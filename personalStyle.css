@@ -12,10 +12,10 @@ body {
     }
 
 nav {
-      background-color: #bbbdf6;
+      background-color: #9893da;
       color: white;
       padding: 1em;
-      width: 200px;         /* larghezza colonna menu */
+      width: 200px;         
     }
 
 nav ul {
@@ -32,15 +32,13 @@ nav a {
       color: white;
       text-decoration: none;
     }
+nav li :hover{
+  background-color: #bbbdf6;
+  color: black;
 
-main {
-      flex: 1;
-      padding: 2em;
-      background-color: #EAF9EB;
-    }
-
+}
 footer {
-      background-color: #bbbdf6;
+      background-color: #9893da;
       color: white;
       text-align: center;
       padding: 1em;

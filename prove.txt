@@ -1,0 +1,22 @@
+<!-- CSS e JS da CDN -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+
+<!-- Div per il calendario -->
+<div id='calendar'></div>
+
+<!-- Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'it',
+      events: [
+        { title: 'Dentista', start: '2025-10-05' },
+        { title: 'Compleanno di Luca', start: '2025-10-12' }
+      ]
+    });
+    calendar.render();
+  });
+</script>
