@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alesja's Personal Hubs</title>
   <link rel="stylesheet" href="personalStyle.css">
 </head>
+
 <body>
+  <!-- Nav laterale -->
+  <nav>
+    <ul>
+      <li><a href="#">Travel Plans</a></li>
+      <li><a href="#">Financial Balance</a></li>
+      <li><a href="#">Books</a></li>
+      <li><a href="#">Tv Series</a></li>
+      <li><a href="#">Manhwa</a></li>
+      <li><a href="#">Shopping List</a></li>
+      <li><a href="#">Games</a></li>
+      <li><a href="#">Sites</a></li>
+      <li><a href="#">Anime</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenitore a destra della nav -->
   <div class="container">
-    <!--Side Bar For Personal Stuff Division-->
-    <nav>
-      <ul>
-        <li><a href="#">Travel Plans</a></li>
-        <li><a href="#">Financial Balance</a></li>
-        <li><a href="#">Books</a></li>
-        <li><a href="#">Tv Series</a></li>
-        <li><a href="#">Manhwa</a></li>
-        <li><a href="#">Shopping List</a></li>
-        <li><a href="#">Games</a></li>
-        <li><a href="#">Sites</a></li>
-        <li><a href="#">Anime</a></li>
-      </ul>
-    </nav>
     <header>
       <h1>Alelover's Personal Hub</h1>
       <div class="right-header">
-        <div class="date-today" id="today">Data odierna</div>
+        <div class="date-today" id="today"></div>
         <img src="#" alt="Profile Photo" class="profile-pic">
       </div>
     </header>
+
     <main>
       <div class="calendar">
-        <h2>Calendario></h2>
-        <!-- Qui puoi inserire un piccolo calendario, ad esempio un plugin oppure un semplice HTML -->
+        <h2>Calendario</h2>
         <p>[Calendario in arrivo]</p>
       </div>
-      <!--Da mettere apposto sta parte-->
+
       <div class="agenda">
         <h2>Settimana</h2>
         <ul>
@@ -48,6 +52,8 @@
           <li>Domenica – Relax</li>
         </ul>
       </div>
+  </div>
+  <div class="notes">
       <p>Post-it da mettere qui delle cose che sono poi da categorizzare</p>
       <p>Mettere link di portofolio carini che poi sono da fare per me.</p>
       <p style="color:#EAF9EB">Colore base - EAF9EB</p>
@@ -58,9 +64,11 @@
       <p>Cambiare colori</p>
     </main>
   </div>
-  <footer>
-    <p>&copy; 2025 - Tutti i diritti riservati</p>
-  </footer>
-
+  <div class="container">
+    <footer>
+      <p>&copy; 2025 - Tutti i diritti riservati</p>
+    </footer>
+  </div>
+  <script src="personalJs.js"></script>
 </body>
 </html>

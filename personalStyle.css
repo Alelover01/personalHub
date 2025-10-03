@@ -2,20 +2,23 @@ body {
       margin: 0;
       font-family: Arial, sans-serif;
       display: flex;
-      flex-direction: column;
       min-height: 100vh;
+      background-color:#EAF9EB;
     }
 
 .container {
       display: flex;
+      flex-direction: column;
       flex: 1;
     }
 
+/*Stile della nav laterale*/
 nav {
       background-color: #9893da;
       color: white;
-      padding: 1em;
-      width: 200px;         
+      padding: 1.5em;
+      width: 200px;
+      flex-shrink: 0;       
     }
 
 nav ul {
@@ -31,11 +34,57 @@ nav li {
 nav a {
       color: white;
       text-decoration: none;
+      transition: color 0.3s;
     }
+
 nav li :hover{
   background-color: #bbbdf6;
   color: black;
 
+}
+/*Stile del header*/
+header{
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 2em;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+}
+header h1{
+  margin: 0;
+  font-size: 1.5em;
+}
+.right-header{
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.date-today{
+  font-size: 0.9em;
+}
+.profile-pic{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+/*Stile dei calendari*/
+main{
+  display: flex;
+  gap: 2em;
+  padding: 2em;
+  flex: 1;
+}
+.calendar .agenda{
+  flex: 1;
+  padding: 1em;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notes{
+  margin: 0.5em 0;
 }
 footer {
       background-color: #9893da;
