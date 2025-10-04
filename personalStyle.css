@@ -1,3 +1,4 @@
+/*Non messo per la transition o trasform tutti i webkit e roba del genere perchè tanto vanno anche senza*/
 body {
       --base-bg: #edede9;
       --text-cl: #333;
@@ -74,18 +75,12 @@ header h1{
 
 /*Stile del girono di prova*/
 .anim04c{
-  -webkit-transition: all .4s cubic-bezier(.5,.35,.15,1.4);
   transition: all .4s cubic-bezier(.5,.35,.15,1.4);
 }
 .outer{
   position: relative; /*TO-DO Questo da vedere se non va bene con il flex*/
   top: 25%;
   z-index: 1;
-  /*Per ogni browser fatto*/ 
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
   transform: translateY(-50%);
   cursor: pointer;
 }
@@ -108,10 +103,6 @@ header h1{
   position: absolute;
   right: 0;
   z-index: 2;
-  -webkit-transform: rotate(-10deg) translate(7px, 8px);
-  -moz-transform: rotate(-10deg) translate(7px, 8px);
-  -ms-transform: rotate(-10deg) translate(7px, 8px);
-  -o-transform: rotate(-10deg) translate(7px, 8px);
   transform: rotate(-10deg) translate(7px, 8px);
   background: #efc94c; /*TO-DO Cambiare colore*/
 }
@@ -119,62 +110,38 @@ header h1{
   position: absolute;
   left: 0;
   z-index: 1;
-  -webkit-transform: rotate(5deg) translate(-4px, 4px);
-  -moz-transform: rotate(5deg) translate(-4px, 4px);
-  -ms-transform: rotate(5deg) translate(-4px, 4px);
-  -o-transform: rotate(5deg) translate(-4px, 4px);
   transform: rotate(5deg) translate(-4px, 4px);
   background: #3498DB; /*TO-DO Cambiare colore*/
 }
 /*Stile della scatola principale in cui si vede il giorno*/
 .outer:hover .inner {
-  -webkit-transform: rotate(0) translate(0);
-  -moz-transform: rotate(0) translate(0);
-  -ms-transform: rotate(0) translate(0);
-  -o-transform: rotate(0) translate(0);
   transform: rotate(0) translate(0);
 }
 .outer:active .inner {
-  -webkit-transform: rotate(0) translate(0) scale(0.9);
-  -moz-transform: rotate(0) translate(0) scale(0.9);
-  -ms-transform: rotate(0) translate(0) scale(0.9);
-  -o-transform: rotate(0) translate(0) scale(0.9);
   transform: rotate(0) translate(0) scale(0.9);
 }
 .outer:active .front .date {
-  -webkit-transform: scale(2);
+  transform: scale(2);
 }
 .outer:active .front .day,
 .outer:active .front .month {
   visibility: hidden;
   opacity: 0;
-  -webkit-transform: scale(0);
-  -moz-transform: scale(0);
-  -ms-transform: scale(0);
-  -o-transform: scale(0);
   transform: scale(0);
 }
 .outer:active .right {
-  -webkit-transform: rotate(-5deg) translateX(80px) scale(0.9);
-  -moz-transform: rotate(-5deg) translateX(80px) scale(0.9);
-  -ms-transform: rotate(-5deg) translateX(80px) scale(0.9);
-  -o-transform: rotate(-5deg) translateX(80px) scale(0.9);
   transform: rotate(-5deg) translateX(80px) scale(0.9);
 }
 .outer:active .left {
-  -webkit-transform: rotate(5deg) translateX(-80px) scale(0.9);
-  -moz-transform: rotate(5deg) translateX(-80px) scale(0.9);
-  -ms-transform: rotate(5deg) translateX(-80px) scale(0.9);
-  -o-transform: rotate(5deg) translateX(-80px) scale(0.9);
   transform: rotate(5deg) translateX(-80px) scale(0.9);
 }
 .outer:active .calendarMain {
-  -webkit-transform: scale(1.8);
+  transform: scale(1.8);
   opacity: 0;
   visibility: hidden;
 }
 .outer:active .clock {
-  -webkit-transform: scale(1.4);
+  transform: scale(1.4);
   opacity: 1;
   visibility: visible;
 }

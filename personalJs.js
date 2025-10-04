@@ -18,19 +18,5 @@ $(document).ready(function () {
         $(".date span,.date2 span").text(newDate.getDate());
         $(".day span,.day2 span").text(dayNames[newDate.getDay()]);
         $(".year span").html(newDate.getFullYear());
-    }, 1000);	
-    
-    
-    
-    $(".outer").on({
-        mousedown:function(){
-            $(".dribbble").css("opacity","1");
-        },
-        mouseup:function(){
-            $(".dribbble").css("opacity","0");
-        }
-    });
-    
-    
-    
+    }, 1000);    
     });
