@@ -23,7 +23,7 @@ body, .container, header, .right-header, .content{
 body, nav ul, header h1{
   margin: 0;
 }
-.front, .right, .left, .calendarMain, .year, .calendarNormal{
+.front, .right, .left, .calendarMain, .year, .calendarNormal,.clock{
   position: absolute;
 }
 header, .right-header{
@@ -31,6 +31,14 @@ header, .right-header{
 }
 .front, .clock, .year, .calendarNormal, footer{
   text-align: center;
+}
+.outer:active .front .day, .outer:active .front .month, .clock, .year, .calendarNormal, .outer:active .calendarMain{
+  opacity: 0;
+  visibility: hidden;
+}
+.outer:active .clock, .outer:active .calendarNormal, .outer:active .year{
+  opacity: 1;
+  visibility: visible;
 }
 
 
@@ -151,8 +159,6 @@ nav li {
 
 .outer:active .front .day,
 .outer:active .front .month {
-  visibility: hidden;
-  opacity: 0;
   transform: scale(0);
 }
 
@@ -166,26 +172,18 @@ nav li {
 
 .outer:active .calendarMain {
   transform: scale(1.8);
-  opacity: 0;
-  visibility: hidden;
 }
 
 .outer:active .clock {
   transform: scale(1.4);
-  opacity: 1;
-  visibility: visible;
 }
 
 .outer:active .calendarNormal {
   bottom: -30px;
-  opacity: 1;
-  visibility: visible;
 }
 
 .outer:active .year {
   top: -30px;
-  opacity: 1;
-  visibility: visible;
   letter-spacing: 3px;
 }
 
@@ -222,8 +220,6 @@ nav li {
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 3px;
-  opacity: 0;
-  visibility: hidden;
 }
 
 /*Stile per l'anno*/
@@ -235,8 +231,6 @@ nav li {
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 0;
-  opacity: 0;
-  visibility: hidden;
   color: #ff726b;
   /*Sicuramente da cambiare*/
 }
@@ -249,8 +243,6 @@ nav li {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 3px;
-  opacity: 0;
-  visibility: hidden;
 }
 
 /*Colori che cambiano*/
