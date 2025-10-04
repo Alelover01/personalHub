@@ -85,7 +85,7 @@ header h1 {
 }
 
 .right-header {
-  gap: 1em;
+  gap: 5em;
   /* TO-DO Questo fa cambiare la distanza tra pic e data*/
 }
 
@@ -99,8 +99,7 @@ header h1 {
 }
 
 .outer {
-  position: relative;
-  /*TO-DO Questo da vedere se non va bene con il flex*/
+  /*position: relative;*/
   top: 25%;
   z-index: 1;
   transform: translateY(-50%);
@@ -117,7 +116,7 @@ header h1 {
 }
 
 .front {
-  top: 0;
+  top: 50px;
   /*TO-DO Cambiare*/
   left: 0;
   z-index: 3;
@@ -126,6 +125,7 @@ header h1 {
 }
 
 .right {
+  top:50px;
   right: 0;
   z-index: 2;
   transform: rotate(-10deg) translate(7px, 8px);
@@ -134,6 +134,7 @@ header h1 {
 }
 
 .left {
+  top:50px;
   left: 0;
   z-index: 1;
   transform: rotate(5deg) translate(-4px, 4px);
