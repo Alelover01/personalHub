@@ -40,6 +40,9 @@ header, .right-header{
   opacity: 1;
   visibility: visible;
 }
+.right-header li, nav li {
+  list-style: none;
+}
 
 
 /*Stile della nav laterale*/
@@ -84,12 +87,6 @@ header h1 {
 .right-header {
   gap: 1em;
   /* TO-DO Questo fa cambiare la distanza tra pic e data*/
-}
-
-/*In questo modo tutti i li non hanno lo stile puntato,aggiuto anche quello della nav in modo da avere tutto più compatto*/
-.right-header li,
-nav li {
-  list-style: none;
 }
 
 .date-today {
