@@ -1,9 +1,9 @@
 body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: Arial, sans-serif; /*Cambiare poi nel font che si vuole*/
       display: flex;
       min-height: 100vh;
-      background-color:#EAF9EB;
+      background-color:#EDEDE9;
     }
 
 .container {
@@ -14,8 +14,8 @@ body {
 
 /*Stile della nav laterale*/
 nav {
-      background-color: #9893da;
-      color: white;
+      background-color: #D6CCC2;
+      color: #333;
       padding: 1.5em;
       width: 200px;
       flex-shrink: 0;       
@@ -32,7 +32,7 @@ nav li {
     }
 
 nav a {
-      color: white;
+      color: #333;
       text-decoration: none;
       transition: color 0.3s;
     }
@@ -47,7 +47,7 @@ header{
   justify-content: space-between;
   align-items: center;
   padding: 1em 2em;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #C5BDAF;
   display: flex;
 }
 header h1{
@@ -57,7 +57,7 @@ header h1{
 .right-header{
   display: flex;
   align-items: center;
-  gap: 1em;
+  gap: 20em; /*Questo fa cambiare la distanza tra pic e data*/
 }
 .date-today{
   font-size: 0.9em;
@@ -71,10 +71,14 @@ header h1{
 }
 /*Stile dei calendari*/
 main{
-  display: flex;
   gap: 2em;
   padding: 2em;
   flex: 1;
+}
+.content{
+  display: flex;
+  gap: 2em;
+  margin-bottom: 2em;
 }
 .calendar .agenda{
   flex: 1;
@@ -87,7 +91,7 @@ main{
   margin: 0.5em 0;
 }
 footer {
-      background-color: #9893da;
+      background-color: #E3D5CA;
       color: white;
       text-align: center;
       padding: 1em;
