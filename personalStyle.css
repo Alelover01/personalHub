@@ -1,168 +1,201 @@
-/*Non messo per la transition o trasform tutti i webkit e roba del genere perchè tanto vanno anche senza*/
+/*Didn't put the webkit and other ones for the transitions and the trasforms*/
 body {
-      --base-bg: #edede9;
-      --text-cl: #333;
-      --nav-bg: #d6ccc2;
-      --footer-bg: #e3d5ca;
-      --link-cl: #f5ebe0;
-      --det-cl: #c5bdaf;
-      margin: 0;
-      font-family: Arial, sans-serif; /*Cambiare poi nel font che si vuole*/
-      display: flex;
-      min-height: 100vh;
-      background-color:var(--base-bg);
-    }
+  /*Varible used for the colors so it's easier to change them*/
+  --base-bg: #edede9;
+  --text-cl: #333;
+  --nav-bg: #d6ccc2;
+  --footer-bg: #e3d5ca;
+  --link-cl: #f5ebe0;
+  --det-cl: #c5bdaf;
+  /*Style of the body*/
+  font-family: Arial, sans-serif;  /*Cambiare poi nel font che si vuole*/
+  min-height: 100vh;
+  background-color: var(--base-bg);
+}
 
-.container {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
+/*Commons stiles in the selectors*/
+body, .container, header, .right-header, .content{
+  display: flex;
+}
+.container, main, .calendar, .agenda{
+  flex: 1;
+}
+body, nav ul, header h1{
+  margin: 0;
+}
+.front, .right, .left, .calendarMain, .year, .calendarNormal{
+  position: absolute;
+}
+header, .right-header{
+  align-items: center;
+}
+.front, .clock, .year, .calendarNormal, footer{
+  text-align: center;
+}
+
 
 /*Stile della nav laterale*/
 nav {
-      background-color: var(--nav-bg);
-      color: var(--text-cl);
-      padding: 1.5em;
-      width: 200px;
-      flex-shrink: 0;       
-    }
-
+  background-color: var(--nav-bg);
+  color: var(--text-cl);
+  padding: 1.5em;
+  width: 200px;
+  flex-shrink: 0;
+}
 nav ul {
-      margin: 0;
-      padding: 0;
-    }
-
+  padding: 0;
+}
 nav li {
-      margin: 1em 0;
-    }
-
+  margin: 1em 0;
+}
 nav a {
-      color: #333;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-nav li :hover{
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+nav li :hover {
   background-color: var(--link-cl);
   color: var(--text-cl);
 
 }
+
+.container {
+  flex-direction: column;
+}
 /*Stile del header*/
-header{
+header {
   justify-content: space-between;
-  align-items: center;
   padding: 1em 2em;
   border-bottom: 1px solid var(--det-cl);
-  display: flex;
 }
-header h1{
-  margin: 0;
+
+header h1 {
   font-size: 1.5em;
 }
-.right-header{
-  display: flex;
-  align-items: center;
-  gap: 1em; /* TO-DO Questo fa cambiare la distanza tra pic e data*/
+
+.right-header {
+  gap: 1em;
+  /* TO-DO Questo fa cambiare la distanza tra pic e data*/
 }
+
 /*In questo modo tutti i li non hanno lo stile puntato,aggiuto anche quello della nav in modo da avere tutto più compatto*/
-.right-header li, nav li{
+.right-header li,
+nav li {
   list-style: none;
 }
-.date-today{
+
+.date-today {
   font-size: 0.9em;
 }
 
 /*Stile del girono di prova*/
-.anim04c{
-  transition: all .4s cubic-bezier(.5,.35,.15,1.4);
+.anim04c {
+  transition: all .4s cubic-bezier(.5, .35, .15, 1.4);
 }
-.outer{
-  position: relative; /*TO-DO Questo da vedere se non va bene con il flex*/
+
+.outer {
+  position: relative;
+  /*TO-DO Questo da vedere se non va bene con il flex*/
   top: 25%;
   z-index: 1;
   transform: translateY(-50%);
   cursor: pointer;
 }
-.signboard{
-  width: 100px; /* TO-DO Cambiare poi le dimensioni*/
+
+.signboard {
+  width: 100px;
+  /* TO-DO Cambiare poi le dimensioni*/
   height: 100px;
   margin: auto;
   color: var(--base-bg);
   border-radius: 10px;
 }
-.front{
-  position: absolute;
-  top: 0; /*TO-DO Cambiare*/
+
+.front {
+  top: 0;
+  /*TO-DO Cambiare*/
   left: 0;
   z-index: 3;
-  background: #ff726b; /*TO-DO Cambiare colore*/
-  text-align: center;
+  background: #ff726b;
+  /*TO-DO Cambiare colore*/
 }
-.right{
-  position: absolute;
+
+.right {
   right: 0;
   z-index: 2;
   transform: rotate(-10deg) translate(7px, 8px);
-  background: #efc94c; /*TO-DO Cambiare colore*/
+  background: #efc94c;
+  /*TO-DO Cambiare colore*/
 }
+
 .left {
-  position: absolute;
   left: 0;
   z-index: 1;
   transform: rotate(5deg) translate(-4px, 4px);
-  background: #3498DB; /*TO-DO Cambiare colore*/
+  background: #3498DB;
+  /*TO-DO Cambiare colore*/
 }
+
 /*Stile della scatola principale in cui si vede il giorno*/
 .outer:hover .inner {
   transform: rotate(0) translate(0);
 }
+
 .outer:active .inner {
   transform: rotate(0) translate(0) scale(0.9);
 }
+
 .outer:active .front .date {
   transform: scale(2);
 }
+
 .outer:active .front .day,
 .outer:active .front .month {
   visibility: hidden;
   opacity: 0;
   transform: scale(0);
 }
+
 .outer:active .right {
   transform: rotate(-5deg) translateX(80px) scale(0.9);
 }
+
 .outer:active .left {
   transform: rotate(5deg) translateX(-80px) scale(0.9);
 }
+
 .outer:active .calendarMain {
   transform: scale(1.8);
   opacity: 0;
   visibility: hidden;
 }
+
 .outer:active .clock {
   transform: scale(1.4);
   opacity: 1;
   visibility: visible;
 }
+
 .outer:active .calendarNormal {
   bottom: -30px;
   opacity: 1;
   visibility: visible;
 }
+
 .outer:active .year {
   top: -30px;
   opacity: 1;
   visibility: visible;
   letter-spacing: 3px;
 }
+
 /*Stile Principale con il mese-giorno-numero TO-DO Cambiare poi qualcosas*/
 .calendarMain {
   width: 100%;
   height: 100%;
-  position: absolute;
   opacity: 1;
 }
+
 .month,
 .day {
   font-size: 10px;
@@ -171,6 +204,7 @@ header h1{
   text-transform: uppercase;
   letter-spacing: 3px;
 }
+
 .date {
   font-size: 40px;
   line-height: 40px;
@@ -178,89 +212,93 @@ header h1{
   text-transform: uppercase;
   letter-spacing: 3px;
 }
+
 /*Stile per l'ora*/
-.clock{
+.clock {
   width: 100%;
   height: 100%;
-  position: absolute;
   font-size: 40px;
   line-height: 100px;
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 3px;
-  text-align: center;
   opacity: 0;
   visibility: hidden;
 }
+
 /*Stile per l'anno*/
-.year{
+.year {
   width: 100%;
-  position: absolute;
   top: 0;
   font-size: 14px;
   line-height: 30px;
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 0;
-  text-align: center;
   opacity: 0;
   visibility: hidden;
-  color: #ff726b; /*Sicuramente da cambiare*/
+  color: #ff726b;
+  /*Sicuramente da cambiare*/
 }
-.calendarNormal{
+
+.calendarNormal {
   width: 100%;
-  position: absolute;
   bottom: 0;
   font-size: 14px;
   line-height: 30px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 3px;
-  text-align: center;
   opacity: 0;
   visibility: hidden;
 }
+
 /*Colori che cambiano*/
-.date2{
+.date2 {
   color: #ff726b;
 }
-.day2{
+
+.day2 {
   color: #3498db;
 }
-.month2{
+
+.month2 {
   color: #efc94c;
 }
-.profile-pic{
+
+.profile-pic {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid white; /*TO-DO Cambiare colore*/
+  border: 2px solid white;
+  /*TO-DO Cambiare colore*/
 }
+
 /*Stile dei calendari*/
-main{
+main {
   gap: 2em;
   padding: 2em;
-  flex: 1;
 }
-.content{
-  display: flex;
+
+.content {
   gap: 2em;
   margin-bottom: 2em;
 }
-.calendar .agenda{
-  flex: 1;
+
+.calendar .agenda {
   padding: 1em;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /*TO-DO Non so se mi piace*/
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  /*TO-DO Non so se mi piace*/
 }
 
-.notes{
+.notes {
   margin: 0.5em 0;
 }
+
 footer {
-      background-color: var(--footer-bg);
-      color: var(--text-cl); 
-      text-align: center;
-      padding: 1em;
-    }
+  background-color: var(--footer-bg);
+  color: var(--text-cl);
+  padding: 1em;
+}
