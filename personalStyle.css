@@ -98,8 +98,8 @@ header h1 {
   cursor: pointer;
 }
 .signboard.outer {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   margin: auto;
   color: var(--text-cl);
   border-radius: 10px;
@@ -123,12 +123,12 @@ header h1 {
 }
 .signboard.right {
   z-index: 2;
-  transform: rotate(-8deg) translate(5px, 4px);
+  transform: rotate(-8deg) translate(6px, 6px);
   background: var(--nav-bg);
 }
 .signboard.left {
   z-index: 1;
-  transform: rotate(5deg) translate(-3px, 3px);
+  transform: rotate(6deg) translate(-6px, 6px);
   background: var(--footer-bg);
 }
 /* Hover e Active */
@@ -175,14 +175,14 @@ header h1 {
 }
 .month,
 .day {
-  font-size: 7px;
-  line-height: 8px;
+  font-size: 10px;
+  line-height: 15px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 .date {
-  font-size: 18px;
+  font-size: 20px;
   line-height: 18px;
   font-weight: 400;
   text-transform: uppercase;
@@ -191,7 +191,7 @@ header h1 {
 .clock {
   width: 100%;
   height: 100%;
-  font-size: 12px;
+  font-size: 20px;
   line-height: 50px;
   font-weight: 400;
   text-transform: uppercase;
@@ -218,14 +218,14 @@ header h1 {
 
 /* Immagine profilo */
 .profile-pic {
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid white;
 }
 
-/* Calendario e agenda */
+/* Main part with calendar,agenda and then post it of today*/
 main {
   gap: 2em;
   padding: 2em;
