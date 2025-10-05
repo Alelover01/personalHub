@@ -7,6 +7,7 @@ body {
   --footer-bg: #e3d5ca;
   --link-cl: #f5ebe0;
   --det-cl: #c5bdaf;
+  --dark-cl:#746D61;
   /*Used in the today date*/
   --face-top: 30px;
   /*Style of the body*/
@@ -77,11 +78,12 @@ nav li :hover {
 header {
   justify-content: space-between;
   padding: 1em 2em;
-  border-bottom: 3px solid var(--det-cl);
+  border-bottom: 1px solid var(--det-cl);
 }
 
 header h1 {
-  font-size: 1.5em;
+  font-size: 3em;
+  color: var(--dark-cl);
 }
 .right-header {
   gap: 3em;
