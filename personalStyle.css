@@ -89,57 +89,45 @@ header h1 {
   /* TO-DO Questo fa cambiare la distanza tra pic e data*/
 }
 
-.date-today {
-  font-size: 0.9em;
-}
-
-/*Stile del girono di prova*/
+/*Stile of the day*/
 .anim04c {
   transition: all .4s cubic-bezier(.5, .35, .15, 1.4);
 }
 
 .outer {
   /*position: relative;*/
-  top: 25%;
   z-index: 1;
   transform: translateY(-50%);
   cursor: pointer;
 }
 
 .signboard {
-  width: 100px;
-  /* TO-DO Cambiare poi le dimensioni*/
-  height: 100px;
+  width: 50px;/*Changes the dimension of the day*/
+  height: 50px;
   margin: auto;
-  color: var(--base-bg);
+  color: var(--text-cl);
   border-radius: 10px;
 }
 
 .front {
   top: 50px;
   /*TO-DO Cambiare*/
-  left: 0;
   z-index: 3;
-  background: #ff726b;
-  /*TO-DO Cambiare colore*/
+  background: var(--det-cl);
 }
 
 .right {
   top:50px;
-  right: 0;
   z-index: 2;
-  transform: rotate(-10deg) translate(7px, 8px);
-  background: #efc94c;
-  /*TO-DO Cambiare colore*/
+  transform: rotate(-10deg) translate(7px, 8px);/*To-do cambiare*/
+  background: var(--nav-bg);
 }
 
 .left {
   top:50px;
-  left: 0;
   z-index: 1;
   transform: rotate(5deg) translate(-4px, 4px);
-  background: #3498DB;
-  /*TO-DO Cambiare colore*/
+  background: var(--footer-bg);
 }
 
 /*Stile della scatola principale in cui si vede il giorno*/
