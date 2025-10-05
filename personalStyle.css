@@ -7,6 +7,8 @@ body {
   --footer-bg: #e3d5ca;
   --link-cl: #f5ebe0;
   --det-cl: #c5bdaf;
+  /*Used in the today date*/
+  --face-top: 30px;
   /*Style of the body*/
   font-family: Arial, sans-serif;  /*Cambiare poi nel font che si vuole*/
   min-height: 100vh;
@@ -44,7 +46,7 @@ header, .right-header{
   list-style: none;
 }
 
-/*Stile della nav laterale*/
+/*Stile of the side bar TO-DO: da finire*/
 nav {
   background-color: var(--nav-bg);
   color: var(--text-cl);
@@ -75,15 +77,14 @@ nav li :hover {
 header {
   justify-content: space-between;
   padding: 1em 2em;
-  border-bottom: 1px solid var(--det-cl);
+  border-bottom: 3px solid var(--det-cl);
 }
 
 header h1 {
   font-size: 1.5em;
 }
-
 .right-header {
-  gap: 2.5em;
+  gap: 3em;
   /* TO-DO Questo fa cambiare la distanza tra pic e data - a seconda se pc o computer deve cambiare*/
 }
 
@@ -91,106 +92,79 @@ header h1 {
 .anim04c {
   transition: all .4s cubic-bezier(.5, .35, .15, 1.4);
 }
-
 .outer {
   z-index: 1;
   transform: translateY(-50%);
   cursor: pointer;
 }
-
-/* ======================
-   FIX Signboard (per il tuo HTML)
-   Mantiene top:30px e centra visivamente il contenuto
-   ====================== */
-:root {
-  --face-top: 30px; /* valore indispensabile */
-}
-
-/* Contenitore principale */
 .signboard.outer {
   width: 50px;
   height: 50px;
   margin: auto;
   color: var(--text-cl);
   border-radius: 10px;
-  position: relative; /* per ancorare le facce */
+  position: relative;
   overflow: visible;
 }
-
-/* Facce */
 .signboard.front,
 .signboard.right,
 .signboard.left {
   position: absolute;
   width: 100%;
   height: 100%;
-  top: var(--face-top); /* 30px */
+  top: var(--face-top);
   left: 0;
   border-radius: 10px;
   box-sizing: border-box;
 }
-
 .signboard.front {
   z-index: 3;
   background: var(--det-cl);
 }
-
 .signboard.right {
   z-index: 2;
   transform: rotate(-8deg) translate(5px, 4px);
   background: var(--nav-bg);
 }
-
 .signboard.left {
   z-index: 1;
   transform: rotate(5deg) translate(-3px, 3px);
   background: var(--footer-bg);
 }
-
 /* Hover e Active */
 .outer:hover .inner {
   transform: rotate(0) translate(0);
 }
-
 .outer:active .inner {
   transform: rotate(0) translate(0) scale(0.9);
 }
-
 .outer:active .front .date {
   transform: scale(1.4);
 }
-
 .outer:active .front .day,
 .outer:active .front .month {
   transform: scale(0.8);
 }
-
 .outer:active .right {
   transform: rotate(-5deg) translateX(50px) scale(0.9);
 }
-
 .outer:active .left {
   transform: rotate(5deg) translateX(-50px) scale(0.9);
 }
-
 .outer:active .calendarMain {
   transform: translateY(calc(-1 * var(--face-top))) scale(1.1);
 }
-
 .outer:active .clock {
   transform: scale(1.1);
 }
-
 .outer:active .calendarNormal {
   bottom: -20px;
 }
-
 .outer:active .year {
   top: -25px;
   letter-spacing: 1px;
 }
-
-/* Centro del contenuto mese / giorno / numero */
+/* Stile of the text and other things*/
 .signboard.front .calendarMain {
   position: absolute;
   top: 0;
@@ -201,13 +175,12 @@ header h1 {
 }
 .month,
 .day {
-  font-size: 6px;
+  font-size: 7px;
   line-height: 8px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
 .date {
   font-size: 18px;
   line-height: 18px;
@@ -215,8 +188,6 @@ header h1 {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
-/* Ora */
 .clock {
   width: 100%;
   height: 100%;
@@ -226,8 +197,6 @@ header h1 {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
-/* Anno */
 .year {
   width: 100%;
   top: 0;
@@ -237,7 +206,6 @@ header h1 {
   text-transform: uppercase;
   letter-spacing: 0;
 }
-
 .calendarNormal {
   width: 100%;
   bottom: 0;
