@@ -10,6 +10,11 @@ body {
   --dark-cl:#746D61;
   /*Used in the today date*/
   --face-top: 30px;
+  /*Used for the dinamic weekly calendar/agenda */
+  --numDays: 7;
+  --numHours: 14;
+  --timeHeight: 60px;
+  /*TO-DO: aggiungere colore degli eventi*/
   /*Style of the body*/
   font-family: Arial, sans-serif;  /*Cambiare poi nel font che si vuole*/
   min-height: 100vh;
@@ -241,7 +246,25 @@ main {
 .calendar .agenda {
   padding: 1em;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /*TO-DO: Capire cosa fare di questi*/
+}
+
+/*Stile del calendario per bene da fare*/
+.mainCalendar{
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr;
+  margin: 2rem;
+}
+.timeline{
+  display: grid;
+  grid-template-rows: repeat(var(--numHours)), var(--timeHeight);
+}
+.days{
+  display: grid;
+  grid-column: 2;
+  gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
 }
 
 .notes {
