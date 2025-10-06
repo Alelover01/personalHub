@@ -79,26 +79,15 @@
         <div class="calendar">
           <h2>Weekly Events</h2>
           <div class="mainCalendar">
-            <div class="timeline">
-              <div class="spacer"></div>
-              <!--TO-DO: Mettere forse la scelta dell'ora d'inizio e di fine-->
-              <div class="time-marker">8 AM</div>
-              <div class="time-marker">9 AM</div>
-              <div class="time-marker">10 AM</div>
-              <div class="time-marker">11 AM</div>
-              <div class="time-marker">12 AM</div>
-              <div class="time-marker">13 AM</div>
-              <div class="time-marker">14 AM</div>
-              <div class="time-marker">15 AM</div>
-              <div class="time-marker">16 AM</div>
-              <div class="time-marker">17 AM</div>
-              <div class="time-marker">18 AM</div>
-              <div class="time-marker">19 AM</div>
-              <div class="time-marker">20 AM</div>
-              <div class="time-marker">21 AM</div>
+            <div class="week-nav">
+              <button id="prev-week">← Settimana Precedente</button>
+              <button id="next-week">Settimana Successiva →</button>
             </div>
-            <!--TO-DO: Giornate ed eventi saranno generati dinamicamente-->
-            <div class="days">
+            <div class="days" id="days-container"></div>
+            <div class="add-event">
+              <select id="day-select"></select>
+              <input type="text" id="title-input" placeholder="Titolo evento">
+              <button id="add-event">Aggiungi</button>
             </div>
           </div>
         </div>
