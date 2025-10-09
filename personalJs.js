@@ -86,7 +86,7 @@ function renderCalendar(){
             ev.textContent = e.title;
             ev.style.top = `${(e.startHour - startHour) * 40 + 25}px`;
             ev.style.height = `${(e.endHour - e.startHour) * 40 - 5}px`;
-            ev,dataset.id = e.id;
+            ev.dataset.id = e.id;
             addDragEvents(ev);
             col.appendChild(ev);
         });
@@ -108,7 +108,7 @@ function addDragEvents(ev){
     let offsetY, originCol,originTop;
     ev.addEventListener("mousedown", (e)=>{
         offsetY = e.offsetY;
-        originCol = ev.originCol;
+        originCol = ev.parentElement;
         originTop = ev.offsetTop;
         ev.style.zIndex= 1000;
         ev.classList.add("dragging");
@@ -143,7 +143,7 @@ function addDragEvents(ev){
             let newStart = Math.max(startHour, startHour + Math.floor((newTop - 25) / 40));
             let newEnd = newStart + (parseInt(ev.style.height) / 40);
 
-            const eventObj = events.find(e => e.di == ev.dataset.id);
+            const eventObj = events.find(e => e.id == ev.dataset.id);
             if (eventObj){
                 eventObj.date = newDay;
                 eventObj.startHour = Math.round(newStart);
@@ -196,7 +196,7 @@ document.getElementById("next-week").addEventListener("click", ()=>{
 });
 
 addBtn.addEventListener("click", ()=> modal.style.display = "flex");
-document.getElementById("close-modal").addEventListener("click", () => modal.style.display = "none" );
+document.getElementById("close-event").addEventListener("click", () => modal.style.display = "none" );
 
 renderTimeColumn();
 renderCalendar();

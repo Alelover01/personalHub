@@ -244,7 +244,12 @@ main {
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /*TO-DO: Capire cosa fare di questi*/
 }
-
+.calendar{
+  flex: 2;
+}
+.agenda{
+  flex: 1;
+}
 /*Stile del calendario per bene da fare*/
 .mainCalendar{
   padding: 1em;
@@ -296,6 +301,7 @@ main {
   flex-direction: column;
   align-items: flex-end;
   padding-right: 5px;
+  margin-top: 50px;
 }
 .time-slot{
   height: 40px;
@@ -330,7 +336,7 @@ main {
 }
 .event{
   position: absolute;
-  background: #c5bdaf;
+  background: var(--footer-bg);
   border-radius: 6px;
   padding: 3px 5px;
   font-size: 0.8em;
