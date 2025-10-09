@@ -94,4 +94,109 @@ function renderCalendar(){
     });
 
     // Update of select
+    const select = document.getElementById("day-select");
+    select.innerHTML="";
+    weekDays.forEach(d=> {
+        const opt = document.createElement("option");
+        opt.value = d.toISOString();
+        opt.textContent = d.toLocaleDateString("it-IT", {weekday: "short",day: "numeric"});
+        select.appendChild(opt);
+    });
 }
+//Drag and Drop Fuction
+function addDragEvents(ev){
+    let offsetY, originCol,originTop;
+    ev.addEventListener("mousedown", (e)=>{
+        offsetY = e.offsetY;
+        originCol = ev.originCol;
+        originTop = ev.offsetTop;
+        ev.style.zIndex= 1000;
+        ev.classList.add("dragging");
+
+        const onMouseMove = (moveEvent) =>{
+            ev.style.top = (moveEvent.clientY - originCol.getBoundingClientRect().top - offsetY) + "px";
+            //Changes the day if it enters in another colums
+            const allCols = document.querySelectorAll(".day-column");
+            allCols.forEach(col =>{
+                const rect = col.getBoundingClientRect();
+                if(
+                    moveEvent.clientX >= rect.left &&
+                    moveEvent.clientX <= rect.right &&
+                    moveEvent.clientY >= rect.top &&
+                    moveEvent.clientY <= rect.bottom
+                ){
+                    if (col !== ev.parentElement) col.appendChild(ev);
+                }
+            });
+        };
+
+        const onMouseUp = ()=>{
+            ev.classList.remove("dragging");
+            ev.style.zIndex = 1;
+            document.removeEventListener("mousemove",onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
+
+            const newTop = parseInt(ev.style.top);
+            const newCol = ev.parentElement;
+            const newDay = new Date(newCol.dataset.date);
+
+            let newStart = Math.max(startHour, startHour + Math.floor((newTop - 25) / 40));
+            let newEnd = newStart + (parseInt(ev.style.height) / 40);
+
+            const eventObj = events.find(e => e.di == ev.dataset.id);
+            if (eventObj){
+                eventObj.date = newDay;
+                eventObj.startHour = Math.round(newStart);
+                eventObj.endHour = Math.round(newEnd);
+            }
+            renderCalendar();
+        };
+
+        document.addEventListener("mousemove",onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+    });
+}
+
+//Add of events
+document.getElementById("save-event").addEventListener("click",() =>{
+    const title = document.getElementById("title-input").value.trim();
+    const startTime = document.getElementById("start-time").value;
+    const endTime = document.getElementById("end-time").value;
+    const day = new Date (document.getElementById("day-select").value);
+
+    if(!title || !startTime || !endTime){
+        alert("Compila tutti i campi");
+        return;
+    }
+    const startHour = parseInt(startTime.split(":")[0]);
+    const endHour = parseInt(endTime.split(":")[0]);
+    if (endHour <= startHour){
+        alert ("L'ora di fine deve essere dopo  l'inizio");
+        return;
+    }
+
+    if (day < new Date().setHours(0,0,0,0)){
+        alert("Non puoi aggiungere eventi nel passato!");
+        return;
+    }
+    events.push({id: Date.now(), title, date: day, startHour, endHour});
+    modal.style.display = "none";
+    document.getElementById("title-input").value = "";
+    renderCalendar();
+});
+
+//This is for the change to the previous and next week
+document.getElementById("prev-week").addEventListener("click", () => {
+    currentDate.setDate(currentDate.getDate() - 7);
+    renderCalendar();
+});
+document.getElementById("next-week").addEventListener("click", ()=>{
+    currentDate.setDate(currentDate.getDate() + 7);
+    renderCalendar();
+});
+
+addBtn.addEventListener("click", ()=> modal.style.display = "flex");
+document.getElementById("close-modal").addEventListener("click", () => modal.style.display = "none" );
+
+renderTimeColumn();
+renderCalendar();
