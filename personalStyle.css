@@ -239,7 +239,7 @@ main {
   margin-bottom: 2em;
 }
 
-.calendar .agenda {
+.calendar, .agenda {
   padding: 1em;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /*TO-DO: Capire cosa fare di questi*/
@@ -258,6 +258,33 @@ main {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1em;
+  gap: 1rem;
+  padding: 0 0.5rem;
+}
+/*Stili button per settimana successiva e precedente*/
+#week-range{
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-cl);
+  text-align: center;
+}
+.week-nav button{
+  border: none;
+  background: var(--det-cl);
+  color: var(--text-cl);
+  padding: 0.5rem 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.week-nav button:hover{
+  background: color-mix(in srgb, var(--det-cl) 85%, #000 15%);
+  transform: translateY(-2px);
+}
+.week-nav button:active{
+  transform: translateY(0);
 }
 .calendar-grid{
   display: flex;

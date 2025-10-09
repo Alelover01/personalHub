@@ -8,7 +8,7 @@ const daysContainer = document.getElementById("days-container");
 const timeColumn = document.getElementById("time-column");
 const weekRange = document.getElementById("week-range");
 const modal = document.getElementById("event-modal");
-constaddBtn = document.getElementById("add-btn");
+const addBtn = document.getElementById("add-btn");
 
 //Used for the calendar in the header near the profile pic
 $(document).ready(function () {
