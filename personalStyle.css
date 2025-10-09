@@ -8,6 +8,7 @@ body {
   --link-cl: #f5ebe0;
   --det-cl: #c5bdaf;
   --dark-cl:#746D61;
+  --other-cl: #555;
   /*Used in the today date*/
   --face-top: 30px;
   /*TO-DO: aggiungere colore degli eventi*/
@@ -63,7 +64,7 @@ nav li {
   margin: 1em 0;
 }
 nav a {
-  color: #333;
+  color: var(--text-cl);
   text-decoration: none;
   transition: color 0.3s;
 }
@@ -219,7 +220,7 @@ header h1 {
   letter-spacing: 1px;
 }
 
-/* Immagine profilo */
+/* Profile Pic Style */
 .profile-pic {
   width: 70px;
   height: 70px;
@@ -242,18 +243,19 @@ main {
 .calendar, .agenda {
   padding: 1em;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /*TO-DO: Capire cosa fare di questi*/
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 .calendar{
   flex: 2;
+  background: var(--dark-cl);
 }
 .agenda{
   flex: 1;
 }
-/*Stile del calendario per bene da fare*/
+/*Stile of the weekly calendar with its events*/
 .mainCalendar{
   padding: 1em;
-  background: #f5ebe0;/*TO-DO DA CAMBIARE*/
+  background: var(--link-cl);
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -266,7 +268,7 @@ main {
   gap: 1rem;
   padding: 0 0.5rem;
 }
-/*Stili button per settimana successiva e precedente*/
+/*Stile of the button next week and previous week*/
 #week-range{
   margin: 0;
   font-weight: 600;
@@ -291,6 +293,7 @@ main {
 .week-nav button:active{
   transform: translateY(0);
 }
+/*Initial Stile of the content of the weekly calendar*/
 .calendar-grid{
   display: flex;
   overflow-x: auto;
@@ -306,7 +309,7 @@ main {
 .time-slot{
   height: 40px;
   font-size: 0.8em;
-  color: #555;
+  color: var(--other-cl);
 }
 .days-grid{
   display: grid;
@@ -316,22 +319,20 @@ main {
   position: relative;
 }
 .days-column{
-  background: #edede9;
   border-radius: 5px;
   position: relative;
   min-width: 120px;
   overflow: hidden;
 }
 .day-header{
-  background: #d6ccc2;
   padding: 0.3em;
   text-align: center;
   font-weight: bold;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--det-cl);
 }
 .hour-block{
   height: 40px;
-  border-bottom: 1px solid #e3d5ca;
+  border-bottom: 1px solid var(--det-cl);
   position: relative;
 }
 .event{
@@ -340,7 +341,7 @@ main {
   border-radius: 6px;
   padding: 3px 5px;
   font-size: 0.8em;
-  color: #333;
+  color: var(--text-cl);
   cursor: grab;
   user-select: none;
 }
@@ -352,7 +353,7 @@ main {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: #c5bdaf;
+  background: var(--dark-cl);
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -362,9 +363,9 @@ main {
   cursor: pointer;
 }
 #add-btn:hover{
-  background: #b6ad9d;
+  background: var(--other-cl);
 }
-/*Modal*/
+/*Modal style*/
 .modal{
   display: none;
   position: fixed;
@@ -391,6 +392,7 @@ main {
   justify-content: space-between;
   margin-top: 1em;
 }
+/*TO-DO Finire per bene come si vuole lo stile  del modal */
 .modal-actions button{
   padding: 0.5em 1em;
   background: #c5bdaf;
