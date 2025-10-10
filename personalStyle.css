@@ -473,6 +473,8 @@ main {
 #event-info-popup p{
   margin: 0.2rem 0;
   line-height: 1.3;
+  word-break: break-word;
+  text-overflow: ellipsis;
 }
 #event-info-popup em{
   display: block;
