@@ -108,6 +108,7 @@ function renderCalendar() {
         const ev = document.createElement("div");
         ev.classList.add("event");
         ev.textContent = e.title;
+        ev.style.background = e.color || "var(--footer-bg)";
 
         // Posizione verticale
         ev.style.top = `${(e.startHour - startHour) * 41 + 30}px`;
@@ -198,6 +199,7 @@ document.getElementById("save-event").addEventListener("click",() =>{
     const startTime = document.getElementById("start-time").value;
     const endTime = document.getElementById("end-time").value;
     const day = new Date (document.getElementById("day-select").value);
+    const color = document.getElementById("color-input").value;
 
     if(!title || !startTime || !endTime){
         alert("Compila tutti i campi");
@@ -214,9 +216,10 @@ document.getElementById("save-event").addEventListener("click",() =>{
         alert("Non puoi aggiungere eventi nel passato!");
         return;
     }
-    events.push({id: Date.now(), title, date: day, startHour, endHour});
+    events.push({id: Date.now(), title, date: day, startHour, endHour, color});
     modal.style.display = "none";
     document.getElementById("title-input").value = "";
+    document.getElementById("color-input"),value = "#c5bdaf";
     renderCalendar();
 });
 

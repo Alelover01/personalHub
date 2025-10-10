@@ -337,7 +337,6 @@ main {
 }
 .event{
   position: absolute;
-  background: var(--footer-bg);
   border-radius: 6px;
   padding: 3px 5px;
   font-size: 0.8em;
