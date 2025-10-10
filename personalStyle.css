@@ -449,6 +449,39 @@ main {
   background-color: #d5d5d5;
   transform: translateY(-2px);
 }
+/*Stile of the popup of the description*/
+#event-info-popup{
+  position: fixed;
+  display: none;
+  background: var(--footer-bg);
+  color: var(--text-cl);
+  padding: 0.9rem 1.1rem;
+  border-radius: 0.8rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  max-width: 260px;
+  font-size: 0.9rem;
+  z-index: 9999;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  opacity: 0.95;
+}
+#event-info-popup h4{
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-cl);
+}
+#event-info-popup p{
+  margin: 0.2rem 0;
+  line-height: 1.3;
+}
+#event-info-popup em{
+  display: block;
+  font-size: 0.85rem;
+  color: var(--subtext-cl, #888);
+  font-style: italic;
+  margin-bottom: 0.3rem;
+}
+
 .agenda{
   flex: 1;
 }

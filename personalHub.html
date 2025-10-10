@@ -103,6 +103,8 @@
                   <input type="time" id="end-time">
                   <label>Titolo Evento:</label>
                   <input type="text" id="title-input" placeholder="Title Event">
+                  <label>Descrizione</label>
+                  <textarea id="description-input" placeholder="Add the description of the event..." rows="3"></textarea>
                   <label>Colore Evento:</label>
                   <input type="color" id="color-input" value="#c5bdaf">
                   <div class="modal-actions">
@@ -116,8 +118,7 @@
         <div class="agenda">
           <h2>TO-DO Del Giorno</h2>
           <ul>
-            <li>Aggiungere descrizione degli eventi</li>
-            <li>Avere la funzione cancella eventi</li>
+            <li>Avere la funzione cancella eventi dentro la description e la funzione chiudi</li>
             <li>Salvare per il momento in locale le cose</li>
             <li>Fare i to-do</li>
             <li>Creare la sezione post-it in cui tu poi modificare la sua posizione in un'altra pagina</li>
@@ -137,6 +138,8 @@
       <p><a href="https://codepen.io/mselmany/pen/kKOJVW">Idea Data e Ora</a></p>
     </footer>
   </div>
+  <!--So it shows the event info in a popup-->
+  <div id="event-info-popup"></div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="personalJs.js"></script>
 </body>
