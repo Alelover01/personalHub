@@ -249,8 +249,9 @@ main {
   flex: 2;
   background: var(--dark-cl);
 }
-.agenda{
-  flex: 1;
+.calendar h2{
+  text-align: center;
+  color: white;
 }
 /*Stile of the weekly calendar with its events*/
 .mainCalendar{
@@ -319,9 +320,8 @@ main {
   position: relative;
 }
 .days-column{
-  border-radius: 5px;
   position: relative;
-  min-width: 120px;
+  flex: 1;
   overflow: hidden;
 }
 .day-header{
@@ -344,6 +344,13 @@ main {
   color: var(--text-cl);
   cursor: grab;
   user-select: none;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 5;
+  transition: box-shadow 0.2s;
 }
 .event:active{
   cursor: grabbing;
@@ -403,7 +410,12 @@ main {
 .modal-actions button:hover{
   background: #b6ad9d;
 }
-
+.agenda{
+  flex: 1;
+}
+.agenda h2{
+  text-align: center;
+}
 .notes {
   margin: 0.5em 0;
 }

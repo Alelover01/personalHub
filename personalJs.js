@@ -56,53 +56,88 @@ function renderTimeColumn(){
         timeColumn.appendChild(div);
     }
 }
-function renderCalendar(){
-    const weekDays = getWeekDays(currentDate);
-    daysContainer.innerHTML = "";
-    const start = weekDays[0].toLocaleDateString("it-IT",{ day: "numeric", month: "short" });
-    const end = weekDays[6].toLocaleDateString("it-IT",{day: "numeric", month:"short"});
-    weekRange.textContent = `${start} - ${end}`;
+//Function for the calendar
+function renderCalendar() {
+  const weekDays = getWeekDays(currentDate);
+  daysContainer.innerHTML = "";
+  const start = weekDays[0].toLocaleDateString("it-IT", { day: "numeric", month: "short" });
+  const end = weekDays[6].toLocaleDateString("it-IT", { day: "numeric", month: "short" });
+  weekRange.textContent = `${start} - ${end}`;
 
-    weekDays.forEach(day =>{
-        const col = document.createElement("div");
-        col.classList.add("day-column");
-        col.dataset.date = day.toISOString();
+  weekDays.forEach(day => {
+    const col = document.createElement("div");
+    col.classList.add("day-column");
+    col.dataset.date = day.toISOString();
+    col.style.position = "relative"; // <— serve per confinare gli eventi
 
-        const header = document.createElement("div");
-        header.classList.add("day-header");
-        header.textContent = day.toLocaleDateString("it-IT", {weekday: "short", day: "numeric"});
-        col.appendChild(header);
+    // header del giorno
+    const header = document.createElement("div");
+    header.classList.add("day-header");
+    header.textContent = day.toLocaleDateString("it-IT", { weekday: "short", day: "numeric" });
+    col.appendChild(header);
 
-        for (let j = startHour; j < endHour; j++){
-            const hourBlock = document.createElement("div");
-            hourBlock.classList.add("hour-block");
-            col.appendChild(hourBlock);
+    // blocchi orari
+    for (let j = startHour; j < endHour; j++) {
+      const hourBlock = document.createElement("div");
+      hourBlock.classList.add("hour-block");
+      col.appendChild(hourBlock);
+    }
+
+    // eventi del giorno
+    const dayEvents = events.filter(e => e.date.toDateString() === day.toDateString());
+    dayEvents.sort((a, b) => a.startHour - b.startHour);
+
+    // 🔸 Raggruppa eventi sovrapposti
+    const overlaps = [];
+    dayEvents.forEach(e => {
+      let placed = false;
+      for (let group of overlaps) {
+        if (e.startHour < group[group.length - 1].endHour) {
+          group.push(e);
+          placed = true;
+          break;
         }
-
-        const dayEvents = events.filter(e => e.date.toDateString() === day.toDateString());
-        dayEvents.forEach(e =>{
-            const ev = document.createElement("div");
-            ev.classList.add("event");
-            ev.textContent = e.title;
-            ev.style.top = `${(e.startHour - startHour) * 40 + 25}px`;
-            ev.style.height = `${(e.endHour - e.startHour) * 40 - 5}px`;
-            ev.dataset.id = e.id;
-            addDragEvents(ev);
-            col.appendChild(ev);
-        });
-        daysContainer.appendChild(col);
+      }
+      if (!placed) overlaps.push([e]);
     });
 
-    // Update of select
-    const select = document.getElementById("day-select");
-    select.innerHTML="";
-    weekDays.forEach(d=> {
-        const opt = document.createElement("option");
-        opt.value = d.toISOString();
-        opt.textContent = d.toLocaleDateString("it-IT", {weekday: "short",day: "numeric"});
-        select.appendChild(opt);
+    // 🔸 Posiziona gli eventi nel giorno
+    overlaps.forEach(group => {
+      const total = group.length;
+      group.forEach((e, i) => {
+        const ev = document.createElement("div");
+        ev.classList.add("event");
+        ev.textContent = e.title;
+
+        // Posizione verticale
+        ev.style.top = `${(e.startHour - startHour) * 41 + 30}px`;
+        ev.style.height = `${(e.endHour - e.startHour) * 41 - 6}px`;
+
+        //  Posizione orizzontale solo dentro la colonna
+        ev.style.left = `${(i / total) * 100}%`;
+        ev.style.width = `${100 / total - 3}%`;
+
+        ev.dataset.id = e.id;
+        addDragEvents(ev);
+        col.appendChild(ev);
+      });
     });
+
+    daysContainer.appendChild(col);
+  });
+
+  // aggiorna il select dei giorni
+  const select = document.getElementById("day-select");
+  select.innerHTML = "";
+  weekDays.forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = d.toISOString();
+    opt.textContent = d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric" });
+    select.appendChild(opt);
+  });
 }
+
+
 //Drag and Drop Fuction
 function addDragEvents(ev){
     let offsetY, originCol,originTop;
