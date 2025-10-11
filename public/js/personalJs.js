@@ -297,6 +297,7 @@ renderTimeColumn();
 loadEventsFromServer();
 
 //---TODO---
+const todayKey = new Date().toISOString().split("T")[0];
 let todoItems = [];
 
 document.getElementById("add-todo-btn").addEventListener("click", ()=>{
@@ -306,6 +307,7 @@ document.getElementById("add-todo-btn").addEventListener("click", ()=>{
 
   todoItems.push({text, done: false});
   input.value= "";
+  saveTodos();
   renderTodoList();
 });
 
@@ -320,6 +322,7 @@ function renderTodoList(){
 
     li.addEventListener("click", ()=>{
       item.done = !item.done;
+      saveTodos();
       renderTodoList();
     });
 
@@ -328,6 +331,7 @@ function renderTodoList(){
     removeBtn.className = "remove-btn";
     removeBtn.onclick = ()=>{
       todoItems.splice(index,1);
+      saveTodos();
       renderTodoList();
     };
 
@@ -335,3 +339,13 @@ function renderTodoList(){
     list.appendChild(li);
   });
 }
+function loadTodos(){
+  const saved = localStorage.getItem("todos-" + todayKey);
+  todoItems = saved ? JSON.parse(saved) : [];
+  renderTodoList();
+}
+function saveTodos(){
+  localStorage.setItem("todos-" + todayKey, JSON.stringify(todoItems));
+}
+
+loadTodos();
