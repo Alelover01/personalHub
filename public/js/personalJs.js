@@ -295,3 +295,43 @@ document.getElementById("close-event").addEventListener("click", () => modal.sty
 
 renderTimeColumn();
 loadEventsFromServer();
+
+//---TODO---
+let todoItems = [];
+
+document.getElementById("add-todo-btn").addEventListener("click", ()=>{
+  const input  = document.getElementById("todo-input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  todoItems.push({text, done: false});
+  input.value= "";
+  renderTodoList();
+});
+
+function renderTodoList(){
+  const list = document.getElementById("todo-list");
+  list.innerHTML="";
+
+  todoItems.forEach((item,index)=>{
+    const li = document.createElement("li");
+    li.className = item.done ? "done" : "";
+    li.textContent = item.text;
+
+    li.addEventListener("click", ()=>{
+      item.done = !item.done;
+      renderTodoList();
+    });
+
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "🗑️";
+    removeBtn.className = "remove-btn";
+    removeBtn.onclick = ()=>{
+      todoItems.splice(index,1);
+      renderTodoList();
+    };
+
+    li.appendChild(removeBtn);
+    list.appendChild(li);
+  });
+}
