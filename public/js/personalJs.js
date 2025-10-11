@@ -148,15 +148,6 @@ function renderCalendar() {
 
     daysContainer.appendChild(col);
   });
-
-  const select = document.getElementById("day-select");
-  select.innerHTML = "";
-  weekDays.forEach(d => {
-    const opt = document.createElement("option");
-    opt.value = d.toISOString();
-    opt.textContent = d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric" });
-    select.appendChild(opt);
-  });
 }
 
 // --- Popup info evento ---
@@ -253,7 +244,7 @@ document.getElementById("save-event").addEventListener("click", async () => {
   const title = document.getElementById("title-input").value.trim();
   const startTime = document.getElementById("start-time").value;
   const endTime = document.getElementById("end-time").value;
-  const day = new Date(document.getElementById("day-select").value);
+  const day = new Date(document.getElementById("day-input").value);
   const color = document.getElementById("color-input").value;
   const description = document.getElementById("description-input").value.trim();
 
