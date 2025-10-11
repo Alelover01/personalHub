@@ -298,6 +298,7 @@ loadEventsFromServer();
 
 //---TODO---
 const todayKey = new Date().toISOString().split("T")[0];
+const lastKey = localStorage.getItem("lastTodoDate");
 let todoItems = [];
 
 document.getElementById("add-todo-btn").addEventListener("click", ()=>{
@@ -340,12 +341,27 @@ function renderTodoList(){
   });
 }
 function loadTodos(){
+  if(lastKey !== todayKey){
+    showNewDayMessage();
+    localStorage.setItem("lastTodoDate", todayKey);
+  }
+
   const saved = localStorage.getItem("todos-" + todayKey);
   todoItems = saved ? JSON.parse(saved) : [];
   renderTodoList();
 }
 function saveTodos(){
   localStorage.setItem("todos-" + todayKey, JSON.stringify(todoItems));
+}
+function showNewDayMessage(){
+  const msg= document.createElement("div");
+  msg.textContent = "🌞 Nuova giornata, nuova lista!";
+  msg.className = "new-day-banner";
+  document.querySelector(".agenda").prepend(msg);
+
+  setTimeout(()=>{
+    msg.remove();
+  }, 4000);
 }
 
 loadTodos();
