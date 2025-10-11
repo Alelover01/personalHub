@@ -1,5 +1,4 @@
-/*Didn't put the webkit and other ones for the transitions and the transforms*/
-body {
+:root{
   /*Varible used for the colors so it's easier to change them*/
   --base-bg: #edede9;
   --text-cl: #333;
@@ -11,8 +10,8 @@ body {
   --other-cl: #555;
   /*Used in the today date*/
   --face-top: 30px;
-  /*TO-DO: aggiungere colore degli eventi*/
-  /*Style of the body*/
+}
+body {
   font-family: Arial, sans-serif;  /*Cambiare poi nel font che si vuole*/
   min-height: 100vh;
   background-color: var(--base-bg);

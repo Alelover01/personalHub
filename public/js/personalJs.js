@@ -168,8 +168,8 @@ function showEventInfo(eventData, element) {
     <p><em>${eventData.startHour}:00 - ${eventData.endHour}:00</em></p>
     <p>${eventData.description ? eventData.description : "Nessuna descrizione"}</p>
     <div style="display:flex;gap:5px;margin-top:5px;">
-      <button id="popup-close-btn">Chiudi</button>
-      <button id="popup-delete-btn" style="background:#f44336;color:white;">Elimina</button>
+      <button class="close-btn">Chiudi</button>
+      <button class="delete-btn"">Elimina</button>
     </div>
   `;
 
