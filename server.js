@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
 const fs = require('fs');
 
 const app = express();
@@ -8,7 +7,7 @@ const PORT = 3000;
 const DATA_FILE = path.join(__dirname, 'events.json');
 
 // Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Serve file statici da /public
 app.use(express.static(path.join(__dirname, 'public')));
@@ -35,7 +34,7 @@ app.post('/events', (req, res) => {
 });
 
 // API: Elimina evento
-app.delete('events/:id', (req, res) => {
+app.delete('/events/:id', (req, res) => {
   const eventId = parseInt(req.params.id);
   if (!fs.existsSync(DATA_FILE)) return res.json({ success: false });
   let events = JSON.parse(fs.readFileSync(DATA_FILE));

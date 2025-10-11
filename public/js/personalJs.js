@@ -22,12 +22,12 @@ async function loadEventsFromServer() {
   }
 }
 
-async function saveEventsToServer() {
+async function saveEventsToServer(newEvent) {
   try {
     await fetch("/events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(events)
+      body: JSON.stringify(newEvent)
     });
   } catch (err) {
     console.error("Errore salvataggio eventi:", err);
@@ -181,7 +181,15 @@ function showEventInfo(eventData, element) {
   document.getElementById("popup-close-btn").onclick = () => popup.style.display = "none";
   document.getElementById("popup-delete-btn").onclick = async () => {
     events = events.filter(ev => ev.id !== eventData.id);
-    await saveEventsToServer();
+    await saveEventsToServer({
+      id: Date.now(),
+      title,
+      description,
+      date: day,
+      startHour: startHourNum,
+      endHour: endHourNum,
+      color
+    });
     popup.style.display = "none";
     renderCalendar();
   };
