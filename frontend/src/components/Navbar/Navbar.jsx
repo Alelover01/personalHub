@@ -1,15 +1,15 @@
 import {Link} from "react-router-dom";
-import ".Navbar.css";
+import "./Navbar.css";
 
 export default function Navbar(){
     const links = [
         "Home",
-        "Travel Plans",
-        "Financial Balance",
+        "Travel-Plans",
+        "Financial-Balance",
         "Books",
-        "TV Series",
+        "TV-Series",
         "Manhwa",
-        "Shopping List",
+        "Shopping-List",
         "Games",
         "Sites",
         "Anime"
