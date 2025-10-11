@@ -508,11 +508,11 @@ main {
   transform: translateY(-2px);
 }
 #event-info-popup .delete-btn{
-  background-color: #d16a5d;
+  background-color: var(--dark-cl);
   color: #fff;
 }
 #event-info-popup .delete-btn:hover{
-  background-color: #b44f45;
+  background-color: #5f574c;
   transform: translateY(-2px);
 }
 
