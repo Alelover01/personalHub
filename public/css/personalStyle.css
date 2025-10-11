@@ -579,10 +579,6 @@ main {
 }
 
 
-.notes {
-  margin: 0.5em 0;
-}
-
 /* Footer */
 footer {
   background-color: var(--footer-bg);
