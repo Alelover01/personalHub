@@ -1,12 +1,7 @@
-// ==========================
-// Variable date and events
-// ==========================
+// --- Variabili principali ---
 let currentDate = new Date();
 let events = [];
 
-// ==========================
-// Constant variables
-// ==========================
 const startHour = 8;
 const endHour = 24;
 const daysContainer = document.getElementById("days-container");
@@ -15,26 +10,47 @@ const weekRange = document.getElementById("week-range");
 const modal = document.getElementById("event-modal");
 const addBtn = document.getElementById("add-btn");
 
-// ==========================
-// Header clock/calendar
-// ==========================
-$(document).ready(function () {
-  var monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-  var dayNames = [
-    "Sunday", "Monday", "Tuesday", "Wednesday",
-    "Thursday", "Friday", "Saturday"
-  ];
+// --- Funzioni server ---
+async function loadEventsFromServer() {
+  try {
+    const res = await fetch("/events");
+    const data = await res.json();
+    events = data.map(ev => ({ ...ev, date: new Date(ev.date) }));
+    renderCalendar();
+  } catch (err) {
+    console.error("Errore caricamento eventi:", err);
+  }
+}
 
-  var newDate = new Date();
+async function saveEventsToServer() {
+  try {
+    await fetch("/events", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(events)
+    });
+  } catch (err) {
+    console.error("Errore salvataggio eventi:", err);
+  }
+}
+
+// --- Orario e calendario header ---
+$(document).ready(function () {
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"];
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday",
+    "Thursday", "Friday", "Saturday"];
+  const newDate = new Date();
+  newDate.setDate(newDate.getDate());
 
   setInterval(function () {
-    var now = new Date();
-    $(".hour").html((now.getHours() < 10 ? "0" : "") + now.getHours());
-    $(".minute").html((now.getMinutes() < 10 ? "0" : "") + now.getMinutes());
-    $(".second").html((now.getSeconds() < 10 ? "0" : "") + now.getSeconds());
+    const hours = new Date().getHours();
+    const minutes = new Date().getMinutes();
+    const seconds = new Date().getSeconds();
+
+    $(".hour").html((hours < 10 ? "0" : "") + hours);
+    $(".minute").html((minutes < 10 ? "0" : "") + minutes);
+    $(".second").html((seconds < 10 ? "0" : "") + seconds);
 
     $(".month span,.month2 span").text(monthNames[newDate.getMonth()]);
     $(".date span,.date2 span").text(newDate.getDate());
@@ -43,9 +59,7 @@ $(document).ready(function () {
   }, 1000);
 });
 
-// ==========================
-// Calendar core functions
-// ==========================
+// --- Funzioni calendario ---
 function getWeekDays(date) {
   const start = new Date(date);
   start.setDate(start.getDate() - start.getDay() + 1);
@@ -68,9 +82,6 @@ function renderTimeColumn() {
   }
 }
 
-// ==========================
-// Render calendar + events
-// ==========================
 function renderCalendar() {
   const weekDays = getWeekDays(currentDate);
   daysContainer.innerHTML = "";
@@ -126,6 +137,11 @@ function renderCalendar() {
         ev.style.width = `${100 / total - 3}%`;
 
         addDragEvents(ev);
+
+        ev.addEventListener("click", (event) => {
+          showEventInfo(e, ev);
+        });
+
         col.appendChild(ev);
       });
     });
@@ -143,137 +159,79 @@ function renderCalendar() {
   });
 }
 
-// ==========================
-// Show / Hide event popup
-// ==========================
+// --- Popup info evento ---
 function showEventInfo(eventData, element) {
   const popup = document.getElementById("event-info-popup");
-  const container = document.querySelector(".calendar-grid");
-  const containerRect = container.getBoundingClientRect();
 
-  // Contenuto del popup con pulsanti
   popup.innerHTML = `
     <h4>${eventData.title}</h4>
     <p><em>${eventData.startHour}:00 - ${eventData.endHour}:00</em></p>
     <p>${eventData.description ? eventData.description : "Nessuna descrizione"}</p>
-    <div class="popup-actions">
-      <button class="close-btn">Chiudi</button>
-      <button class="delete-btn">Elimina</button>
+    <div style="display:flex;gap:5px;margin-top:5px;">
+      <button id="popup-close-btn">Chiudi</button>
+      <button id="popup-delete-btn" style="background:#f44336;color:white;">Elimina</button>
     </div>
   `;
 
-  // Posizionamento intelligente
   const rect = element.getBoundingClientRect();
-  let left = rect.right + 10;
-  if (left + 250 > containerRect.right) {
-    left = rect.left - 260;
-  }
-  popup.style.left = `${left + window.scrollX}px`;
+  popup.style.left = `${rect.right + window.scrollX + 10}px`;
   popup.style.top = `${rect.top + window.scrollY}px`;
   popup.style.display = "block";
 
-  // Listener per pulsante Chiudi
-  popup.querySelector(".close-btn").addEventListener("click", () => {
+  document.getElementById("popup-close-btn").onclick = () => popup.style.display = "none";
+  document.getElementById("popup-delete-btn").onclick = async () => {
+    events = events.filter(ev => ev.id !== eventData.id);
+    await saveEventsToServer();
     popup.style.display = "none";
-    document.removeEventListener("click",hidePopup); 
-    //In questo modo quando fai click di nuovo sul evento esso non faccia partire il drag
-  });
-
-  // Listener per pulsante Elimina
-  popup.querySelector(".delete-btn").addEventListener("click", () => {
-    if (confirm(`Eliminare l'evento "${eventData.title}"?`)) {
-      const index = events.findIndex(e => e.id === eventData.id);
-      if (index !== -1) {
-        events.splice(index, 1);
-        renderCalendar();
-        popup.style.display = "none";
-      }
-    }
-  });
-
-  // Chiudi cliccando fuori dal popup (ritardato per evitare conflitti)
-  setTimeout(() => {
-    document.addEventListener("click", hidePopup);
-  }, 150);
+    renderCalendar();
+  };
 }
 
-
-function hidePopup(e) {
-  const popup = document.getElementById("event-info-popup");
-  if (!popup.contains(e.target)) {
-    popup.style.display = "none";
-    document.removeEventListener("click", hidePopup);
-  }
-}
-
-// ==========================
-// Drag and Drop (fixed)
-// ==========================
+// --- Drag & Drop ---
 function addDragEvents(ev) {
-  let offsetY, originCol, startX, startY, isDragging = false;
+  let offsetY, originCol;
 
   ev.addEventListener("mousedown", (e) => {
+    if (e.target.tagName === "BUTTON") return; // evita drag su pulsanti popup
+
     offsetY = e.offsetY;
     originCol = ev.parentElement;
-    startX = e.clientX;
-    startY = e.clientY;
-    isDragging = false;
-
     ev.style.zIndex = 1000;
     ev.classList.add("dragging");
 
     const onMouseMove = (moveEvent) => {
-      const dx = Math.abs(moveEvent.clientX - startX);
-      const dy = Math.abs(moveEvent.clientY - startY);
-      if (dx > 5 || dy > 5) isDragging = true;
+      ev.style.top = (moveEvent.clientY - originCol.getBoundingClientRect().top - offsetY) + "px";
 
-      if (isDragging) {
-        ev.style.top =
-          moveEvent.clientY -
-          originCol.getBoundingClientRect().top -
-          offsetY +
-          "px";
-
-        const allCols = document.querySelectorAll(".day-column");
-        allCols.forEach((col) => {
-          const rect = col.getBoundingClientRect();
-          if (
-            moveEvent.clientX >= rect.left &&
-            moveEvent.clientX <= rect.right &&
-            moveEvent.clientY >= rect.top &&
-            moveEvent.clientY <= rect.bottom
-          ) {
-            if (col !== ev.parentElement) col.appendChild(ev);
-          }
-        });
-      }
+      document.querySelectorAll(".day-column").forEach(col => {
+        const rect = col.getBoundingClientRect();
+        if (moveEvent.clientX >= rect.left && moveEvent.clientX <= rect.right &&
+            moveEvent.clientY >= rect.top && moveEvent.clientY <= rect.bottom) {
+          if (col !== ev.parentElement) col.appendChild(ev);
+        }
+      });
     };
 
-    const onMouseUp = (upEvent) => {
+    const onMouseUp = async () => {
       ev.classList.remove("dragging");
       ev.style.zIndex = 1;
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
-
-      if (!isDragging) {
-        upEvent.stopPropagation();
-        showEventInfo(events.find((e) => e.id == ev.dataset.id), ev);
-        return;
-      }
 
       const newTop = parseInt(ev.style.top);
       const newCol = ev.parentElement;
       const newDay = new Date(newCol.dataset.date);
 
       let newStart = Math.max(startHour, startHour + Math.floor((newTop - 25) / 40));
-      let newEnd = newStart + parseInt(ev.style.height) / 40;
+      let newEnd = newStart + (parseInt(ev.style.height) / 40);
 
-      const eventObj = events.find((e) => e.id == ev.dataset.id);
+      const eventObj = events.find(e => e.id == ev.dataset.id);
       if (eventObj) {
         eventObj.date = newDay;
         eventObj.startHour = Math.round(newStart);
         eventObj.endHour = Math.round(newEnd);
       }
+
+      await saveEventsToServer();
       renderCalendar();
     };
 
@@ -282,10 +240,8 @@ function addDragEvents(ev) {
   });
 }
 
-// ==========================
-// Add / Save new event
-// ==========================
-document.getElementById("save-event").addEventListener("click", () => {
+// --- Aggiunta evento ---
+document.getElementById("save-event").addEventListener("click", async () => {
   const title = document.getElementById("title-input").value.trim();
   const startTime = document.getElementById("start-time").value;
   const endTime = document.getElementById("end-time").value;
@@ -297,15 +253,11 @@ document.getElementById("save-event").addEventListener("click", () => {
     alert("Compila tutti i campi");
     return;
   }
-  const startHour = parseInt(startTime.split(":")[0]);
-  const endHour = parseInt(endTime.split(":")[0]);
-  if (endHour <= startHour) {
-    alert("L'ora di fine deve essere dopo l'inizio");
-    return;
-  }
 
-  if (day < new Date().setHours(0, 0, 0, 0)) {
-    alert("Non puoi aggiungere eventi nel passato!");
+  const startHourNum = parseInt(startTime.split(":")[0]);
+  const endHourNum = parseInt(endTime.split(":")[0]);
+  if (endHourNum <= startHourNum) {
+    alert("L'ora di fine deve essere dopo l'inizio");
     return;
   }
 
@@ -314,10 +266,12 @@ document.getElementById("save-event").addEventListener("click", () => {
     title,
     description,
     date: day,
-    startHour,
-    endHour,
+    startHour: startHourNum,
+    endHour: endHourNum,
     color
   });
+
+  await saveEventsToServer();
 
   modal.style.display = "none";
   document.getElementById("title-input").value = "";
@@ -326,9 +280,7 @@ document.getElementById("save-event").addEventListener("click", () => {
   renderCalendar();
 });
 
-// ==========================
-// Week navigation + modal
-// ==========================
+// --- Navigazione settimana ---
 document.getElementById("prev-week").addEventListener("click", () => {
   currentDate.setDate(currentDate.getDate() - 7);
   renderCalendar();
@@ -338,11 +290,9 @@ document.getElementById("next-week").addEventListener("click", () => {
   renderCalendar();
 });
 
+// --- Modal e inizializzazione ---
 addBtn.addEventListener("click", () => modal.style.display = "flex");
 document.getElementById("close-event").addEventListener("click", () => modal.style.display = "none");
 
-// ==========================
-// Initial render
-// ==========================
 renderTimeColumn();
-renderCalendar();
+loadEventsFromServer();
