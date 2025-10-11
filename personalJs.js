@@ -175,6 +175,8 @@ function showEventInfo(eventData, element) {
   // Listener per pulsante Chiudi
   popup.querySelector(".close-btn").addEventListener("click", () => {
     popup.style.display = "none";
+    document.removeEventListener("click",hidePopup); 
+    //In questo modo quando fai click di nuovo sul evento esso non faccia partire il drag
   });
 
   // Listener per pulsante Elimina
