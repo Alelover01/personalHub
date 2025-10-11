@@ -150,27 +150,51 @@ function showEventInfo(eventData, element) {
   const popup = document.getElementById("event-info-popup");
   const container = document.querySelector(".calendar-grid");
   const containerRect = container.getBoundingClientRect();
-  const rect = element.getBoundingClientRect();
 
+  // Contenuto del popup con pulsanti
   popup.innerHTML = `
     <h4>${eventData.title}</h4>
     <p><em>${eventData.startHour}:00 - ${eventData.endHour}:00</em></p>
     <p>${eventData.description ? eventData.description : "Nessuna descrizione"}</p>
+    <div class="popup-actions">
+      <button class="close-btn">Chiudi</button>
+      <button class="delete-btn">Elimina</button>
+    </div>
   `;
 
+  // Posizionamento intelligente
+  const rect = element.getBoundingClientRect();
   let left = rect.right + 10;
   if (left + 250 > containerRect.right) {
     left = rect.left - 260;
   }
-
   popup.style.left = `${left + window.scrollX}px`;
   popup.style.top = `${rect.top + window.scrollY}px`;
   popup.style.display = "block";
 
+  // Listener per pulsante Chiudi
+  popup.querySelector(".close-btn").addEventListener("click", () => {
+    popup.style.display = "none";
+  });
+
+  // Listener per pulsante Elimina
+  popup.querySelector(".delete-btn").addEventListener("click", () => {
+    if (confirm(`Eliminare l'evento "${eventData.title}"?`)) {
+      const index = events.findIndex(e => e.id === eventData.id);
+      if (index !== -1) {
+        events.splice(index, 1);
+        renderCalendar();
+        popup.style.display = "none";
+      }
+    }
+  });
+
+  // Chiudi cliccando fuori dal popup (ritardato per evitare conflitti)
   setTimeout(() => {
     document.addEventListener("click", hidePopup);
   }, 150);
 }
+
 
 function hidePopup(e) {
   const popup = document.getElementById("event-info-popup");
