@@ -1,0 +1,252 @@
+/* ============================
+   HEADER BASE
+   ============================ */
+header {
+  justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--det-cl);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+header h1 {
+  font-size: 48px;
+  color: var(--dark-cl);
+  margin: 0;
+}
+
+.right-header {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+
+.right-header li {
+  list-style: none;
+}
+
+/* ============================
+   ANIMATION & TRANSITIONS
+   ============================ */
+.anim04c {
+  transition: all 0.4s cubic-bezier(0.5, 0.35, 0.15, 1.4);
+}
+
+/* ============================
+   SIGNBOARD STRUCTURE
+   ============================ */
+.signboard-container {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto;
+  perspective: 400px;
+}
+
+.signboard.outer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.signboard .outer {
+  width: 70px;
+  height: 70px;
+  margin: auto;
+  color: var(--text-cl);
+  border-radius: 10px;
+  overflow: visible;
+}
+
+/* Common style for the 3 faces */
+.signboard.front,
+.signboard.left,
+.signboard.right {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 50px;
+  left: 0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease, background 0.3s ease;
+  color: var(--text-cl, #222);
+}
+
+.signboard.front {
+  z-index: 3;
+  background: var(--det-cl, #ffffff);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.signboard.left {
+  z-index: 1;
+  transform: rotate(6deg) translate(-6px, 6px);
+  background: var(--footer-bg, #cccccc);
+}
+
+.signboard.right {
+  z-index: 2;
+  transform: rotate(-8deg) translate(6px, 6px);
+  background: var(--nav-bg, #dddddd);
+}
+
+.signboard.front .calendarMain {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-7px) translateX(-40px);
+}
+
+/* ============================
+   OUTER INTERACTION STATES
+   ============================ */
+.outer {
+  z-index: 1;
+  transform: translateY(-50%);
+  cursor: pointer;
+  position: relative;
+}
+
+.outer:hover .inner {
+  transform: rotate(0) translate(0);
+}
+
+.outer:active .inner {
+  transform: rotate(0) translate(0) scale(0.9);
+}
+
+.outer:active .front .date {
+  transform: scale(1.4);
+}
+
+.outer:active .front .day,
+.outer:active .front .month {
+  transform: scale(0.8);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.outer:active .right {
+  transform: rotate(-12deg) translateX(80px) scale(0.95);
+}
+
+.outer:active .left {
+  transform: rotate(12deg) translateX(-80px) scale(0.95);
+}
+
+.outer:active .calendarMain {
+  transform: translateY(calc(-1 * var(--face-top))) scale(1.1);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.outer:active .clock {
+  transform: scale(1.1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.outer:active .calendarNormal {
+  bottom: -20px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.outer:active .year {
+  top: -25px;
+  letter-spacing: 1px;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ============================
+   TEXT FORMATTING
+   ============================ */
+.month,
+.day {
+  font-size: 10px;
+  line-height: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.date {
+  font-size: 20px;
+  line-height: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.clock {
+  width: 100%;
+  height: 100%;
+  font-size: 32px;
+  line-height: 80px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.year {
+  width: 100%;
+  top: 0;
+  font-size: 14px;
+  line-height: 30px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  position: absolute;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ============================
+   CALENDAR DISPLAY
+   ============================ */
+.calendarNormal {
+  width: 100%;
+  bottom: 0;
+  font-size: 11px;
+  line-height: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: absolute;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.calendarMain {
+  position: absolute;
+}
+
+/* ============================
+   PROFILE PICTURE
+   ============================ */
+.profile-pic {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
