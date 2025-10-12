@@ -16,14 +16,5 @@
     "startHour": 14,
     "endHour": 15,
     "color": "#00ccff"
-  },
-  {
-    "id": 1697030400003,
-    "title": "Workshop interno",
-    "description": "Formazione team sviluppo",
-    "date": "2025-10-16T19:02:59.273Z",
-    "startHour": 9,
-    "endHour": 11,
-    "color": "#cc99ff"
   }
 ]

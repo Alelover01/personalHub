@@ -8,7 +8,6 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
   const [editingEvent, setEditingEvent] = useState(null);
 
   const titleRef = useRef();
@@ -48,14 +47,6 @@ const Calendar = () => {
       console.error("Errore nel salvataggio degli eventi:", error);
     }
   };
-
-  const handleDeleteEvent = async () => {
-    const updated = events.filter(e => e.id !== selectedEvent.id);
-    setEvents(updated);
-    await saveEvents(updated);
-    setSelectedEvent(null);
-  };
-
   const handleSaveEvent = async () => {
     const title = titleRef.current.value.trim();
     const description = descriptionRef.current.value.trim();
@@ -260,10 +251,15 @@ return (
     </div>
 
     {/* Bottone flottante per aggiungere evento */}
-    <button className="add-button" onClick={() => {
-      setEditingEvent(null);
-      setModalVisible(true);
-    }}>＋</button>
+    <button
+      className="add-button"
+      onClick={() => {
+        setEditingEvent(null);
+        setModalVisible(true);
+      }}
+    >
+      ＋
+    </button>
 
     {/* Modal per aggiunta o modifica evento */}
     {modalVisible && (
@@ -284,16 +280,22 @@ return (
             ref={dayRef}
             type="date"
             defaultValue={editingEvent ? editingEvent.date.toISOString().split("T")[0] : ""}
+            min="2023-01-01"
+            max="2030-12-31"
           />
           <input
             ref={startTimeRef}
             type="time"
             defaultValue={editingEvent ? `${editingEvent.startHour.toString().padStart(2, "0")}:00` : ""}
+            min="08:00"
+            max="24:00"
           />
           <input
             ref={endTimeRef}
             type="time"
             defaultValue={editingEvent ? `${editingEvent.endHour.toString().padStart(2, "0")}:00` : ""}
+            min="08:00"
+            max="24:00"
           />
           <input
             ref={colorRef}
@@ -303,27 +305,28 @@ return (
           <button onClick={handleSaveEvent}>
             {editingEvent ? "Aggiorna" : "Salva"}
           </button>
-          <button onClick={() => {
-            setModalVisible(false);
-            setEditingEvent(null);
-          }}>
+          {editingEvent && (
+            <button
+              onClick={async () => {
+                const updated = events.filter(e => e.id !== editingEvent.id);
+                setEvents(updated);
+                await saveEvents(updated);
+                setModalVisible(false);
+                setEditingEvent(null);
+              }}
+              style={{ backgroundColor: "#d9534f", color: "#fff" }}
+            >
+              Elimina
+            </button>
+          )}
+          <button
+            onClick={() => {
+              setModalVisible(false);
+              setEditingEvent(null);
+            }}
+          >
             Annulla
           </button>
-        </div>
-      </div>
-    )}
-
-    {/* Popup per visualizzare evento selezionato */}
-    {selectedEvent && (
-      <div className="event-popup">
-        <div className="popup-content">
-          <h3>{selectedEvent.title}</h3>
-          <p>{selectedEvent.description}</p>
-          <p>
-            {selectedEvent.date.toLocaleDateString("it-IT")} : {selectedEvent.startHour}:00 → {selectedEvent.endHour}:00
-          </p>
-          <button onClick={handleDeleteEvent}>🗑️ Elimina</button>
-          <button onClick={() => setSelectedEvent(null)}>Chiudi</button>
         </div>
       </div>
     )}
