@@ -17,45 +17,6 @@
   <div class="container">
     <main>
       <div class="content">
-        <div class="calendar">
-          <h2>Weekly Events</h2>
-          <div class="mainCalendar">
-            <div class="week-nav">
-              <button id="prev-week">← Settimana Precedente</button>
-              <h3 id="week-range"></h3>
-              <button id="next-week">Settimana Successiva →</button>
-            </div>
-            <!--Grid of the calendar-->
-            <div class="calendar-grid">
-              <div class="time-column" id="time-column"></div>
-              <div class="days-grid" id="days-container"></div>
-            </div>
-            <!--Button to add events-->
-            <button id="add-btn">+</button>
-            <!--Modal to add Events-->
-            <div class="modal" id="event-modal">
-              <div class="modal-content">
-                  <h3>Aggiungi Evento</h3>
-                  <label>Giorno:</label>
-                  <input type="date" id="day-input">
-                  <label>Ora Inizio:</label>
-                  <input type="time" id="start-time">
-                  <label>Ora Fine</label>
-                  <input type="time" id="end-time">
-                  <label>Titolo Evento:</label>
-                  <input type="text" id="title-input" placeholder="Title Event">
-                  <label>Descrizione</label>
-                  <textarea id="description-input" placeholder="Add the description of the event..." rows="3"></textarea>
-                  <label>Colore Evento:</label>
-                  <input type="color" id="color-input" value="#c5bdaf">
-                  <div class="modal-actions">
-                    <button id="save-event">Save</button>
-                    <button id="close-event">Close</button>
-                  </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="agenda">
           <h2>Today's TO-DO</h2>
           <div class="todo-controls">
