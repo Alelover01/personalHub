@@ -20,20 +20,19 @@ export default function App() {
     <BrowserRouter>
       <div style={{ display: "flex" }}>
         <Navbar />
-        <Routes>
+         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Home" element={<Home />} />
-          <Route path="/travel-plans" element={<TravelPlans />} />
-          <Route path="/financial-balance" element={<FinancialBalance />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/tv-series" element={<TVSeries />} />
-          <Route path="/manhwa" element={<Manhwa />} />
-          <Route path="/shopping-list" element={<ShoppingList />} />
-          <Route path="/games" element={<Games />} />
-          <Route path="/sites" element={<Sites />} />
-          <Route path="/anime" element={<Anime />} />
-        </Routes>
-
+            <Route path="/Home" element={<Home />} />
+            <Route path="/travel-plans" element={<TravelPlans />} />
+            <Route path="/financial-balance" element={<FinancialBalance />} />
+            <Route path="/books" element={<Books />} />
+            <Route path="/tv-series" element={<TVSeries />} />
+            <Route path="/manhwa" element={<Manhwa />} />
+            <Route path="/shopping-list" element={<ShoppingList />} />
+            <Route path="/games" element={<Games />} />
+            <Route path="/sites" element={<Sites />} />
+            <Route path="/anime" element={<Anime />} />
+          </Routes>
       </div>
     </BrowserRouter>
   );
