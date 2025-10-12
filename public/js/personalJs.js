@@ -34,31 +34,6 @@ async function saveEventsToServer(newEvent) {
   }
 }
 
-// --- Orario e calendario header ---
-$(document).ready(function () {
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday",
-    "Thursday", "Friday", "Saturday"];
-  const newDate = new Date();
-  newDate.setDate(newDate.getDate());
-
-  setInterval(function () {
-    const hours = new Date().getHours();
-    const minutes = new Date().getMinutes();
-    const seconds = new Date().getSeconds();
-
-    $(".hour").html((hours < 10 ? "0" : "") + hours);
-    $(".minute").html((minutes < 10 ? "0" : "") + minutes);
-    $(".second").html((seconds < 10 ? "0" : "") + seconds);
-
-    $(".month span,.month2 span").text(monthNames[newDate.getMonth()]);
-    $(".date span,.date2 span").text(newDate.getDate());
-    $(".day span,.day2 span").text(dayNames[newDate.getDay()]);
-    $(".year span").html(newDate.getFullYear());
-  }, 1000);
-});
-
 // --- Funzioni calendario ---
 function getWeekDays(date) {
   const start = new Date(date);
