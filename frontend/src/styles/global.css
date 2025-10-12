@@ -3,6 +3,5 @@ body {
   font-family: Arial, sans-serif;  /*TO-DO Change the font to the one i want*/
   min-height: 100vh;
   background-color: var(--base-bg);
-  display: flex;
   margin: 0;
 }
