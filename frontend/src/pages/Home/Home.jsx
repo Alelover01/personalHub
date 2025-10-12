@@ -1,5 +1,6 @@
 import Header from "../../components/Header/Header";
 import Calendar from '../../components/Calendar/Calendar';
+import Todo from "../../components/Todo/Todo";
 import './Home.css'
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <main>
         <div className="content">
           <Calendar />
+          <Todo />
         </div>
       </main>
       {/**
