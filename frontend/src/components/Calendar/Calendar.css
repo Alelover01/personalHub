@@ -1,117 +1,106 @@
-.calendar{
-    padding: 16px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    flex: 2;
-    background: var(--dark-cl);
+.calendar {
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  flex: 2;
+  background: var(--dark-cl);
 }
-.calendar h2{
-    text-align: center;
-    color: white;
+.calendar h2 {
+  text-align: center;
+  color: white;
 }
-.mainCalendar{
-    padding: 16px;
-    background: var(--link-cl);
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
+.mainCalendar {
+  padding: 16px;
+  background: var(--link-cl);
+  border-radius: 10px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
-/*Display of the week*/
-.week-nav{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    gap: 16px;
-    padding: 0 8px;
+
+/* Navigazione settimana */
+.week-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 16px;
+  padding: 0px 8px;
 }
-#week-range{
-    margin: 0;
-    font-weight: 600;
-    font-size: 16px;
-    color: var(--text-cl);
-    text-align: center;
+.week-nav button {
+  border: none;
+  background: var(--det-cl);
+  color: var(--text-cl);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
 }
-.week-nav button{
-    border: none;
-    background: var(--det-cl);
-    color: var(--text-cl);
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 15px;
+.week-nav button:hover {
+  background: color-mix(in srgb, var(--det-cl) 85%, #000 15%);
 }
-.week-nav button:hover{
-    background: color-mix(in srgb, var(--det-cl) 85%, #000 15%);
-    transform: translateY(-2px);
+
+/* Colonna oraria */
+.calendar-grid {
+  display: flex;
+  overflow-x: auto;
 }
-.week-nav button:active{
-    transform: translateY(0);
+.time-column {
+  flex: 0 0 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 5px;
+  margin-top: 50px;
 }
-/*Display of the time column*/
-.calendar-grid{
-    display: flex;
-    overflow-x: auto;
+.time-slot {
+  height: 40px;
+  font-size: 15px;
+  color: var(--other-cl);
 }
-.time-column{
-    flex: 0 0 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding-right: 5px;
-    margin-top: 50px;
+
+/* Giorni e ore */
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  flex: 1;
+  gap: 2px;
+  position: relative;
 }
-.time-slot{
-    height:40px;
-    font-size: 15px;
-    color: var(--other-cl);
+.day-header {
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid var(--det-cl);
 }
-/*Stile of the day*/
-.days-grid{
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    flex: 1;
-    gap: 2px;
-    position: relative;
+.hour-block {
+  height: 40px;
+  border-bottom: 1px solid var(--det-cl);
+  position: relative;
 }
-.days-column{
-    position: relative;
-    flex: 1;
-    overflow: hidden;
+
+/* Eventi */
+.event {
+  position: absolute;
+  border-radius: 6px;
+  padding: 3px 5px;
+  font-size: 13px;
+  color: var(--text-cl);
+  cursor: grab;
+  user-select: none;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 5;
 }
-.day-header{
-    padding: 5px;
-    text-align: center;
-    font-weight: bold;
-    border-bottom: 1px solid var(--det-cl);
-}
-.hour-block{
-    height: 40px;
-    border-bottom: 1px solid var(--det-cl);
-    position: relative;
-}
-.event{
-    position: absolute;
-    border-radius: 6px;
-    padding: 3px 5px;
-    font-size: 0.8em;
-    color: var(--text-cl);
-    cursor: grab;
-    user-select: none;
-    box-sizing: border-box;
-    word-wrap: break-word;
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    z-index: 5;
-    transition: box-shadow 0.2s;
-}
-.event:active{
+.event:active {
   cursor: grabbing;
   opacity: 0.8;
 }
-/* Bottone flottante per aggiungere evento */
+
+/* Bottone aggiunta evento */
 .add-button {
   position: fixed;
   bottom: 20px;
@@ -124,91 +113,76 @@
   width: 50px;
   height: 50px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
   z-index: 1000;
 }
 .add-button:hover {
   background: var(--other-cl);
 }
 
-/* Modal overlay per aggiunta evento */
+/* Modal */
 .modal {
   position: fixed;
-  inset: 0;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
   background-color: rgba(0, 0, 0, 0.35);
   z-index: 9999;
 }
-
 .modal-content {
   background: var(--main-bg, #f9f9f9);
   color: var(--main-text, #2b2b2b);
-  padding: 2rem;
-  border-radius: 1.5rem;
+  padding: 32px;
+  border-radius: 24px;
   width: 380px;
   max-width: 90%;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 20px;
 }
-
 .modal-content h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.3rem;
+  margin: 0px 0px 8px 0px;
+  font-size: 21px;
   font-weight: 600;
   text-align: center;
   color: var(--text-cl);
 }
-
 .modal-content input,
-.modal-content textarea,
-.modal-content select {
-  padding: 0.6rem 0.8rem;
-  border-radius: 0.6rem;
+.modal-content textarea {
+  padding: 10px 12px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  outline: none;
-  font-size: 0.9rem;
+  font-size: 14px;
   background-color: #fff;
   color: var(--text-cl);
 }
-
 .modal-content input:focus,
-.modal-content textarea:focus,
-.modal-content select:focus {
+.modal-content textarea:focus {
   border-color: var(--accent-color, #8b7b6d);
 }
-
 .modal-content button {
-  padding: 0.6rem 0.8rem;
+  padding: 10px 12px;
   border: none;
-  border-radius: 0.8rem;
+  border-radius: 12px;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
 }
-
 .modal-content button:first-of-type {
   background-color: var(--accent-color, #8b7b6d);
   color: #fff;
 }
-.modal-content button:first-of-type:hover {
-  background-color: #a2907d;
-  transform: translateY(-2px);
-}
-
 .modal-content button:last-of-type {
   background-color: #e0e0e0;
   color: var(--text-cl);
 }
-.modal-content button:last-of-type:hover {
-  background-color: #d5d5d5;
-  transform: translateY(-2px);
-}
 
-/* Popup evento selezionato */
+/* Popup evento */
 .event-popup {
   position: fixed;
   top: 50%;
@@ -216,58 +190,44 @@
   transform: translate(-50%, -50%);
   background: var(--footer-bg, #fff);
   color: var(--text-cl);
-  padding: 1.2rem 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  padding: 20px 24px;
+  border-radius: 16px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.25);
   z-index: 9999;
   width: 320px;
   max-width: 90%;
 }
-
 .popup-content {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 12px;
 }
-
 .popup-content h3 {
-  margin: 0;
-  font-size: 1.2rem;
+  margin: 0px;
+  font-size: 19px;
   font-weight: 600;
-  color: var(--text-cl);
   text-align: center;
+  color: var(--text-cl);
 }
-
 .popup-content p {
-  margin: 0.2rem 0;
-  font-size: 0.95rem;
-  line-height: 1.4;
+  margin: 4px 0px;
+  font-size: 15px;
+  line-height: 20px;
   word-break: break-word;
 }
-
 .popup-content button {
-  padding: 0.5rem 0.8rem;
+  padding: 8px 12px;
   border: none;
-  border-radius: 0.6rem;
-  font-size: 0.9rem;
+  border-radius: 10px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
-
 .popup-content button:first-of-type {
   background-color: var(--dark-cl);
   color: #fff;
 }
-.popup-content button:first-of-type:hover {
-  background-color: #5f574c;
-  transform: translateY(-2px);
-}
-
 .popup-content button:last-of-type {
   background-color: #e0e0e0;
   color: var(--text-cl);
-}
-.popup-content button:last-of-type:hover {
-  background-color: #d3d3d3;
-  transform: translateY(-2px);
 }

@@ -9,6 +9,7 @@ const Calendar = () => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [editingEvent, setEditingEvent] = useState(null);
 
   const titleRef = useRef();
   const descriptionRef = useRef();
@@ -55,6 +56,43 @@ const Calendar = () => {
     setSelectedEvent(null);
   };
 
+  const handleSaveEvent = async () => {
+    const title = titleRef.current.value.trim();
+    const description = descriptionRef.current.value.trim();
+    const day = new Date(dayRef.current.value);
+    const startHourNum = parseInt(startTimeRef.current.value.split(":")[0]);
+    const endHourNum = parseInt(endTimeRef.current.value.split(":")[0]);
+    const color = colorRef.current.value;
+
+    if (!title || isNaN(startHourNum) || isNaN(endHourNum)) {
+      alert("Compila tutti i campi");
+      return;
+    }
+    if (endHourNum <= startHourNum) {
+      alert("L'ora di fine deve essere dopo l'inizio");
+      return;
+    }
+
+    const newEvent = {
+      id: editingEvent?.id || Date.now(),
+      title,
+      description,
+      date: day,
+      startHour: startHourNum,
+      endHour: endHourNum,
+      color
+    };
+
+    const updated = editingEvent
+      ? events.map(e => e.id === newEvent.id ? newEvent : e)
+      : [...events, newEvent];
+
+    setEvents(updated);
+    await saveEvents(updated);
+    setModalVisible(false);
+    setEditingEvent(null);
+  };
+
   useEffect(() => {
     loadEvents();
   }, []);
@@ -63,10 +101,11 @@ const Calendar = () => {
     const addDragEvents = (ev) => {
       let isDragging = false;
 
-      ev.addEventListener("pointerdown", (e) => {
+      ev.addEventListener("pointerdown", () => {
         isDragging = false;
         ev.style.zIndex = 1000;
         ev.classList.add("dragging");
+
         const onPointerMove = () => {
           isDragging = true;
         };
@@ -80,7 +119,10 @@ const Calendar = () => {
           if (!isDragging) {
             const eventId = parseInt(ev.dataset.id);
             const found = events.find(e => e.id === eventId);
-            if (found) setSelectedEvent(found);
+            if (found) {
+              setEditingEvent(found);
+              setModalVisible(true);
+            }
             return;
           }
 
@@ -196,96 +238,97 @@ const Calendar = () => {
       return d;
     });
   };
+return (
+  <div className="calendar">
+    <h2>Weekly Events</h2>
 
-  const handleAddEvent = async () => {
-    const title = titleRef.current.value.trim();
-    const description = descriptionRef.current.value.trim();
-    const day = new Date(dayRef.current.value);
-    const startHourNum = parseInt(startTimeRef.current.value.split(":")[0]);
-    const endHourNum = parseInt(endTimeRef.current.value.split(":")[0]);
-    const color = colorRef.current.value;
-
-    if (!title || isNaN(startHourNum) || isNaN(endHourNum)) {
-      alert("Compila tutti i campi");
-      return;
-    }
-    if (endHourNum <= startHourNum) {
-      alert("L'ora di fine deve essere dopo l'inizio");
-      return;
-    }
-
-    const newEvent = {
-      id: Date.now(),
-      title,
-      description,
-      date: day,
-      startHour: startHourNum,
-      endHour: endHourNum,
-      color
-    };
-
-    const updated = [...events, newEvent];
-    setEvents(updated);
-    await saveEvents(updated);
-    setModalVisible(false);
-  };
-  return (
-    <div className="calendar">
-      <h2>Weekly Events</h2>
-
-      <div className="mainCalendar">
-        <div className="week-nav">
-          <button onClick={() => setCurrentDate(prev => new Date(prev.setDate(prev.getDate() - 7)))}>
-            ← Settimana Precedente
-          </button>
-          <h3 ref={weekRangeRef} aria-live="polite">Settimana</h3>
-          <button onClick={() => setCurrentDate(prev => new Date(prev.setDate(prev.getDate() + 7)))}>
-            Settimana Successiva →
-          </button>
-        </div>
-
-        <div className="calendar-grid">
-          <div className="time-column" ref={timeColumnRef}></div>
-          <div className="days-grid" ref={daysContainerRef}></div>
-        </div>
+    <div className="mainCalendar">
+      <div className="week-nav">
+        <button onClick={() => setCurrentDate(prev => new Date(prev.setDate(prev.getDate() - 7)))}>
+          ← Settimana Precedente
+        </button>
+        <h3 ref={weekRangeRef} aria-live="polite">Settimana</h3>
+        <button onClick={() => setCurrentDate(prev => new Date(prev.setDate(prev.getDate() + 7)))}>
+          Settimana Successiva →
+        </button>
       </div>
 
-      {/* Bottone flottante per aggiungere evento */}
-      <button className="add-button" onClick={() => setModalVisible(true)}>＋</button>
-
-      {/* Modal per aggiunta evento */}
-      {modalVisible && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Nuovo Evento</h3>
-            <input ref={titleRef} placeholder="Titolo" />
-            <textarea ref={descriptionRef} placeholder="Descrizione" />
-            <input ref={dayRef} type="date" />
-            <input ref={startTimeRef} type="time" />
-            <input ref={endTimeRef} type="time" />
-            <input ref={colorRef} type="color" defaultValue="#3f51b5" />
-            <button onClick={handleAddEvent}>Salva</button>
-            <button onClick={() => setModalVisible(false)}>Annulla</button>
-          </div>
-        </div>
-      )}
-
-      {/* Popup per visualizzare evento selezionato */}
-      {selectedEvent && (
-        <div className="event-popup">
-          <div className="popup-content">
-            <h3>{selectedEvent.title}</h3>
-            <p>{selectedEvent.description}</p>
-            <p>
-              {selectedEvent.date.toLocaleDateString("it-IT")} : {selectedEvent.startHour}:00 → {selectedEvent.endHour}:00
-            </p>
-            <button onClick={handleDeleteEvent}>🗑️ Elimina</button>
-            <button onClick={() => setSelectedEvent(null)}>Chiudi</button>
-          </div>
-        </div>
-      )}
+      <div className="calendar-grid">
+        <div className="time-column" ref={timeColumnRef}></div>
+        <div className="days-grid" ref={daysContainerRef}></div>
+      </div>
     </div>
-  );
+
+    {/* Bottone flottante per aggiungere evento */}
+    <button className="add-button" onClick={() => {
+      setEditingEvent(null);
+      setModalVisible(true);
+    }}>＋</button>
+
+    {/* Modal per aggiunta o modifica evento */}
+    {modalVisible && (
+      <div className="modal">
+        <div className="modal-content">
+          <h3>{editingEvent ? "Modifica Evento" : "Nuovo Evento"}</h3>
+          <input
+            ref={titleRef}
+            placeholder="Titolo"
+            defaultValue={editingEvent?.title || ""}
+          />
+          <textarea
+            ref={descriptionRef}
+            placeholder="Descrizione"
+            defaultValue={editingEvent?.description || ""}
+          />
+          <input
+            ref={dayRef}
+            type="date"
+            defaultValue={editingEvent ? editingEvent.date.toISOString().split("T")[0] : ""}
+          />
+          <input
+            ref={startTimeRef}
+            type="time"
+            defaultValue={editingEvent ? `${editingEvent.startHour.toString().padStart(2, "0")}:00` : ""}
+          />
+          <input
+            ref={endTimeRef}
+            type="time"
+            defaultValue={editingEvent ? `${editingEvent.endHour.toString().padStart(2, "0")}:00` : ""}
+          />
+          <input
+            ref={colorRef}
+            type="color"
+            defaultValue={editingEvent?.color || "#3f51b5"}
+          />
+          <button onClick={handleSaveEvent}>
+            {editingEvent ? "Aggiorna" : "Salva"}
+          </button>
+          <button onClick={() => {
+            setModalVisible(false);
+            setEditingEvent(null);
+          }}>
+            Annulla
+          </button>
+        </div>
+      </div>
+    )}
+
+    {/* Popup per visualizzare evento selezionato */}
+    {selectedEvent && (
+      <div className="event-popup">
+        <div className="popup-content">
+          <h3>{selectedEvent.title}</h3>
+          <p>{selectedEvent.description}</p>
+          <p>
+            {selectedEvent.date.toLocaleDateString("it-IT")} : {selectedEvent.startHour}:00 → {selectedEvent.endHour}:00
+          </p>
+          <button onClick={handleDeleteEvent}>🗑️ Elimina</button>
+          <button onClick={() => setSelectedEvent(null)}>Chiudi</button>
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default Calendar;

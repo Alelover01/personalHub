@@ -3,7 +3,7 @@
     "id": 1697030400001,
     "title": "Riunione Marketing",
     "description": "Strategia Q4",
-    "date": "2025-10-13T19:02:59.273Z",
+    "date": "2025-10-13T00:00:00.000Z",
     "startHour": 10,
     "endHour": 12,
     "color": "#ffcc00"
@@ -25,14 +25,5 @@
     "startHour": 9,
     "endHour": 11,
     "color": "#cc99ff"
-  },
-  {
-    "id": 1760294935813,
-    "title": "A",
-    "description": "prova di cose",
-    "date": "2025-10-13T19:02:59.273Z",
-    "startHour": 9,
-    "endHour": 10,
-    "color": "#c5bdaf"
   }
 ]
