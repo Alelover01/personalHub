@@ -91,7 +91,7 @@ const Header = () => {
         </div>
 
         {/* PROFILE PIC */}
-        <img src={profilePic} alt="Profile Photo" className="profile-pic" />
+        <img src={profilePic} alt="Person of the profile of the people using it" className="profile-pic" />
       </div>
     </header>
   );

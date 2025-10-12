@@ -1,4 +1,5 @@
 import Header from "../../components/Header/Header";
+import Calendar from '../../components/Calendar/Calendar';
 import './Home.css'
 export default function Home() {
   return (
@@ -6,7 +7,7 @@ export default function Home() {
       <Header />
       <main>
         <div className="content">
-          
+          <Calendar />
         </div>
       </main>
       {/**
