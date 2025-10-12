@@ -16,6 +16,7 @@ export default function Navbar(){
     ];
 
     return(
+        //TO-DO farlo più dinamico
         <nav>
             <ul>
                 {links.map((text) =>(

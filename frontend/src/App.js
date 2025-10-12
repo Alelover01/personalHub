@@ -22,6 +22,7 @@ export default function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/Home" element={<Home />} />
           <Route path="/travel-plans" element={<TravelPlans />} />
           <Route path="/financial-balance" element={<FinancialBalance />} />
           <Route path="/books" element={<Books />} />
