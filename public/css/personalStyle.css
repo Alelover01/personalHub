@@ -1,26 +1,11 @@
 
 /*Commons stiles in the selectors*/
-.content{
-  display: flex;
-}
-main, .calendar, .agenda{
+.calendar, .agenda{
   flex: 1;
 }
 footer{
   text-align: center;
 }
-
-/* Main part with calendar,agenda and then post it of today*/
-main {
-  gap: 2em;
-  padding: 2em;
-}
-
-.content {
-  gap: 2em;
-  margin-bottom: 2em;
-}
-
 .calendar, .agenda {
   padding: 1em;
   border-radius: 10px;

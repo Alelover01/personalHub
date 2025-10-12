@@ -3,3 +3,13 @@
     padding: 0;
     margin: 0;
 }
+main{
+    flex: 1;
+    gap: 36px; /*DA CAMBIARE*/
+    padding: 36px;
+}
+.content{
+    display: flex;
+    gap: 36px;
+    margin-bottom: 36px;
+}
