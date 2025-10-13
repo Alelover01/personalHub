@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
 
 // Import delle pagine
 import Home from "./pages/Home/Home";
@@ -34,6 +35,7 @@ export default function App() {
             <Route path="/anime" element={<Anime />} />
           </Routes>
       </div>
+      <Footer />
     </BrowserRouter>
   );
 }
