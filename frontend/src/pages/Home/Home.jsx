@@ -12,9 +12,9 @@ export default function Home() {
           <Todo />
         </div>
       </main>
-      {/**
-      Qui c'è anche il main con il calendario e tutto
-       */}
+      <section>
+        <h2>Chaos' Post-It</h2>
+      </section>
     </div>
   );
 }
