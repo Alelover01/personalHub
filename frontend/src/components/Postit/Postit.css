@@ -1,0 +1,27 @@
+.postit-board {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  flex-wrap: wrap;
+}
+
+.section {
+  flex: 1;
+  min-width: 200px;
+  background-color: #f4f4f4;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.section h3 {
+  margin-top: 0;
+  color: var(--text-cl);
+}
+
+.postit {
+  background-color: #fff8a6;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
