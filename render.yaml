@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: mio-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free
+    autoDeploy: true
+
+  - type: static
+    name: mio-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    plan: free
+    autoDeploy: true
