@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import PostItCreator from '../PostItCreator/PostItCreator';
-import './PostitBoard.css';
+import './Postit.css';
 
 export default function PostItBoard() {
   const [notes, setNotes] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const addNote = note => setNotes(prev => [...prev, note]);
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   return (
-    <div>
-      <PostItCreator onCreate={addNote} />
+    <div className="postit-section">
+      <div className="postit-header">
+        <h2>Chaos Post-It</h2>
+        <button className="create-button" onClick={openModal}>Crea Post-it</button>
+      </div>
+
+      {modalOpen && <PostItCreator onCreate={addNote} onClose={closeModal} />}
+
       <div className="postit-board">
         {notes.map(note => (
           <div key={note.id} className="postit">
