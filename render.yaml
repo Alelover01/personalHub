@@ -1,15 +1,15 @@
 services:
   - type: web
-    name: mio-backend
+    name: calendar-backend
     env: node
     rootDir: backend
     buildCommand: npm install
-    startCommand: node server.js
+    startCommand: npm start
     plan: free
     autoDeploy: true
 
   - type: static
-    name: mio-frontend
+    name: calendar-frontend
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: build
