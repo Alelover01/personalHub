@@ -4,57 +4,60 @@ const fs = require('fs');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const DATA_FILE = path.join(__dirname, 'events.json');
 
-// Middleware
-app.use(cors()); // consente richieste dal frontend su altra porta
+app.use(cors());
 app.use(express.json());
 
-// API: Leggi tutti gli eventi
+// ---- API ----
+
+// Leggi tutti gli eventi
 app.get('/events', (req, res) => {
   if (!fs.existsSync(DATA_FILE)) return res.json([]);
   try {
     const data = fs.readFileSync(DATA_FILE, 'utf8');
-    const events = JSON.parse(data);
-    res.json(events);
+    res.json(JSON.parse(data));
   } catch (err) {
     console.error("Errore lettura eventi:", err);
-    res.status(500).json({ success: false, message: "Errore lettura file eventi" });
+    res.status(500).json({ success: false });
   }
 });
 
-// API: Sovrascrivi tutti gli eventi
+// Sovrascrivi tutti gli eventi
 app.post('/events', (req, res) => {
-  const updatedEvents = req.body;
-  if (!Array.isArray(updatedEvents)) {
-    return res.status(400).json({ success: false, message: "Serve un array di eventi" });
-  }
   try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(updatedEvents, null, 2));
+    fs.writeFileSync(DATA_FILE, JSON.stringify(req.body, null, 2));
     res.json({ success: true });
   } catch (err) {
     console.error("Errore salvataggio eventi:", err);
-    res.status(500).json({ success: false, message: "Errore scrittura file eventi" });
+    res.status(500).json({ success: false });
   }
 });
 
-// API: Elimina evento per ID
+// Elimina evento per ID
 app.delete('/events/:id', (req, res) => {
-  const eventId = parseInt(req.params.id);
+  const id = parseInt(req.params.id);
   if (!fs.existsSync(DATA_FILE)) return res.json({ success: false });
   try {
     let events = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-    events = events.filter(e => e.id !== eventId);
+    events = events.filter(e => e.id !== id);
     fs.writeFileSync(DATA_FILE, JSON.stringify(events, null, 2));
     res.json({ success: true });
   } catch (err) {
     console.error("Errore eliminazione evento:", err);
-    res.status(500).json({ success: false, message: "Errore scrittura file eventi" });
+    res.status(500).json({ success: false });
   }
 });
 
-// Avvio del server
+// ---- SERVE IL FRONTEND REACT ----
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));
+});
+
+// ---- AVVIO SERVER ----
 app.listen(PORT, () => {
-  console.log(`✅ Backend avviato su http://localhost:${PORT}`);
+  console.log(`✅ Server avviato su porta ${PORT}`);
 });

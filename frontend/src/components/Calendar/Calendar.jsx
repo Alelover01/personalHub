@@ -21,7 +21,7 @@ const Calendar = () => {
   const daysContainerRef = useRef();
   const weekRangeRef = useRef();
 
-  const API_URL = "http://localhost:3001/events";
+  const API_URL = "/events";
 
   const loadEvents = async () => {
     try {
