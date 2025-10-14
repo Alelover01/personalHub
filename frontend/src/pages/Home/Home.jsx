@@ -14,7 +14,6 @@ export default function Home() {
         </div>
       </main>
       <section>
-        <h2>Chaos' Post-It</h2>
         <PostItBoard />
       </section>
     </div>

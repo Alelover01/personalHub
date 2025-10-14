@@ -13,7 +13,7 @@ export default function PostItBoard() {
   return (
     <div className="postit-section">
       <div className="postit-header">
-        <h2>Chaos Post-It</h2>
+        <h2 className='chaos'>Chaos Post-It</h2>
         <button className="create-button" onClick={openModal}>Crea Post-it</button>
       </div>
 
