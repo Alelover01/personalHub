@@ -1,27 +1,26 @@
 .postit-board {
   display: flex;
-  gap: 24px;
-  padding: 24px;
   flex-wrap: wrap;
-}
-
-.section {
-  flex: 1;
-  min-width: 200px;
-  background-color: #f4f4f4;
-  padding: 16px;
-  border-radius: 8px;
-}
-
-.section h3 {
-  margin-top: 0;
-  color: var(--text-cl);
+  gap: 16px;
+  padding: 24px;
 }
 
 .postit {
   background-color: #fff8a6;
-  padding: 12px;
-  margin: 8px 0;
+  padding: 16px;
   border-radius: 8px;
+  width: 200px;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.postit p {
+  margin: 0 0 8px;
+  font-weight: bold;
+}
+
+.postit select {
+  width: 100%;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
