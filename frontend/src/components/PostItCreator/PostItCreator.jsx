@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { postitTemplates } from './postItTemplates';
-import './PostitCreator.css';
+import { postItTemplates } from './postItTemplates';
+import './PostItCreator.css';
 
-export default function PostItCreator({ onCreate }) {
-  const [section, setSection] = useState('Travel');
+export default function PostItCreator({ onCreate, onClose }) {
+  const [section, setSection] = useState('');
   const [formData, setFormData] = useState({});
 
   const handleChange = (field, value) => {
@@ -12,52 +12,62 @@ export default function PostItCreator({ onCreate }) {
 
   const handleSubmit = e => {
     e.preventDefault();
+    if (!section) return;
     onCreate({ ...formData, section, id: Date.now() });
-    setFormData({});
+    onClose();
   };
 
-  const fields = postitTemplates[section].fields;
+  const fields = section ? postItTemplates[section]?.fields || [] : [];
 
   return (
-    <form className="postit-creator" onSubmit={handleSubmit}>
-      <label>
-        Sezione:
-        <select value={section} onChange={e => setSection(e.target.value)}>
-          {Object.keys(postitTemplates).map(sec => (
-            <option key={sec} value={sec}>{sec}</option>
-          ))}
-        </select>
-      </label>
-
-      {fields.map(field => (
-        <label key={field.name}>
-          {field.label}:
-          {field.type === 'select' ? (
-            <select
-              value={formData[field.name] || ''}
-              onChange={e => handleChange(field.name, e.target.value)}
-            >
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <h2>Crea un nuovo Post-It</h2>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Sezione:
+            <select value={section} onChange={e => setSection(e.target.value)}>
               <option value="">-- Seleziona --</option>
-              {field.options.map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
+              {Object.keys(postItTemplates).map(sec => (
+                <option key={sec} value={sec}>{sec}</option>
               ))}
             </select>
-          ) : field.type === 'textarea' ? (
-            <textarea
-              value={formData[field.name] || ''}
-              onChange={e => handleChange(field.name, e.target.value)}
-            />
-          ) : (
-            <input
-              type={field.type}
-              value={formData[field.name] || ''}
-              onChange={e => handleChange(field.name, e.target.value)}
-            />
-          )}
-        </label>
-      ))}
+          </label>
 
-      <button type="submit">Crea Post-It</button>
-    </form>
+          {fields.map(field => (
+            <label key={field.name}>
+              {field.label}:
+              {field.type === 'select' ? (
+                <select
+                  value={formData[field.name] || ''}
+                  onChange={e => handleChange(field.name, e.target.value)}
+                >
+                  <option value="">-- Seleziona --</option>
+                  {field.options.map(opt => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+              ) : field.type === 'textarea' ? (
+                <textarea
+                  value={formData[field.name] || ''}
+                  onChange={e => handleChange(field.name, e.target.value)}
+                />
+              ) : (
+                <input
+                  type={field.type}
+                  value={formData[field.name] || ''}
+                  onChange={e => handleChange(field.name, e.target.value)}
+                />
+              )}
+            </label>
+          ))}
+
+          <div className="modal-actions">
+            <button type="submit">Crea</button>
+            <button type="button" onClick={onClose}>Chiudi</button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
