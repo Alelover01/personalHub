@@ -57,6 +57,8 @@ export default function PostItCreator({ onCreate, onClose }) {
                   type={field.type}
                   value={formData[field.name] || ''}
                   onChange={e => handleChange(field.name, e.target.value)}
+                  min={field.min}
+                  max={field.max}
                 />
               )}
             </label>
