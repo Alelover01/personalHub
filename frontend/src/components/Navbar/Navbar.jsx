@@ -9,7 +9,6 @@ export default function Navbar(){
         "Books",
         "TV-Series",
         "Manhwa",
-        "Shopping-List",
         "Games",
         "Sites",
         "Anime"
