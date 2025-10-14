@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 .postit-section {
   position: relative;
   padding: 24px;
@@ -8,6 +9,19 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+}
+.postit{
+  background-color: #fff8a6;/*TODO Cambiare colore*/
+  padding: 16px;
+  border-radius: 8px;
+  width: 220px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Patrick Hand', cursive;
+  margin-bottom: 16px;
+  transition: transform 0.2s ease;
+}
+.postit:hover{
+  transform: scale(1.02);
 }
 
 .create-button {
