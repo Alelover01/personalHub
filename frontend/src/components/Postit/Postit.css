@@ -3,6 +3,13 @@
   position: relative;
   padding: 24px;
 }
+.postit-board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+}
+
 
 .postit-header {
   display: flex;
@@ -10,18 +17,82 @@
   align-items: center;
   margin-bottom: 16px;
 }
-.postit{
-  background-color: #fff8a6;/*TODO Cambiare colore*/
+/* Stile base */
+.postit {
   padding: 16px;
   border-radius: 8px;
-  width: 220px;
+  width: 240px;
+  margin: 12px;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
   font-family: 'Patrick Hand', cursive;
-  margin-bottom: 16px;
   transition: transform 0.2s ease;
 }
-.postit:hover{
+
+.postit:hover {
   transform: scale(1.02);
+}
+
+/* Sezioni colorate */
+.postit.travel {
+  background-color: #cce5ff;
+  border-left: 6px solid #3399ff;
+}
+
+.postit.finance {
+  background-color: #d4edda;
+  border-left: 6px solid #28a745;
+}
+
+.postit.books {
+  background-color: #f8d7da;
+  border-left: 6px solid #dc3545;
+}
+
+.postit.series {
+  background-color: #f0e5ff;
+  border-left: 6px solid #6f42c1;
+}
+
+.postit.anime {
+  background-color: #ffe5b4;
+  border-left: 6px solid #ff9900;
+}
+
+.postit.manhwa {
+  background-color: #fff3cd;
+  border-left: 6px solid #ffc107;
+}
+
+.postit.games {
+  background-color: #e2e3e5;
+  border-left: 6px solid #6c757d;
+}
+
+.postit.sites {
+  background-color: #d1ecf1;
+  border-left: 6px solid #17a2b8;
+}
+
+.postit-content {
+  margin-top: 8px;
+}
+
+.postit-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.postit-label {
+  font-weight: bold;
+  color: #444;
+  width: 120px;
+}
+
+.postit-value {
+  color: #222;
+  text-align: right;
+  flex: 1;
 }
 
 .create-button {
