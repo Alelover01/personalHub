@@ -34,35 +34,48 @@ export default function PostItCreator({ onCreate, onClose }) {
             </select>
           </label>
 
-          {fields.map(field => (
-            <label key={field.name}>
-              {field.label}:
-              {field.type === 'select' ? (
-                <select
-                  value={formData[field.name] || ''}
-                  onChange={e => handleChange(field.name, e.target.value)}
-                >
-                  <option value="">-- Seleziona --</option>
-                  {field.options.map(opt => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
-              ) : field.type === 'textarea' ? (
-                <textarea
-                  value={formData[field.name] || ''}
-                  onChange={e => handleChange(field.name, e.target.value)}
-                />
-              ) : (
-                <input
-                  type={field.type}
-                  value={formData[field.name] || ''}
-                  onChange={e => handleChange(field.name, e.target.value)}
-                  min={field.min}
-                  max={field.max}
-                />
-              )}
-            </label>
-          ))}
+          {fields.map(field => {
+            const condition = field.conditionalOn;
+            if (condition) {
+              const triggerValue = formData[condition.field];
+              const expected = condition.value;
+              const shouldShow = Array.isArray(expected)
+              ? expected.includes(triggerValue)
+              :triggerValue === expected;
+
+              if (!shouldShow) return null;
+            }
+
+            return (
+              <label key={field.name}>
+                {field.label}:
+                {field.type === 'select' ? (
+                  <select
+                    value={formData[field.name] || ''}
+                    onChange={e => handleChange(field.name, e.target.value)}
+                  >
+                    <option value="">-- Seleziona --</option>
+                    {field.options.map(opt => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                ) : field.type === 'textarea' ? (
+                  <textarea
+                    value={formData[field.name] || ''}
+                    onChange={e => handleChange(field.name, e.target.value)}
+                  />
+                ) : (
+                  <input
+                    type={field.type}
+                    value={formData[field.name] || ''}
+                    onChange={e => handleChange(field.name, e.target.value)}
+                    min={field.min}
+                    max={field.max}
+                  />
+                )}
+              </label>
+            );
+          })}
 
           <div className="modal-actions">
             <button type="submit">Crea</button>
