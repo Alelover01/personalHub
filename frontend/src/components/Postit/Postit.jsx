@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PostItCreator from '../PostItCreator/PostItCreator';
-import './Postit.css';
 import { postItTemplates } from '../PostItCreator/postItTemplates';
+import './Postit.css';
+
+const API_URL = '/postits'; // endpoint che legge/scrive il file JSON
 
 function getVisibleFields(note) {
   const template = postItTemplates[note.section];
   if (!template) return [];
-
   return template.fields.filter(field => {
     if (!field.conditionalOn) return true;
     const triggerValue = note[field.conditionalOn.field];
@@ -21,28 +22,58 @@ export default function PostItBoard() {
   const [notes, setNotes] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const addNote = note => setNotes(prev => [...prev, note]);
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  // 🔹 Carica i post-it dal file JSON
+  const loadNotes = async () => {
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
+      const data = await response.json();
+      setNotes(data);
+    } catch (error) {
+      console.error('Errore nel caricamento dei post-it:', error);
+    }
+  };
+
+  // 🔹 Salva i post-it nel file JSON
+  const saveNotes = async updatedNotes => {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedNotes)
+      });
+      if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
+    } catch (error) {
+      console.error('Errore nel salvataggio dei post-it:', error);
+    }
+  };
+
+  const addNote = async note => {
+    const updated = [...notes, note];
+    setNotes(updated);
+    await saveNotes(updated);
+  };
+
+  useEffect(() => {
+    loadNotes();
+  }, []);
 
   return (
     <div className="postit-section">
       <div className="postit-header">
         <h2 className="chaos">Chaos Post-It</h2>
-        <button className="create-button" onClick={openModal}>Crea Post-it</button>
+        <button className="create-button" onClick={() => setModalOpen(true)}>Crea Post-it</button>
       </div>
 
-      {modalOpen && <PostItCreator onCreate={addNote} onClose={closeModal} />}
+      {modalOpen && <PostItCreator onCreate={addNote} onClose={() => setModalOpen(false)} />}
 
       <div className="postit-board">
         {notes.map(note => (
           <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
             <h4>{note.title}</h4>
-
             {note.imageUrl && (
               <img src={note.imageUrl} alt={note.title} style={{ width: '100%', borderRadius: '6px' }} />
             )}
-
             <div className="postit-content">
               {getVisibleFields(note).map(field => (
                 <div key={field.name} className="postit-row">
@@ -51,7 +82,6 @@ export default function PostItBoard() {
                 </div>
               ))}
             </div>
-
             <small><em>
               {note.section === 'Travel' && '✈️ '}
               {note.section === 'Finance' && '💰 '}
