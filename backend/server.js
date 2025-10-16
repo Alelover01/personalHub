@@ -1,8 +1,8 @@
 // server.js
+import fetch from 'node-fetch';
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
-const fetch = require('node-fetch'); // Assicurati di installarlo: npm install node-fetch
+const cors = require('cors'); 
 require('dotenv').config(); // Carica variabili da .env
 
 const app = express();
