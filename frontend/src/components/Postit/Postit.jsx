@@ -29,12 +29,9 @@ export default function PostItBoard() {
   // 🔹 Carica i post-it dal file JSON
   const loadNotes = async () => {
     try {
-      const response = await fetch(API_URL, {
-        headers: { 'X-Master-Key': API_KEY},
-      });
+      const response = await fetch(API_URL);
       if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
-      const json = await response.json();
-      const data = json.record || [];
+      const data = await response.json();
       setNotes(data);
     } catch (error) {
       console.error('Errore nel caricamento dei post-it:', error);
@@ -45,11 +42,8 @@ export default function PostItBoard() {
   const saveNotes = async updatedNotes => {
     try {
       const response = await fetch(API_URL, {
-        method: 'PUT',
-        headers: { 
-          'Content-Type': 'application/json',
-          'X-Master-Key': API_KEY,
-        },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedNotes)
       });
       if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
