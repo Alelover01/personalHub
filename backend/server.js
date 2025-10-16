@@ -1,100 +1,63 @@
+// server.js
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
 const cors = require('cors');
+const fetch = require('node-fetch'); // Assicurati di installarlo: npm install node-fetch
+require('dotenv').config(); // Carica variabili da .env
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const DATA_FILE = path.join(__dirname, 'events.json');
-const POSTIT_FILE = path.join(__dirname, 'postits.json');
+
+// Variabili da .env
+const JSONBIN_URL = process.env.JSONBIN_URL;
+const JSONBIN_API_KEY = process.env.JSONBIN_API_KEY;
 
 app.use(cors());
 app.use(express.json());
 
-// ---- API ----
+// === API POST-IT via JSONBin ===
 
-// Leggi tutti gli eventi
-app.get('/events', (req, res) => {
-  if (!fs.existsSync(DATA_FILE)) return res.json([]);
+// Leggi tutti i post-it
+app.get('/postits', async (req, res) => {
   try {
-    const data = fs.readFileSync(DATA_FILE, 'utf8');
-    res.json(JSON.parse(data));
+    const response = await fetch(JSONBIN_URL, {
+      headers: { 'X-Master-Key': JSONBIN_API_KEY }
+    });
+    const json = await response.json();
+    res.json(json.record || []);
   } catch (err) {
-    console.error("Errore lettura eventi:", err);
-    res.status(500).json({ success: false });
-  }
-});
-//Leggi tutti i post-it
-app.get('/postits', (req, res) => {
-  if (!fs.existsSync(POSTIT_FILE)) return res.json([]);
-  try {
-    const data = fs.readFileSync(POSTIT_FILE, 'utf8');
-    res.json(JSON.parse(data));
-  } catch (err) {
-    console.error("Errore lettura post-it:", err);
+    console.error("Errore lettura da JSONBin:", err);
     res.status(500).json({ success: false });
   }
 });
 
-
-// Sovrascrivi tutti gli eventi
-app.post('/events', (req, res) => {
+// Sovrascrivi tutti i post-it
+app.post('/postits', async (req, res) => {
   try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(req.body, null, 2));
+    const response = await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_API_KEY
+      },
+      body: JSON.stringify(req.body)
+    });
+    if (!response.ok) throw new Error("Errore salvataggio");
     res.json({ success: true });
   } catch (err) {
-    console.error("Errore salvataggio eventi:", err);
-    res.status(500).json({ success: false });
-  }
-});
-//Sovrascrivi tutti i post-it
-app.post('/postits', (req, res) => {
-  try {
-    fs.writeFileSync(POSTIT_FILE, JSON.stringify(req.body, null, 2));
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Errore salvataggio post-it:", err);
+    console.error("Errore salvataggio su JSONBin:", err);
     res.status(500).json({ success: false });
   }
 });
 
-// Elimina evento per ID
-app.delete('/events/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  if (!fs.existsSync(DATA_FILE)) return res.json({ success: false });
-  try {
-    let events = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-    events = events.filter(e => e.id !== id);
-    fs.writeFileSync(DATA_FILE, JSON.stringify(events, null, 2));
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Errore eliminazione evento:", err);
-    res.status(500).json({ success: false });
-  }
-});
-// Elimina i post-it
-app.delete('/postits/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  if (!fs.existsSync(POSTIT_FILE)) return res.json({ success: false });
-  try {
-    let postits = JSON.parse(fs.readFileSync(POSTIT_FILE, 'utf8'));
-    postits = postits.filter(p => p.id !== id);
-    fs.writeFileSync(POSTIT_FILE, JSON.stringify(postits, null, 2));
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Errore eliminazione post-it:", err);
-    res.status(500).json({ success: false });
-  }
-});
-
-// ---- SERVE IL FRONTEND REACT ----
+// === SERVE IL FRONTEND REACT ===
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));
 });
 
-// ---- AVVIO SERVER ----
+// === AVVIO SERVER ===
 app.listen(PORT, () => {
   console.log(`✅ Server avviato su porta ${PORT}`);
 });
