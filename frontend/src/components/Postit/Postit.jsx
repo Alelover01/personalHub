@@ -3,7 +3,11 @@ import PostItCreator from '../PostItCreator/PostItCreator';
 import { postItTemplates } from '../PostItCreator/postItTemplates';
 import './Postit.css';
 
-const API_URL = '/postits'; // endpoint che legge/scrive il file JSON
+// === JSONBin setup ===
+const API_URL = 'https://api.jsonbin.io/v3/b/68f0b9a8ae596e708f16aefe ';
+const API_KEY = '$2a$10$AFeJKiIL9x6QhTbDGLJA7uETFyShEENeKqqT1z/Xmaf1kdo2rBOv6';
+
+//const API_URL = '/postits'; // endpoint che legge/scrive il file JSON
 
 function getVisibleFields(note) {
   const template = postItTemplates[note.section];
@@ -25,9 +29,12 @@ export default function PostItBoard() {
   // 🔹 Carica i post-it dal file JSON
   const loadNotes = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        headers: { 'X-Master-Key': API_KEY},
+      });
       if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
-      const data = await response.json();
+      const json = await response.json();
+      const data = json.record || [];
       setNotes(data);
     } catch (error) {
       console.error('Errore nel caricamento dei post-it:', error);
@@ -38,8 +45,11 @@ export default function PostItBoard() {
   const saveNotes = async updatedNotes => {
     try {
       const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Master-Key': API_KEY,
+        },
         body: JSON.stringify(updatedNotes)
       });
       if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
