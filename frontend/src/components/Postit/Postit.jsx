@@ -106,6 +106,10 @@ export default function PostItBoard() {
   useEffect(() => {
     loadNotes();
   }, []);
+  useEffect(() => {
+  console.log('📌 Stato aggiornato: notes =', notes);
+}, [notes]);
+
 
   console.log('Rendering notes array:', notes);
 
