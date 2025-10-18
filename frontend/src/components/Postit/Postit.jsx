@@ -156,8 +156,8 @@ export default function PostItBoard() {
                   </div>
 
                   <div className="postit-actions">
-                    <button onClick={() => editNote(note)}>✏️ Modifica</button>
-                    <button onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
+                    <button className='edit-button' onClick={() => editNote(note)}>✏️ Modifica</button>
+                    <button className='delete-button' onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
                   </div>
 
                   <small>

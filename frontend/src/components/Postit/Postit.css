@@ -142,16 +142,18 @@
   transition: background-color 0.2s ease;
 }
 .edit-button {
-  background-color: #1e90ff;
+  background-color: var(--link-cl);
+  color: var(--text-cl);
 }
 .edit-button:hover {
-  background-color: #0b78e3;
+  background-color: var(--det-cl);
 }
 
 .delete-button {
-  background-color: #ff6b6b;
+  background-color: var(--dark-cl);
+  color: #fff;
 }
 .delete-button:hover {
-  background-color: #e63946;
+  background-color: var(--other-cl);
 }
 
