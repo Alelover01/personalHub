@@ -61,6 +61,24 @@ export default function PostItBoard() {
   };
 
   useEffect(() => {
+     const loadNotes = async () => {
+    console.log("🔄 Inizio fetch /postits...");
+    try {
+      const response = await fetch('/postits');
+      console.log("📥 Risposta:", response);
+
+      if (!response.ok) {
+        console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("✅ Dati ricevuti:", data);
+      setNotes(data);
+    } catch (error) {
+      console.error('❌ Errore nella fetch /postits:', error);
+    }
+  };
     loadNotes();
   }, []);
 
