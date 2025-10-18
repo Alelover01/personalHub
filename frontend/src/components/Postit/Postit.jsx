@@ -35,6 +35,9 @@ export default function PostItBoard() {
         return;
       }
       const data = await response.json();
+      console.log('✅ Tipo di data:', typeof data);
+      console.log('✅ È array?', Array.isArray(data));
+      console.log('✅ Contenuto:', data);
       console.log('✅ Post-it ricevuti:', data);
       if (!Array.isArray(data)) {
         console.warn('⚠️ I dati ricevuti non sono un array, uso fallback statico');
