@@ -15,6 +15,9 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 // Serve i file statici React 
 app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
 // 🔹 Legge i post-it dal bin privato
 app.get('/postits', async (req, res) => {
   try {
