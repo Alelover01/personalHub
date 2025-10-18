@@ -72,6 +72,18 @@ export default function PostItBoard() {
   };
 
   useEffect(() => {
+    const testFetch = async () => {
+    try {
+      const response = await fetch('/postits');
+      const data = await response.json();
+      console.log("✅ Dati ricevuti da /postits:", data);
+      alert(`Post-it ricevuti: ${data.length}`);
+    } catch (err) {
+      console.error("❌ Errore nella fetch:", err);
+      alert("Errore nel caricamento dei post-it");
+    }
+  };
+  testFetch();
     loadNotes();
   }, []);
 
