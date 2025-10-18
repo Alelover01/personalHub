@@ -1,15 +1,17 @@
 import express from 'express';
+import path from 'path';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-app.use(express.json());
-
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const BIN_URL = process.env.REACT_APP_JSONBIN_URL;
 const API_KEY = process.env.REACT_APP_JSONBIN_API_KEY;
 
+app.use(express.json());
+// Serve i file statici React 
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 // 🔹 Legge i post-it dal bin privato
 app.get('/postits', async (req, res) => {
   try {
@@ -28,7 +30,6 @@ app.get('/postits', async (req, res) => {
     res.status(500).json({ error: 'Errore nel caricamento dei post-it' });
   }
 });
-
 
 // 🔹 Salva i post-it nel bin privato
 app.post('/postits', async (req, res) => {
