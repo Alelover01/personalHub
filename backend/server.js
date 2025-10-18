@@ -25,14 +25,25 @@ app.get('/postits', async (req, res) => {
     });
 
     const json = await response.json();
-    console.log("📦 Risposta completa da JSONBin:", JSON.stringify(json, null, 2));
 
-    res.json(json.record || []);
+    // 🔍 Stampa visibile nei log
+    console.log("📦 JSONBin response:");
+    console.log("typeof json.record:", typeof json.record);
+    console.log("json.record keys:", Object.keys(json.record || {}));
+    console.log("json.record preview:", JSON.stringify(json.record, null, 2));
+
+    // 🔁 Adatta la risposta in base alla struttura
+    const notes = Array.isArray(json.record)
+      ? json.record
+      : json.record.notes || [];
+
+    res.json(notes);
   } catch (err) {
     console.error('❌ Errore nel caricamento:', err);
     res.status(500).json({ error: 'Errore nel caricamento dei post-it' });
   }
 });
+
 
 // 🔹 Salva i post-it nel bin privato
 app.post('/postits', async (req, res) => {
