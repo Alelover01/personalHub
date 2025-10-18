@@ -172,6 +172,7 @@ export default function PostItBoard() {
     </div>
   );
 }*/
+throw new Error('🧨 Questo è il file giusto?');
 import React, { useEffect, useState } from 'react';
 import './Postit.css';
 
