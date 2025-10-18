@@ -21,8 +21,8 @@ function getVisibleFields(note) {
 export default function PostItBoard() {
   const [notes, setNotes] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [noteToEdit, setNoteToEdit] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [noteToEdit, setNoteToEdit] = useState(true);
 
   // 🔹 Carica i post-it dal server
   const loadNotes = async () => {
@@ -59,41 +59,48 @@ export default function PostItBoard() {
       console.error('❌ Errore nel salvataggio dei post-it:', error);
     }
   };
+
   // 🔹 Aggiungi nuovo post-it
   const addNote = async (note) => {
     const updated = [...notes, note];
     setNotes(updated);
     await saveNotes(updated);
   };
+
   // 🔹 Modifica post-it esistente
-  const updateNote = async(updateNote)=>{
-    const updatedNotes = notes.map(note => 
-      note.id === updatedNotes.id ? updateNote : note
+  const updateNote = async (updatedNote) => {
+    const updatedNotes = notes.map(note =>
+      note.id === updatedNote.id ? updatedNote : note
     );
     setNotes(updatedNotes);
     await saveNotes(updatedNotes);
   };
-  //Cancella post-it
-  const deleteNote = async (id) =>{
+
+  // 🔹 Cancella post-it
+  const deleteNote = async (id) => {
     const updatedNotes = notes.filter(note => note.id !== id);
     setNotes(updatedNotes);
     await saveNotes(updatedNotes);
-  }
-  //Apro il modal per la modifica
-  const editNote = (note) =>{
+  };
+
+  // 🔹 Apri modal per modifica
+  const editNote = (note) => {
     setNoteToEdit(note);
     setModalOpen(true);
-  }
+  };
 
   useEffect(() => {
-    loadNotes(); // 🔹 fetch una sola volta al mount
+    loadNotes();
   }, []);
 
-   return (
+  return (
     <div className="postit-section">
       <div className="postit-header">
         <h2 className="chaos">Chaos Post-It</h2>
-        <button className="create-button" onClick={() => { setNoteToEdit(null); setModalOpen(true); }}>
+        <button
+          className="create-button"
+          onClick={() => { setNoteToEdit(null); setModalOpen(true); }}
+        >
           Crea Post-it
         </button>
       </div>
@@ -116,7 +123,11 @@ export default function PostItBoard() {
             <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
               <h4>{note.title}</h4>
               {note.imageUrl && (
-                <img src={note.imageUrl} alt={note.title} style={{ width: '100%', borderRadius: '6px' }} />
+                <img
+                  src={note.imageUrl}
+                  alt={note.title}
+                  style={{ width: '100%', borderRadius: '6px' }}
+                />
               )}
               <div className="postit-content">
                 {getVisibleFields(note).map((field) => (
@@ -126,10 +137,13 @@ export default function PostItBoard() {
                   </div>
                 ))}
               </div>
+
+              {/* 🔹 Pulsanti Modifica e Elimina */}
               <div className="postit-actions">
                 <button onClick={() => editNote(note)}>✏️ Modifica</button>
                 <button onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
               </div>
+
               <small>
                 <em>
                   {note.section === 'Travel' && '✈️ '}
