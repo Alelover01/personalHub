@@ -35,7 +35,7 @@ app.get('/postits', async (req, res) => {
     // 🔁 Adatta la risposta in base alla struttura
     const notes = Array.isArray(json.record)
       ? json.record
-      : json.record.notes || [];
+      : [];
 
     res.json(notes);
   } catch (err) {
