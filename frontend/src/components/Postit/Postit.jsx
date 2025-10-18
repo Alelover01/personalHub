@@ -131,12 +131,27 @@ export default function PostItBoard() {
                 <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
                   <h4>{note.title}</h4>
                   {note.imageUrl && (
-                    <img
-                      src={note.imageUrl}
-                      alt={note.title}
-                      style={{ width: '100%', borderRadius: '6px' }}
-                    />
+                    <a
+                      href={note.link || note.imageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={note.imageUrl}
+                        alt={note.title}
+                        style={{ width: '100%', borderRadius: '6px', marginBottom: '8px' }}
+                      />
+                    </a>
                   )}
+
+                  {note.link && (
+                    <p style={{ marginTop: '4px' }}>
+                      🔗 <a href={note.link} target="_blank" rel="noopener noreferrer">
+                        Visita il sito
+                      </a>
+                    </p>
+                  )}
+
                   <div className="postit-content">
                     {getVisibleFields(note).map((field) => (
                       <div key={field.name} className="postit-row">

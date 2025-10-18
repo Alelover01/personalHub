@@ -9,9 +9,9 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
     title: '',
     imageUrl: '',
     description: '',
+    link: '', // nuovo campo
   });
 
-  // 🔹 Popola il form se stiamo modificando un post-it esistente
   useEffect(() => {
     if (noteToEdit) {
       setFormData({ ...noteToEdit });
@@ -26,12 +26,16 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Se stiamo creando un nuovo post-it, assicuriamoci che abbia un ID unico
     if (!noteToEdit) {
       formData.id = Date.now();
     }
 
-    onCreate(formData); // Passa i dati al PostItBoard
+    // Normalizza il link se manca http/https
+    if (formData.link && !formData.link.startsWith('http')) {
+      formData.link = 'https://' + formData.link;
+    }
+
+    onCreate(formData);
     onClose();
   };
 
@@ -75,6 +79,16 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
             <textarea
               name="description"
               value={formData.description}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label>
+            Link esterno (opzionale):
+            <input
+              type="text"
+              name="link"
+              value={formData.link}
               onChange={handleChange}
             />
           </label>
