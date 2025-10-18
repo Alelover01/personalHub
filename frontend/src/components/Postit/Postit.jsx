@@ -143,15 +143,6 @@ export default function PostItBoard() {
                       />
                     </a>
                   )}
-
-                  {note.link && (
-                    <p style={{ marginTop: '4px' }}>
-                      🔗 <a href={note.link} target="_blank" rel="noopener noreferrer">
-                        Visita il sito
-                      </a>
-                    </p>
-                  )}
-
                   <div className="postit-content">
                     {getVisibleFields(note).map((field) => (
                       <div key={field.name} className="postit-row">
