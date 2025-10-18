@@ -1,4 +1,4 @@
-/*import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PostItCreator from '../PostItCreator/PostItCreator';
 import { postItTemplates } from '../PostItCreator/postItTemplates';
 import './Postit.css';
@@ -167,49 +167,6 @@ export default function PostItBoard() {
                 </div>
               );
             })
-        )}
-      </div>
-    </div>
-  );
-}*/
-throw new Error('🧨 Questo è il file giusto?');
-import React, { useEffect, useState } from 'react';
-import './Postit.css';
-
-export default function PostItBoard() {
-  const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulazione dati statici validi
-    const testNotes = [
-      { id: 1, section: 'Travel', title: 'Tokyo' },
-      { id: 2, section: 'Finance', title: 'New Laptop' }
-    ];
-    setNotes(testNotes);
-    setLoading(false);
-  }, []);
-
-  return (
-    <div className="postit-section">
-      <h2 className="chaos">Chaos Post-It (TEST)</h2>
-
-      <div className="postit-board">
-        {loading ? (
-          <p>⏳ Caricamento in corso...</p>
-        ) : notes.length === 0 ? (
-          <p>📭 Nessun post-it disponibile</p>
-        ) : (
-          notes.map((note) => (
-            <div key={note.id} className="postit">
-              <h4>{note.title}</h4>
-
-              <div className="postit-actions">
-                <button className="edit-button">✏️ Modifica</button>
-                <button className="delete-button">🗑️ Elimina</button>
-              </div>
-            </div>
-          ))
         )}
       </div>
     </div>
