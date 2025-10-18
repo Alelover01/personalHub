@@ -35,9 +35,11 @@
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15);
 }
 .postit img {
-  height: 180px;
-  width: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 8px;
+  border-radius: 6px;
 }
 
 /* Sezioni colorate */
