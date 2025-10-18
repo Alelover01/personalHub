@@ -144,14 +144,14 @@ export default function PostItBoard() {
                     style={{ width: '100%', borderRadius: '6px' }}
                   />
                 )}
-                <div className="postit-content">
+                {/*<div className="postit-content">
                   {getVisibleFields(note).map((field) => (
                     <div key={field.name} className="postit-row">
                       <span className="postit-label">{field.label}:</span>
                       <span className="postit-value">{note[field.name]}</span>
                     </div>
                   ))}
-                </div>
+                </div>*/}
 
                 {/* 🔹 Pulsanti Modifica e Elimina sempre visibili */}
                 <div className="postit-actions">
