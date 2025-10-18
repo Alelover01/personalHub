@@ -21,22 +21,29 @@ function getVisibleFields(note) {
 export default function PostItBoard() {
   const [notes, setNotes] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  // 🔹 Carica i post-it dal server
   const loadNotes = async () => {
+    console.log('🔄 Fetch /postits dal server...');
     try {
       const response = await fetch(API_URL);
       if (!response.ok) {
         console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
+        setLoading(false);
         return;
       }
       const data = await response.json();
-      console.log("✅ Dati ricevuti:", data);
+      console.log('✅ Dati ricevuti dal server:', data);
       setNotes(data);
     } catch (error) {
-      console.error('❌ Errore nel caricamento dei post-it:', error);
+      console.error('❌ Errore fetch /postits:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // 🔹 Salva i post-it sul server
   const saveNotes = async (updatedNotes) => {
     try {
       const response = await fetch(API_URL, {
@@ -48,7 +55,7 @@ export default function PostItBoard() {
         console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
         return;
       }
-      console.log("✅ Salvataggio completato");
+      console.log('✅ Salvataggio completato');
     } catch (error) {
       console.error('❌ Errore nel salvataggio dei post-it:', error);
     }
@@ -60,24 +67,9 @@ export default function PostItBoard() {
     await saveNotes(updated);
   };
 
- useEffect(() => {
-  const loadNotes = async () => {
-    console.log("🔄 Fetch /postits dal server...");
-    try {
-      const response = await fetch(API_URL);
-      if (!response.ok) {
-        console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
-        return;
-      }
-      const data = await response.json();
-      console.log("✅ Dati ricevuti dal server:", data);
-      setNotes(data);
-    } catch (error) {
-      console.error('❌ Errore fetch /postits:', error);
-    }
-  };
-  loadNotes();
-}, []);
+  useEffect(() => {
+    loadNotes(); // 🔹 fetch una sola volta al mount
+  }, []);
 
   return (
     <div className="postit-section">
@@ -96,7 +88,9 @@ export default function PostItBoard() {
       )}
 
       <div className="postit-board">
-        {notes.length === 0 ? (
+        {loading ? (
+          <p>⏳ Caricamento in corso...</p>
+        ) : notes.length === 0 ? (
           <p>📭 Nessun post-it disponibile</p>
         ) : (
           notes.map((note) => (
