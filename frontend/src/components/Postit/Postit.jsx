@@ -124,7 +124,7 @@ export default function PostItBoard() {
           <p>📭 Nessun post-it disponibile</p>
         ) : (
           notes
-            .filter(note => note.id && note.section)
+            .filter(note => note && note.id && note.section)
             .map((note) => {
               console.log('Rendering note:', note);
               return (
