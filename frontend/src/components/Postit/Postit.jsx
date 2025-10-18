@@ -3,11 +3,8 @@ import PostItCreator from '../PostItCreator/PostItCreator';
 import { postItTemplates } from '../PostItCreator/postItTemplates';
 import './Postit.css';
 
-// === JSONBin setup ===
-const API_URL = 'https://api.jsonbin.io/v3/b/68f0b9a8ae596e708f16aefe ';
-const API_KEY = '$2a$10$AFeJKiIL9x6QhTbDGLJA7uETFyShEENeKqqT1z/Xmaf1kdo2rBOv6';
-
-//const API_URL = '/postits'; // endpoint che legge/scrive il file JSON
+// === Usa l’endpoint del tuo server ===
+const API_URL = '/postits'; // ora parla con il tuo backend (Express)
 
 function getVisibleFields(note) {
   const template = postItTemplates[note.section];
@@ -26,33 +23,36 @@ export default function PostItBoard() {
   const [notes, setNotes] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // 🔹 Carica i post-it dal file JSON
+  // 🔹 Carica i post-it dal backend
   const loadNotes = async () => {
     try {
       const response = await fetch(API_URL);
-      if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
+      if (!response.ok)
+        throw new Error(`Errore ${response.status}: ${response.statusText}`);
+
       const data = await response.json();
       setNotes(data);
     } catch (error) {
-      console.error('Errore nel caricamento dei post-it:', error);
+      console.error('❌ Errore nel caricamento dei post-it:', error);
     }
   };
 
-  // 🔹 Salva i post-it nel file JSON
-  const saveNotes = async updatedNotes => {
+  // 🔹 Salva i post-it tramite backend
+  const saveNotes = async (updatedNotes) => {
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedNotes)
+        body: JSON.stringify(updatedNotes),
       });
-      if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
+      if (!response.ok)
+        throw new Error(`Errore ${response.status}: ${response.statusText}`);
     } catch (error) {
-      console.error('Errore nel salvataggio dei post-it:', error);
+      console.error('❌ Errore nel salvataggio dei post-it:', error);
     }
   };
 
-  const addNote = async note => {
+  const addNote = async (note) => {
     const updated = [...notes, note];
     setNotes(updated);
     await saveNotes(updated);
@@ -66,37 +66,53 @@ export default function PostItBoard() {
     <div className="postit-section">
       <div className="postit-header">
         <h2 className="chaos">Chaos Post-It</h2>
-        <button className="create-button" onClick={() => setModalOpen(true)}>Crea Post-it</button>
+        <button className="create-button" onClick={() => setModalOpen(true)}>
+          Crea Post-it
+        </button>
       </div>
 
-      {modalOpen && <PostItCreator onCreate={addNote} onClose={() => setModalOpen(false)} />}
+      {modalOpen && (
+        <PostItCreator
+          onCreate={addNote}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
 
       <div className="postit-board">
-        {notes.map(note => (
-          <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
+        {notes.map((note) => (
+          <div
+            key={note.id}
+            className={`postit ${note.section.toLowerCase()}`}
+          >
             <h4>{note.title}</h4>
             {note.imageUrl && (
-              <img src={note.imageUrl} alt={note.title} style={{ width: '100%', borderRadius: '6px' }} />
+              <img
+                src={note.imageUrl}
+                alt={note.title}
+                style={{ width: '100%', borderRadius: '6px' }}
+              />
             )}
             <div className="postit-content">
-              {getVisibleFields(note).map(field => (
+              {getVisibleFields(note).map((field) => (
                 <div key={field.name} className="postit-row">
                   <span className="postit-label">{field.label}:</span>
                   <span className="postit-value">{note[field.name]}</span>
                 </div>
               ))}
             </div>
-            <small><em>
-              {note.section === 'Travel' && '✈️ '}
-              {note.section === 'Finance' && '💰 '}
-              {note.section === 'Books' && '📚 '}
-              {note.section === 'Series' && '📺 '}
-              {note.section === 'Anime' && '🎌 '}
-              {note.section === 'Manhwa' && '📖 '}
-              {note.section === 'Games' && '🎮 '}
-              {note.section === 'Sites' && '🌐 '}
-              {note.section}
-            </em></small>
+            <small>
+              <em>
+                {note.section === 'Travel' && '✈️ '}
+                {note.section === 'Finance' && '💰 '}
+                {note.section === 'Books' && '📚 '}
+                {note.section === 'Series' && '📺 '}
+                {note.section === 'Anime' && '🎌 '}
+                {note.section === 'Manhwa' && '📖 '}
+                {note.section === 'Games' && '🎮 '}
+                {note.section === 'Sites' && '🌐 '}
+                {note.section}
+              </em>
+            </small>
           </div>
         ))}
       </div>
