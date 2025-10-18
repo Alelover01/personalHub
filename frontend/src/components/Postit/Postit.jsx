@@ -36,15 +36,27 @@ export default function PostItBoard() {
       }
       const data = await response.json();
       console.log('✅ Post-it ricevuti:', data);
-      setNotes(data);
+      if (!Array.isArray(data)) {
+        console.warn('⚠️ I dati ricevuti non sono un array, uso fallback statico');
+        setNotes([
+          { id: 1, section: 'Travel', title: 'Fallback Test 1' },
+          { id: 2, section: 'Finance', title: 'Fallback Test 2' }
+        ]);
+      } else {
+        setNotes(data);
+      }
     } catch (error) {
       console.error('❌ Errore fetch /postits:', error);
+      // fallback
+      setNotes([
+        { id: 1, section: 'Travel', title: 'Fallback Test 1' },
+        { id: 2, section: 'Finance', title: 'Fallback Test 2' }
+      ]);
     } finally {
       setLoading(false);
     }
   };
 
-  // 🔹 Salva i post-it sul server
   const saveNotes = async (updatedNotes) => {
     try {
       const response = await fetch(API_URL, {
@@ -92,6 +104,8 @@ export default function PostItBoard() {
     loadNotes();
   }, []);
 
+  console.log('Rendering notes array:', notes);
+
   return (
     <div className="postit-section">
       <div className="postit-header">
@@ -116,17 +130,7 @@ export default function PostItBoard() {
         {loading ? (
           <p>⏳ Caricamento in corso...</p>
         ) : notes.length === 0 ? (
-          <>
-            <p>📭 Nessun post-it disponibile</p>
-            {/* 🔹 Render fallback statico per test pulsanti */}
-            <div className="postit test-fallback">
-              <h4>Post-it di test</h4>
-              <div className="postit-actions">
-                <button onClick={() => console.log('✏️ Modifica test')}>✏️ Modifica</button>
-                <button onClick={() => console.log('🗑️ Elimina test')}>🗑️ Elimina</button>
-              </div>
-            </div>
-          </>
+          <p>📭 Nessun post-it disponibile</p>
         ) : (
           notes.map((note) => {
             console.log('Rendering note:', note);
@@ -149,7 +153,7 @@ export default function PostItBoard() {
                   ))}
                 </div>
 
-                {/* 🔹 Pulsanti Modifica e Elimina */}
+                {/* 🔹 Pulsanti Modifica e Elimina sempre visibili */}
                 <div className="postit-actions">
                   <button onClick={() => editNote(note)}>✏️ Modifica</button>
                   <button onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
