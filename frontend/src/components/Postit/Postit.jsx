@@ -25,7 +25,6 @@ export default function PostItBoard() {
 
   // 🔹 Carica i post-it dal server
   const loadNotes = async () => {
-    console.log('🔄 Fetch /postits dal server...');
     try {
       const response = await fetch(API_URL);
       if (!response.ok) {
@@ -34,7 +33,6 @@ export default function PostItBoard() {
         return;
       }
       const data = await response.json();
-      console.log('✅ Dati ricevuti dal server:', data);
       setNotes(data);
     } catch (error) {
       console.error('❌ Errore fetch /postits:', error);
