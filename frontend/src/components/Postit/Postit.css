@@ -4,10 +4,14 @@
   padding: 24px;
 }
 .postit-board {
-  display: flex;
+  column-count: auto;
+  column-width: 260px;
+  column-gap: 16px;
+  padding: 16px;
+  /*display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  justify-content: flex-start;
+  justify-content: flex-start;*/
 }
 
 
@@ -19,58 +23,65 @@
 }
 /* Stile base */
 .postit {
-  padding: 16px;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 16px;
+  break-inside: avoid;
+  background-color: var(--base-bg);
   border-radius: 8px;
-  width: 240px;
-  margin: 12px;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
   font-family: 'Patrick Hand', cursive;
   transition: transform 0.2s ease;
+
+  /*padding: 16px;
+  width: 240px;
+  margin: 12px;*/
 }
 
 .postit:hover {
   transform: scale(1.02);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Sezioni colorate */
 .postit.travel {
-  background-color: #cce5ff;
-  border-left: 6px solid #3399ff;
+  background-color: var(--link-cl);
+  border-left: 6px solid var(--dark-cl);
 }
 
 .postit.finance {
-  background-color: #d4edda;
-  border-left: 6px solid #28a745;
+  background-color: var(--footer-bg);
+  border-left: 6px solid var(--other-cl);
 }
 
 .postit.books {
-  background-color: #f8d7da;
-  border-left: 6px solid #dc3545;
+  background-color: var(--nav-bg);
+  border-left: 6px solid var(--text-cl);
 }
 
 .postit.series {
-  background-color: #f0e5ff;
-  border-left: 6px solid #6f42c1;
+  background-color: var(--det-cl);
+  border-left: 6px solid var(--dark-cl);
 }
 
 .postit.anime {
-  background-color: #ffe5b4;
-  border-left: 6px solid #ff9900;
+  background-color: var(--base-bg);
+  border-left: 6px solid var(--other-cl);
 }
 
 .postit.manhwa {
-  background-color: #fff3cd;
-  border-left: 6px solid #ffc107;
+  background-color: var(--link-cl);
+  border-left: 6px solid var(--text-cl);
 }
 
 .postit.games {
-  background-color: #e2e3e5;
-  border-left: 6px solid #6c757d;
+  background-color: var(--footer-bg);
+  border-left: 6px solid var(--dark-cl);
 }
 
 .postit.sites {
-  background-color: #d1ecf1;
-  border-left: 6px solid #17a2b8;
+  background-color: var(--nav-bg);
+  border-left: 6px solid var(--other-cl);
 }
 
 .postit-content {
