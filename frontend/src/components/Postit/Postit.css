@@ -128,8 +128,6 @@
   margin-top: 12px;
   display: flex;
   justify-content: flex-end;
-  display: block !important;
-  background: red !important;
   gap: 8px;
 }
 
