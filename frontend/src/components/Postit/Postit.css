@@ -123,3 +123,33 @@
   border-top: 2px solid var(--link-cl);  
   border-radius: 10px;  
 }
+/*Added the edit and delete button*/
+.postit-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.postit-actions button {
+  background-color: #ff6b6b;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.postit-actions button:first-child {
+  background-color: #1e90ff; /* colore Modifica */
+}
+
+.postit-actions button:first-child:hover {
+  background-color: #0b78e3;
+}
+
+.postit-actions button:last-child:hover {
+  background-color: #e63946;
+}
