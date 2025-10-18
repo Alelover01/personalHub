@@ -144,7 +144,10 @@ export default function PostItBoard() {
                     </a>
                   )}
                   <div className="postit-content">
-                    {getVisibleFields(note).map((field) => (
+                    {getVisibleFields(note)
+                    //in modo da non vedere questo nella visualizzazione
+                    .filter(field => field.name !== 'imageUrl')
+                    .map((field) => (
                       <div key={field.name} className="postit-row">
                         <span className="postit-label">{field.label}:</span>
                         <span className="postit-value">{note[field.name]}</span>
