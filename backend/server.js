@@ -8,8 +8,10 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const BIN_URL = process.env.JSONBIN_URL;
-const API_KEY = process.env.JSONBIN_API_KEY;
+const POSTIT_BIN_URL = process.env.JSONBIN_URL;         // bin post-it
+const EVENT_BIN_URL = process.env.JSONBIN_URL_EVENTS;  // bin eventi
+const API_KEY = process.env.JSONBIN_API_KEY;           // stessa chiave per entrambi
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,39 +20,35 @@ app.use(express.json());
 // Serve i file statici React
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// 🔹 Middleware log richieste e variabili d'ambiente
+// 🔹 Middleware log richieste e variabili
 app.use((req, res, next) => {
   console.log("====================================");
   console.log("🌐 Nuova richiesta:", req.method, req.url);
-  console.log("🔗 BIN_URL:", BIN_URL ? "presente" : "manca");
-  console.log("🔑 API_KEY presente?", !!API_KEY);
   console.log("====================================");
   next();
 });
 
-// 🔹 Legge i post-it dal bin privato
+/* ================= POST-IT ROUTES ================= */
+
+// Legge i post-it
 app.get('/postits', async (req, res) => {
-  if (!BIN_URL || !API_KEY) {
-    console.error('❌ Mancano BIN_URL o API_KEY');
-    return res.status(500).json({ error: 'Configurazione mancante' });
+  if (!POSTIT_BIN_URL || !API_KEY) {
+    return res.status(500).json({ error: 'Configurazione post-it mancante' });
   }
 
   try {
-    console.log("🔄 Fetch verso JSONBin...");
-    const response = await fetch(`${BIN_URL}/latest`, {
+    const response = await fetch(`${POSTIT_BIN_URL}/latest`, {
       headers: { 'X-Master-Key': API_KEY },
     });
 
-    console.log("📥 Response:", response.status, response.statusText);
     if (!response.ok) {
       const text = await response.text();
-      console.error("❌ Errore JSONBin:", text);
-      return res.status(response.status).json({ error: 'Errore nel fetch dei post-it' });
+      console.error("❌ Errore JSONBin post-it:", text);
+      return res.status(response.status).json({ error: 'Errore fetch post-it' });
     }
 
     const json = await response.json();
     const notes = Array.isArray(json.record) ? json.record : [];
-    console.log("📦 Numero post-it:", notes.length);
     res.json(notes);
   } catch (err) {
     console.error('❌ Errore fetch /postits:', err);
@@ -58,17 +56,11 @@ app.get('/postits', async (req, res) => {
   }
 });
 
-// 🔹 Salva i post-it nel bin privato
+// Salva i post-it
 app.post('/postits', async (req, res) => {
-  if (!BIN_URL || !API_KEY) {
-    console.error('❌ Mancano BIN_URL o API_KEY');
-    return res.status(500).json({ error: 'Configurazione mancante' });
-  }
-
   const updatedNotes = req.body;
   try {
-    console.log("💾 Salvataggio post-it in corso...");
-    const response = await fetch(BIN_URL, {
+    const response = await fetch(POSTIT_BIN_URL, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -80,19 +72,74 @@ app.post('/postits', async (req, res) => {
 
     if (!response.ok) {
       const text = await response.text();
-      console.error("❌ Errore salvataggio JSONBin:", response.status, response.statusText, text);
-      return res.status(response.status).json({ error: 'Errore nel salvataggio dei post-it' });
+      console.error("❌ Errore salvataggio post-it:", text);
+      return res.status(response.status).json({ error: 'Errore salvataggio post-it' });
     }
 
-    console.log("✅ Salvataggio completato");
-    res.status(200).json({ message: 'Salvataggio completato' });
+    res.status(200).json({ message: 'Salvataggio post-it completato' });
   } catch (err) {
     console.error('❌ Errore fetch /postits POST:', err);
     res.status(500).json({ error: 'Errore nel salvataggio dei post-it' });
   }
 });
 
-// 🔹 Gestione React router
+/* ================= EVENTS ROUTES ================= */
+
+// Legge gli eventi
+app.get('/events', async (req, res) => {
+  if (!EVENT_BIN_URL || !API_KEY) {
+    return res.status(500).json({ error: 'Configurazione eventi mancante' });
+  }
+
+  try {
+    const response = await fetch(`${EVENT_BIN_URL}/latest`, {
+      headers: { 'X-Master-Key': API_KEY },
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("❌ Errore JSONBin eventi:", text);
+      return res.status(response.status).json({ error: 'Errore fetch eventi' });
+    }
+
+    const json = await response.json();
+    const events = Array.isArray(json.record) ? json.record : [];
+    res.json(events);
+  } catch (err) {
+    console.error('❌ Errore fetch /events:', err);
+    res.status(500).json({ error: 'Errore nel caricamento degli eventi' });
+  }
+});
+
+// Salva gli eventi
+app.post('/events', async (req, res) => {
+  const updatedEvents = req.body;
+  try {
+    const response = await fetch(EVENT_BIN_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY,
+        'X-Bin-Versioning': 'false',
+      },
+      body: JSON.stringify(updatedEvents),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("❌ Errore salvataggio eventi:", text);
+      return res.status(response.status).json({ error: 'Errore salvataggio eventi' });
+    }
+
+    res.status(200).json({ message: 'Salvataggio eventi completato' });
+  } catch (err) {
+    console.error('❌ Errore fetch /events POST:', err);
+    res.status(500).json({ error: 'Errore nel salvataggio degli eventi' });
+  }
+});
+
+/* ================= REACT ROUTER ================= */
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
