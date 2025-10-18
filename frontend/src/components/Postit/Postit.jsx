@@ -7,7 +7,7 @@ const API_URL = '/postits';
 
 function getVisibleFields(note) {
   const template = postItTemplates[note.section];
-  if (!template) return [];
+  if (!template || !template.fields) return [];
   return template.fields.filter(field => {
     if (!field.conditionalOn) return true;
     const triggerValue = note[field.conditionalOn.field];
@@ -24,33 +24,33 @@ export default function PostItBoard() {
   const [noteToEdit, setNoteToEdit] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Carica i post-it dal server
   const loadNotes = async () => {
     try {
-      console.log('🔄 Fetching post-it...');
+      console.log('🔄 Fetch /postits dal server...');
       const response = await fetch(API_URL);
       if (!response.ok) {
         console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
-        setLoading(false);
         return;
       }
       const data = await response.json();
-      console.log('✅ Tipo di data:', typeof data);
-      console.log('✅ È array?', Array.isArray(data));
-      console.log('✅ Contenuto:', data);
-      console.log('✅ Post-it ricevuti:', data);
-      if (!Array.isArray(data)) {
-        console.warn('⚠️ I dati ricevuti non sono un array, uso fallback statico');
+      console.log('✅ Dati ricevuti dal server:', data);
+
+      // 🔧 Filtro i dati per evitare oggetti malformati
+      const validNotes = Array.isArray(data)
+        ? data.filter(note => note.id && note.section)
+        : [];
+
+      if (validNotes.length === 0) {
+        console.warn('⚠️ Nessun post-it valido, uso fallback statico');
         setNotes([
           { id: 1, section: 'Travel', title: 'Fallback Test 1' },
           { id: 2, section: 'Finance', title: 'Fallback Test 2' }
         ]);
       } else {
-        setNotes(data);
+        setNotes(validNotes);
       }
     } catch (error) {
       console.error('❌ Errore fetch /postits:', error);
-      // fallback
       setNotes([
         { id: 1, section: 'Travel', title: 'Fallback Test 1' },
         { id: 2, section: 'Finance', title: 'Fallback Test 2' }
@@ -102,25 +102,14 @@ export default function PostItBoard() {
     setNoteToEdit(note);
     setModalOpen(true);
   };
-{/*
+
   useEffect(() => {
     loadNotes();
   }, []);
+
   useEffect(() => {
-  console.log('📌 Stato aggiornato: notes =', notes);
-}, [notes]); */}
-useEffect(() => {
-  console.log('🔧 Test: setNotes statico');
-  setNotes([
-    { id: 1, section: 'Travel', title: 'Test Statico 1' },
-    { id: 2, section: 'Finance', title: 'Test Statico 2' }
-  ]);
-  setLoading(false);
-}, []);
-
-
-
-  console.log('Rendering notes array:', notes);
+    console.log('📌 Stato aggiornato: notes =', notes);
+  }, [notes]);
 
   return (
     <div className="postit-section">
@@ -149,11 +138,8 @@ useEffect(() => {
           <p>📭 Nessun post-it disponibile</p>
         ) : (
           notes.map((note) => {
-            console.log('🧪 loading:', loading);
-            console.log('🧪 notes:', notes);
-            console.log('Rendering note:', note);
             return (
-              <div key={note.id} className={`postit ${note.section?.toLowerCase() || ''}`}>
+              <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
                 <h4>{note.title}</h4>
                 {note.imageUrl && (
                   <img
@@ -171,12 +157,10 @@ useEffect(() => {
                   ))}
                 </div>
 
-                {/* 🔹 Pulsanti Modifica e Elimina sempre visibili */}
                 <div className="postit-actions">
-                  <button className="edit-button" onClick={() => editNote(note)}>✏️ Modifica</button>
-                  <button className="delete-button" onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
+                  <button onClick={() => editNote(note)}>✏️ Modifica</button>
+                  <button onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
                 </div>
-
 
                 <small>
                   <em>
