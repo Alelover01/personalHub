@@ -27,6 +27,7 @@ export default function PostItBoard() {
   // 🔹 Carica i post-it dal server
   const loadNotes = async () => {
     try {
+      console.log('🔄 Fetching post-it...');
       const response = await fetch(API_URL);
       if (!response.ok) {
         console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
@@ -34,6 +35,7 @@ export default function PostItBoard() {
         return;
       }
       const data = await response.json();
+      console.log('✅ Post-it ricevuti:', data);
       setNotes(data);
     } catch (error) {
       console.error('❌ Errore fetch /postits:', error);
@@ -60,14 +62,12 @@ export default function PostItBoard() {
     }
   };
 
-  // 🔹 Aggiungi nuovo post-it
   const addNote = async (note) => {
     const updated = [...notes, note];
     setNotes(updated);
     await saveNotes(updated);
   };
 
-  // 🔹 Modifica post-it esistente
   const updateNote = async (updatedNote) => {
     const updatedNotes = notes.map(note =>
       note.id === updatedNote.id ? updatedNote : note
@@ -76,15 +76,14 @@ export default function PostItBoard() {
     await saveNotes(updatedNotes);
   };
 
-  // 🔹 Cancella post-it
   const deleteNote = async (id) => {
     const updatedNotes = notes.filter(note => note.id !== id);
     setNotes(updatedNotes);
     await saveNotes(updatedNotes);
   };
 
-  // 🔹 Apri modal per modifica
   const editNote = (note) => {
+    console.log('✏️ Editing note:', note);
     setNoteToEdit(note);
     setModalOpen(true);
   };
@@ -117,48 +116,61 @@ export default function PostItBoard() {
         {loading ? (
           <p>⏳ Caricamento in corso...</p>
         ) : notes.length === 0 ? (
-          <p>📭 Nessun post-it disponibile</p>
-        ) : (
-          notes.map((note) => (
-            <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
-              <h4>{note.title}</h4>
-              {note.imageUrl && (
-                <img
-                  src={note.imageUrl}
-                  alt={note.title}
-                  style={{ width: '100%', borderRadius: '6px' }}
-                />
-              )}
-              <div className="postit-content">
-                {getVisibleFields(note).map((field) => (
-                  <div key={field.name} className="postit-row">
-                    <span className="postit-label">{field.label}:</span>
-                    <span className="postit-value">{note[field.name]}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* 🔹 Pulsanti Modifica e Elimina */}
+          <>
+            <p>📭 Nessun post-it disponibile</p>
+            {/* 🔹 Render fallback statico per test pulsanti */}
+            <div className="postit test-fallback">
+              <h4>Post-it di test</h4>
               <div className="postit-actions">
-                <button onClick={() => editNote(note)}>✏️ Modifica</button>
-                <button onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
+                <button onClick={() => console.log('✏️ Modifica test')}>✏️ Modifica</button>
+                <button onClick={() => console.log('🗑️ Elimina test')}>🗑️ Elimina</button>
               </div>
-
-              <small>
-                <em>
-                  {note.section === 'Travel' && '✈️ '}
-                  {note.section === 'Finance' && '💰 '}
-                  {note.section === 'Books' && '📚 '}
-                  {note.section === 'Series' && '📺 '}
-                  {note.section === 'Anime' && '🎌 '}
-                  {note.section === 'Manhwa' && '📖 '}
-                  {note.section === 'Games' && '🎮 '}
-                  {note.section === 'Sites' && '🌐 '}
-                  {note.section}
-                </em>
-              </small>
             </div>
-          ))
+          </>
+        ) : (
+          notes.map((note) => {
+            console.log('Rendering note:', note);
+            return (
+              <div key={note.id} className={`postit ${note.section?.toLowerCase() || ''}`}>
+                <h4>{note.title}</h4>
+                {note.imageUrl && (
+                  <img
+                    src={note.imageUrl}
+                    alt={note.title}
+                    style={{ width: '100%', borderRadius: '6px' }}
+                  />
+                )}
+                <div className="postit-content">
+                  {getVisibleFields(note).map((field) => (
+                    <div key={field.name} className="postit-row">
+                      <span className="postit-label">{field.label}:</span>
+                      <span className="postit-value">{note[field.name]}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* 🔹 Pulsanti Modifica e Elimina */}
+                <div className="postit-actions">
+                  <button onClick={() => editNote(note)}>✏️ Modifica</button>
+                  <button onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
+                </div>
+
+                <small>
+                  <em>
+                    {note.section === 'Travel' && '✈️ '}
+                    {note.section === 'Finance' && '💰 '}
+                    {note.section === 'Books' && '📚 '}
+                    {note.section === 'Series' && '📺 '}
+                    {note.section === 'Anime' && '🎌 '}
+                    {note.section === 'Manhwa' && '📖 '}
+                    {note.section === 'Games' && '🎮 '}
+                    {note.section === 'Sites' && '🌐 '}
+                    {note.section}
+                  </em>
+                </small>
+              </div>
+            );
+          })
         )}
       </div>
     </div>
