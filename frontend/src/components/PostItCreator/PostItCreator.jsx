@@ -9,7 +9,7 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
     title: '',
     imageUrl: '',
     description: '',
-    link: '', // nuovo campo
+    link: '',
   });
 
   useEffect(() => {
@@ -30,7 +30,6 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
       formData.id = Date.now();
     }
 
-    // Normalizza il link se manca http/https
     if (formData.link && !formData.link.startsWith('http')) {
       formData.link = 'https://' + formData.link;
     }
@@ -64,15 +63,14 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
             />
           </label>
 
-          <label>
-            Immagine URL:
-            <input
-              type="text"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
-            />
-          </label>
+          {/* Campo nascosto per imageUrl */}
+          <input
+            type="text"
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleChange}
+            style={{ display: 'none' }}
+          />
 
           <label>
             Descrizione:
