@@ -3,8 +3,7 @@ import PostItCreator from '../PostItCreator/PostItCreator';
 import { postItTemplates } from '../PostItCreator/postItTemplates';
 import './Postit.css';
 
-// === Usa l’endpoint del tuo server ===
-const API_URL = '/postits'; // ora parla con il tuo backend (Express)
+const API_URL = '/postits'; // comunica con il backend Express
 
 function getVisibleFields(note) {
   const template = postItTemplates[note.section];
@@ -25,12 +24,18 @@ export default function PostItBoard() {
 
   // 🔹 Carica i post-it dal backend
   const loadNotes = async () => {
+    console.log("🔄 Chiamata a /postits in corso...");
     try {
       const response = await fetch(API_URL);
-      if (!response.ok)
+      console.log("📥 Risposta ricevuta:", response);
+
+      if (!response.ok) {
+        console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
         throw new Error(`Errore ${response.status}: ${response.statusText}`);
+      }
 
       const data = await response.json();
+      console.log("📄 Dati ricevuti dal backend:", data);
       setNotes(data);
     } catch (error) {
       console.error('❌ Errore nel caricamento dei post-it:', error);
@@ -39,14 +44,22 @@ export default function PostItBoard() {
 
   // 🔹 Salva i post-it tramite backend
   const saveNotes = async (updatedNotes) => {
+    console.log("💾 Salvataggio post-it in corso...");
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedNotes),
       });
-      if (!response.ok)
+
+      console.log("📤 Risposta salvataggio:", response);
+
+      if (!response.ok) {
+        console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
         throw new Error(`Errore ${response.status}: ${response.statusText}`);
+      }
+
+      console.log("✅ Salvataggio completato");
     } catch (error) {
       console.error('❌ Errore nel salvataggio dei post-it:', error);
     }
@@ -79,42 +92,46 @@ export default function PostItBoard() {
       )}
 
       <div className="postit-board">
-        {notes.map((note) => (
-          <div
-            key={note.id}
-            className={`postit ${note.section.toLowerCase()}`}
-          >
-            <h4>{note.title}</h4>
-            {note.imageUrl && (
-              <img
-                src={note.imageUrl}
-                alt={note.title}
-                style={{ width: '100%', borderRadius: '6px' }}
-              />
-            )}
-            <div className="postit-content">
-              {getVisibleFields(note).map((field) => (
-                <div key={field.name} className="postit-row">
-                  <span className="postit-label">{field.label}:</span>
-                  <span className="postit-value">{note[field.name]}</span>
-                </div>
-              ))}
+        {notes.length === 0 ? (
+          <p>📭 Nessun post-it disponibile</p>
+        ) : (
+          notes.map((note) => (
+            <div
+              key={note.id}
+              className={`postit ${note.section.toLowerCase()}`}
+            >
+              <h4>{note.title}</h4>
+              {note.imageUrl && (
+                <img
+                  src={note.imageUrl}
+                  alt={note.title}
+                  style={{ width: '100%', borderRadius: '6px' }}
+                />
+              )}
+              <div className="postit-content">
+                {getVisibleFields(note).map((field) => (
+                  <div key={field.name} className="postit-row">
+                    <span className="postit-label">{field.label}:</span>
+                    <span className="postit-value">{note[field.name]}</span>
+                  </div>
+                ))}
+              </div>
+              <small>
+                <em>
+                  {note.section === 'Travel' && '✈️ '}
+                  {note.section === 'Finance' && '💰 '}
+                  {note.section === 'Books' && '📚 '}
+                  {note.section === 'Series' && '📺 '}
+                  {note.section === 'Anime' && '🎌 '}
+                  {note.section === 'Manhwa' && '📖 '}
+                  {note.section === 'Games' && '🎮 '}
+                  {note.section === 'Sites' && '🌐 '}
+                  {note.section}
+                </em>
+              </small>
             </div>
-            <small>
-              <em>
-                {note.section === 'Travel' && '✈️ '}
-                {note.section === 'Finance' && '💰 '}
-                {note.section === 'Books' && '📚 '}
-                {note.section === 'Series' && '📺 '}
-                {note.section === 'Anime' && '🎌 '}
-                {note.section === 'Manhwa' && '📖 '}
-                {note.section === 'Games' && '🎮 '}
-                {note.section === 'Sites' && '🌐 '}
-                {note.section}
-              </em>
-            </small>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

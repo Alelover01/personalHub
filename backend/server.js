@@ -1,84 +1,61 @@
-// server.js
 import express from 'express';
-import path from 'path';
-import cors from 'cors';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-
-// === Carica variabili d’ambiente ===
 dotenv.config();
 
-// === Setup percorsi ===
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
-const PORT = process.env.PORT || 3001;
-
-// === Variabili d’ambiente ===
-const URL = process.env.JSONBIN_URL;       // es. https://api.jsonbin.io/v3/b/xxxx
-const API = process.env.JSONBIN_API_KEY;   // la tua chiave segreta
-
-app.use(cors());
 app.use(express.json());
 
-// === API POST-IT via JSONBin ===
+const PORT = 3001;
+const BIN_URL = process.env.REACT_APP_JSONBIN_URL;
+const API_KEY = process.env.REACT_APP_JSONBIN_API_KEY;
 
-// 🔹 Legge i post-it
+// 🔹 Legge i post-it dal bin privato
 app.get('/postits', async (req, res) => {
   try {
-    const response = await fetch(`${URL}/latest`, {
-      headers: { 'X-Master-Key': API }
+    const response = await fetch(`${BIN_URL}/latest`, {
+      headers: {
+        'X-Master-Key': API_KEY,
+      },
     });
 
-    if (!response.ok) {
-      console.error(`Errore lettura JSONBin: ${response.status} ${response.statusText}`);
-      return res.status(response.status).json({ success: false });
-    }
-
     const json = await response.json();
+    console.log("📦 Risposta completa da JSONBin:", JSON.stringify(json, null, 2));
+
     res.json(json.record || []);
   } catch (err) {
-    console.error('Errore lettura da JSONBin:', err);
-    res.status(500).json({ success: false, error: 'Errore server nel caricamento' });
+    console.error('❌ Errore nel caricamento:', err);
+    res.status(500).json({ error: 'Errore nel caricamento dei post-it' });
   }
 });
 
-// 🔹 Salva i post-it
+
+// 🔹 Salva i post-it nel bin privato
 app.post('/postits', async (req, res) => {
   try {
-    const response = await fetch(URL, {
+    const updatedNotes = req.body;
+
+    const response = await fetch(BIN_URL, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': API
+        'X-Master-Key': API_KEY,
+        'X-Bin-Versioning': 'false',
       },
-      body: JSON.stringify({ record: req.body })
+      body: JSON.stringify(updatedNotes),
     });
 
     if (!response.ok) {
-      console.error(`Errore salvataggio JSONBin: ${response.status} ${response.statusText}`);
-      return res.status(response.status).json({ success: false });
+      throw new Error(`Errore ${response.status}: ${response.statusText}`);
     }
 
-    res.json({ success: true });
+    res.status(200).json({ message: '✅ Salvataggio completato' });
   } catch (err) {
-    console.error('Errore salvataggio su JSONBin:', err);
-    res.status(500).json({ success: false, error: 'Errore server nel salvataggio' });
+    console.error('❌ Errore nel salvataggio:', err);
+    res.status(500).json({ error: 'Errore nel salvataggio dei post-it' });
   }
 });
 
-// === Serve il frontend React (build) ===
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
-
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));
-});
-
-// === Avvio server ===
 app.listen(PORT, () => {
-  console.log(`✅ Server avviato sulla porta ${PORT}`);
-  console.log(`🌐 JSONBin URL: ${URL}`);
-  console.log(`🔑 Chiave API: ${API ? '✅ Caricata' : '❌ Mancante'}`);
+  console.log(`🚀 Server avviato su http://localhost:${PORT}`);
 });
