@@ -132,13 +132,11 @@
 }
 
 .postit-actions button {
-  background-color: #ff6b6b;
   border: none;
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 0.9rem;
   cursor: pointer;
-  color: white;
   transition: background-color 0.2s ease;
 }
 .edit-button {
