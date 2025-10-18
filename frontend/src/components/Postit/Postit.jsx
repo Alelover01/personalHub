@@ -3,7 +3,7 @@ import PostItCreator from '../PostItCreator/PostItCreator';
 import { postItTemplates } from '../PostItCreator/postItTemplates';
 import './Postit.css';
 
-const API_URL = '/postits'; // comunica con il backend Express
+const API_URL = '/postits';
 
 function getVisibleFields(note) {
   const template = postItTemplates[note.section];
@@ -22,43 +22,32 @@ export default function PostItBoard() {
   const [notes, setNotes] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // 🔹 Carica i post-it dal backend
   const loadNotes = async () => {
-    console.log("🔄 Chiamata a /postits in corso...");
     try {
       const response = await fetch(API_URL);
-      console.log("📥 Risposta ricevuta:", response);
-
       if (!response.ok) {
         console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
-        throw new Error(`Errore ${response.status}: ${response.statusText}`);
+        return;
       }
-
       const data = await response.json();
-      console.log("📄 Dati ricevuti dal backend:", data);
+      console.log("✅ Dati ricevuti:", data);
       setNotes(data);
     } catch (error) {
       console.error('❌ Errore nel caricamento dei post-it:', error);
     }
   };
 
-  // 🔹 Salva i post-it tramite backend
   const saveNotes = async (updatedNotes) => {
-    console.log("💾 Salvataggio post-it in corso...");
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedNotes),
       });
-
-      console.log("📤 Risposta salvataggio:", response);
-
       if (!response.ok) {
         console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
-        throw new Error(`Errore ${response.status}: ${response.statusText}`);
+        return;
       }
-
       console.log("✅ Salvataggio completato");
     } catch (error) {
       console.error('❌ Errore nel salvataggio dei post-it:', error);
@@ -72,18 +61,6 @@ export default function PostItBoard() {
   };
 
   useEffect(() => {
-    const testFetch = async () => {
-    try {
-      const response = await fetch('/postits');
-      const data = await response.json();
-      console.log("✅ Dati ricevuti da /postits:", data);
-      alert(`Post-it ricevuti: ${data.length}`);
-    } catch (err) {
-      console.error("❌ Errore nella fetch:", err);
-      alert("Errore nel caricamento dei post-it");
-    }
-  };
-  testFetch();
     loadNotes();
   }, []);
 
