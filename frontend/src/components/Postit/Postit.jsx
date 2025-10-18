@@ -133,6 +133,8 @@ export default function PostItBoard() {
           <p>📭 Nessun post-it disponibile</p>
         ) : (
           notes.map((note) => {
+            console.log('🧪 loading:', loading);
+            console.log('🧪 notes:', notes);
             console.log('Rendering note:', note);
             return (
               <div key={note.id} className={`postit ${note.section?.toLowerCase() || ''}`}>
@@ -144,14 +146,14 @@ export default function PostItBoard() {
                     style={{ width: '100%', borderRadius: '6px' }}
                   />
                 )}
-                {/*<div className="postit-content">
+                <div className="postit-content">
                   {getVisibleFields(note).map((field) => (
                     <div key={field.name} className="postit-row">
                       <span className="postit-label">{field.label}:</span>
                       <span className="postit-value">{note[field.name]}</span>
                     </div>
                   ))}
-                </div>*/}
+                </div>
 
                 {/* 🔹 Pulsanti Modifica e Elimina sempre visibili */}
                 <div className="postit-actions">
