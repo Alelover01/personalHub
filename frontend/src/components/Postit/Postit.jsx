@@ -34,21 +34,7 @@ export default function PostItBoard() {
       }
       const data = await response.json();
       console.log('✅ Dati ricevuti dal server:', data);
-
-      // 🔧 Filtro i dati per evitare oggetti malformati
-      const validNotes = Array.isArray(data)
-        ? data.filter(note => note.id && note.section)
-        : [];
-
-      if (validNotes.length === 0) {
-        console.warn('⚠️ Nessun post-it valido, uso fallback statico');
-        setNotes([
-          { id: 1, section: 'Travel', title: 'Fallback Test 1' },
-          { id: 2, section: 'Finance', title: 'Fallback Test 2' }
-        ]);
-      } else {
-        setNotes(validNotes);
-      }
+      setNotes(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('❌ Errore fetch /postits:', error);
       setNotes([
@@ -137,47 +123,50 @@ export default function PostItBoard() {
         ) : notes.length === 0 ? (
           <p>📭 Nessun post-it disponibile</p>
         ) : (
-          notes.map((note) => {
-            return (
-              <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
-                <h4>{note.title}</h4>
-                {note.imageUrl && (
-                  <img
-                    src={note.imageUrl}
-                    alt={note.title}
-                    style={{ width: '100%', borderRadius: '6px' }}
-                  />
-                )}
-                <div className="postit-content">
-                  {getVisibleFields(note).map((field) => (
-                    <div key={field.name} className="postit-row">
-                      <span className="postit-label">{field.label}:</span>
-                      <span className="postit-value">{note[field.name]}</span>
-                    </div>
-                  ))}
-                </div>
+          notes
+            .filter(note => note.id && note.section)
+            .map((note) => {
+              console.log('Rendering note:', note);
+              return (
+                <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
+                  <h4>{note.title}</h4>
+                  {note.imageUrl && (
+                    <img
+                      src={note.imageUrl}
+                      alt={note.title}
+                      style={{ width: '100%', borderRadius: '6px' }}
+                    />
+                  )}
+                  <div className="postit-content">
+                    {getVisibleFields(note).map((field) => (
+                      <div key={field.name} className="postit-row">
+                        <span className="postit-label">{field.label}:</span>
+                        <span className="postit-value">{note[field.name]}</span>
+                      </div>
+                    ))}
+                  </div>
 
-                <div className="postit-actions">
-                  <button onClick={() => editNote(note)}>✏️ Modifica</button>
-                  <button onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
-                </div>
+                  <div className="postit-actions">
+                    <button onClick={() => editNote(note)}>✏️ Modifica</button>
+                    <button onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
+                  </div>
 
-                <small>
-                  <em>
-                    {note.section === 'Travel' && '✈️ '}
-                    {note.section === 'Finance' && '💰 '}
-                    {note.section === 'Books' && '📚 '}
-                    {note.section === 'Series' && '📺 '}
-                    {note.section === 'Anime' && '🎌 '}
-                    {note.section === 'Manhwa' && '📖 '}
-                    {note.section === 'Games' && '🎮 '}
-                    {note.section === 'Sites' && '🌐 '}
-                    {note.section}
-                  </em>
-                </small>
-              </div>
-            );
-          })
+                  <small>
+                    <em>
+                      {note.section === 'Travel' && '✈️ '}
+                      {note.section === 'Finance' && '💰 '}
+                      {note.section === 'Books' && '📚 '}
+                      {note.section === 'Series' && '📺 '}
+                      {note.section === 'Anime' && '🎌 '}
+                      {note.section === 'Manhwa' && '📖 '}
+                      {note.section === 'Games' && '🎮 '}
+                      {note.section === 'Sites' && '🌐 '}
+                      {note.section}
+                    </em>
+                  </small>
+                </div>
+              );
+            })
         )}
       </div>
     </div>
