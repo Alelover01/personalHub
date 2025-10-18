@@ -1,85 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { postItTemplates } from './postItTemplates';
 import './PostItCreator.css';
 
-export default function PostItCreator({ onCreate, onClose }) {
-  const [section, setSection] = useState('');
-  const [formData, setFormData] = useState({});
+export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
+  const [formData, setFormData] = useState({
+    id: Date.now(),
+    section: 'Travel',
+    title: '',
+    imageUrl: '',
+    description: '',
+  });
 
-  const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  // 🔹 Popola il form se stiamo modificando un post-it esistente
+  useEffect(() => {
+    if (noteToEdit) {
+      setFormData({ ...noteToEdit });
+    }
+  }, [noteToEdit]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!section) return;
-    onCreate({ ...formData, section, id: Date.now() });
+
+    // Se stiamo creando un nuovo post-it, assicuriamoci che abbia un ID unico
+    if (!noteToEdit) {
+      formData.id = Date.now();
+    }
+
+    onCreate(formData); // Passa i dati al PostItBoard
     onClose();
   };
 
-  const fields = section ? postItTemplates[section]?.fields || [] : [];
-
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h2>Crea un nuovo Post-It</h2>
+    <div className="modal-backdrop">
+      <div className="modal">
+        <h3>{noteToEdit ? 'Modifica Post-It' : 'Crea Post-It'}</h3>
         <form onSubmit={handleSubmit}>
           <label>
             Sezione:
-            <select value={section} onChange={e => setSection(e.target.value)}>
-              <option value="">-- Seleziona --</option>
-              {Object.keys(postItTemplates).map(sec => (
-                <option key={sec} value={sec}>{sec}</option>
+            <select name="section" value={formData.section} onChange={handleChange}>
+              {Object.keys(postItTemplates).map(section => (
+                <option key={section} value={section}>{section}</option>
               ))}
             </select>
           </label>
 
-          {fields.map(field => {
-            const condition = field.conditionalOn;
-            if (condition) {
-              const triggerValue = formData[condition.field];
-              const expected = condition.value;
-              const shouldShow = Array.isArray(expected)
-              ? expected.includes(triggerValue)
-              :triggerValue === expected;
+          <label>
+            Titolo:
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-              if (!shouldShow) return null;
-            }
+          <label>
+            Immagine URL:
+            <input
+              type="text"
+              name="imageUrl"
+              value={formData.imageUrl}
+              onChange={handleChange}
+            />
+          </label>
 
-            return (
-              <label key={field.name}>
-                {field.label}:
-                {field.type === 'select' ? (
-                  <select
-                    value={formData[field.name] || ''}
-                    onChange={e => handleChange(field.name, e.target.value)}
-                  >
-                    <option value="">-- Seleziona --</option>
-                    {field.options.map(opt => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
-                ) : field.type === 'textarea' ? (
-                  <textarea
-                    value={formData[field.name] || ''}
-                    onChange={e => handleChange(field.name, e.target.value)}
-                  />
-                ) : (
-                  <input
-                    type={field.type}
-                    value={formData[field.name] || ''}
-                    onChange={e => handleChange(field.name, e.target.value)}
-                    min={field.min}
-                    max={field.max}
-                  />
-                )}
-              </label>
-            );
-          })}
+          <label>
+            Descrizione:
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </label>
 
           <div className="modal-actions">
-            <button type="submit">Crea</button>
-            <button type="button" onClick={onClose}>Chiudi</button>
+            <button type="submit">{noteToEdit ? 'Aggiorna' : 'Crea'}</button>
+            <button type="button" onClick={onClose}>Annulla</button>
           </div>
         </form>
       </div>

@@ -22,6 +22,7 @@ export default function PostItBoard() {
   const [notes, setNotes] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [noteToEdit, setNoteToEdit] = useState(true);
 
   // 🔹 Carica i post-it dal server
   const loadNotes = async () => {
@@ -58,29 +59,49 @@ export default function PostItBoard() {
       console.error('❌ Errore nel salvataggio dei post-it:', error);
     }
   };
-
+  // 🔹 Aggiungi nuovo post-it
   const addNote = async (note) => {
     const updated = [...notes, note];
     setNotes(updated);
     await saveNotes(updated);
   };
+  // 🔹 Modifica post-it esistente
+  const updateNote = async(updateNote)=>{
+    const updatedNotes = notes.map(note => 
+      note.id === updatedNotes.id ? updateNote : note
+    );
+    setNotes(updatedNotes);
+    await saveNotes(updatedNotes);
+  };
+  //Cancella post-it
+  const deleteNote = async (id) =>{
+    const updatedNotes = notes.filter(note => note.id !== id);
+    setNotes(updatedNotes);
+    await saveNotes(updatedNotes);
+  }
+  //Apro il modal per la modifica
+  const editNote = (note) =>{
+    setNoteToEdit(note);
+    setModalOpen(true);
+  }
 
   useEffect(() => {
     loadNotes(); // 🔹 fetch una sola volta al mount
   }, []);
 
-  return (
+   return (
     <div className="postit-section">
       <div className="postit-header">
         <h2 className="chaos">Chaos Post-It</h2>
-        <button className="create-button" onClick={() => setModalOpen(true)}>
+        <button className="create-button" onClick={() => { setNoteToEdit(null); setModalOpen(true); }}>
           Crea Post-it
         </button>
       </div>
 
       {modalOpen && (
         <PostItCreator
-          onCreate={addNote}
+          noteToEdit={noteToEdit}
+          onCreate={noteToEdit ? updateNote : addNote}
           onClose={() => setModalOpen(false)}
         />
       )}
@@ -92,17 +113,10 @@ export default function PostItBoard() {
           <p>📭 Nessun post-it disponibile</p>
         ) : (
           notes.map((note) => (
-            <div
-              key={note.id}
-              className={`postit ${note.section.toLowerCase()}`}
-            >
+            <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
               <h4>{note.title}</h4>
               {note.imageUrl && (
-                <img
-                  src={note.imageUrl}
-                  alt={note.title}
-                  style={{ width: '100%', borderRadius: '6px' }}
-                />
+                <img src={note.imageUrl} alt={note.title} style={{ width: '100%', borderRadius: '6px' }} />
               )}
               <div className="postit-content">
                 {getVisibleFields(note).map((field) => (
@@ -111,6 +125,10 @@ export default function PostItBoard() {
                     <span className="postit-value">{note[field.name]}</span>
                   </div>
                 ))}
+              </div>
+              <div className="postit-actions">
+                <button onClick={() => editNote(note)}>✏️ Modifica</button>
+                <button onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
               </div>
               <small>
                 <em>
