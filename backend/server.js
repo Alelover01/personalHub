@@ -18,32 +18,22 @@ app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 // 🔹 Legge i post-it dal bin privato
 app.get('/postits', async (req, res) => {
+  console.log("🔗 BIN_URL:", BIN_URL);
+  console.log("🔑 API_KEY presente?", !!API_KEY);
   try {
     const response = await fetch(`${BIN_URL}/latest`, {
-      headers: {
-        'X-Master-Key': API_KEY,
-      },
+      headers: { 'X-Master-Key': API_KEY },
     });
-
+    console.log("response.ok:", response.ok, "status:", response.status);
     const json = await response.json();
-
-    // 🔍 Stampa visibile nei log
-    console.log("📦 JSONBin response:");
-    console.log("typeof json.record:", typeof json.record);
-    console.log("json.record keys:", Object.keys(json.record || {}));
-    console.log("json.record preview:", JSON.stringify(json.record, null, 2));
-
-    // 🔁 Adatta la risposta in base alla struttura
-    const notes = Array.isArray(json.record)
-      ? json.record
-      : [];
-
-    res.json(notes);
+    console.log("json:", json);
+    res.json(Array.isArray(json.record) ? json.record : []);
   } catch (err) {
-    console.error('❌ Errore nel caricamento:', err);
+    console.error('❌ Errore fetch /postits:', err);
     res.status(500).json({ error: 'Errore nel caricamento dei post-it' });
   }
 });
+
 
 
 // 🔹 Salva i post-it nel bin privato
