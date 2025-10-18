@@ -36,8 +36,8 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
   };
 
   return (
-    <div className="modal-backdrop">
-      <div className="modal">
+    <div className="modal-overlay">
+      <div className="modal-content">
         <h3>{noteToEdit ? 'Modifica Post-It' : 'Crea Post-It'}</h3>
         <form onSubmit={handleSubmit}>
           <label>
