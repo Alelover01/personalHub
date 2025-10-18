@@ -102,13 +102,22 @@ export default function PostItBoard() {
     setNoteToEdit(note);
     setModalOpen(true);
   };
-
+{/*
   useEffect(() => {
     loadNotes();
   }, []);
   useEffect(() => {
   console.log('📌 Stato aggiornato: notes =', notes);
-}, [notes]);
+}, [notes]); */}
+useEffect(() => {
+  console.log('🔧 Test: setNotes statico');
+  setNotes([
+    { id: 1, section: 'Travel', title: 'Test Statico 1' },
+    { id: 2, section: 'Finance', title: 'Test Statico 2' }
+  ]);
+  setLoading(false);
+}, []);
+
 
 
   console.log('Rendering notes array:', notes);
