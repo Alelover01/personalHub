@@ -155,9 +155,10 @@ export default function PostItBoard() {
 
                 {/* 🔹 Pulsanti Modifica e Elimina sempre visibili */}
                 <div className="postit-actions">
-                  <button>✏️ Modifica</button>
-                  <button>🗑️ Elimina</button>
+                  <button className="edit-button" onClick={() => editNote(note)}>✏️ Modifica</button>
+                  <button className="delete-button" onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
                 </div>
+
 
                 <small>
                   <em>

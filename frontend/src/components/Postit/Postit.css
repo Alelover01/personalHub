@@ -141,15 +141,17 @@
   color: white;
   transition: background-color 0.2s ease;
 }
-
-.postit-actions button:first-child {
-  background-color: #1e90ff; /* colore Modifica */
+.edit-button {
+  background-color: #1e90ff;
 }
-
-.postit-actions button:first-child:hover {
+.edit-button:hover {
   background-color: #0b78e3;
 }
 
-.postit-actions button:last-child:hover {
+.delete-button {
+  background-color: #ff6b6b;
+}
+.delete-button:hover {
   background-color: #e63946;
 }
+
