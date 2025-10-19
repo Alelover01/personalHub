@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Todo.css";
-
+/**
+ * Generate the key of localStorage for the date today.
+ * @returns {string} The Key in format 'todos-YYYY-MM-DD'.
+ */
 const getTodayKey = () => {
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -9,17 +12,18 @@ const getTodayKey = () => {
   return `todos-${yyyy}-${mm}-${dd}`;
 };
 
-// ---- Componente ----
 const Todo = () => {
-  // Inizializzo sincronamente dallo storage per evitare flash di "vuoto"
+  /**
+   * Retrieves todos from localStorage for the current date.
+   * If no list exists, retuns an empty array.
+   */
   const initialTodos = () => {
     try {
       const key = getTodayKey();
       const raw = localStorage.getItem(key);
-      console.log("[Todo] initial read key:", key, raw);
       return raw ? JSON.parse(raw) : [];
     } catch (err) {
-      console.error("[Todo] errore lettura initialTodos:", err);
+      console.error("[Todo] Error while reading initialTodos:", err);
       return [];
     }
   };
@@ -27,43 +31,44 @@ const Todo = () => {
   const [todoItems, setTodoItems] = useState(initialTodos);
   const [inputText, setInputText] = useState("");
   const [showBanner, setShowBanner] = useState(false);
-
-  // Al montaggio: se non esiste la chiave per oggi -> mostra banner
+  /**
+   * When the component starts:
+   * -If today's list doesn't exist, initialize it.
+   * -Display a 'new day' banner.
+   */
   useEffect(() => {
     try {
       const key = getTodayKey();
       const exists = localStorage.getItem(key) !== null;
-      console.log("[Todo] mount: storage key exists?", exists, "key:", key);
       if (!exists) {
-        // Non esiste ancora: crea un array vuoto e mostra banner
         localStorage.setItem(key, JSON.stringify([]));
         setShowBanner(true);
         setTimeout(() => setShowBanner(false), 4000);
       }
     } catch (err) {
-      console.error("[Todo] errore useEffect mount:", err);
-      // Se localStorage è bloccato (es. private mode), fallback silenzioso
+      console.error("[Todo] error useEffect mount:", err);
     }
   }, []);
-
-  // Salvataggio: salva ogni volta che cambia la lista
+  /**
+   * Automatically saves the updated list to localStorage
+   * whenever the status of the todos changes.
+   */
   useEffect(() => {
     try {
       const key = getTodayKey();
       localStorage.setItem(key, JSON.stringify(todoItems));
-      console.log("[Todo] saved", todoItems.length, "items to", key);
     } catch (err) {
-      console.error("[Todo] errore salvataggio:", err);
+      console.error("[Todo] Error of the save:", err);
     }
   }, [todoItems]);
-
+  /** Adds un new todo on the list. */
   const addTodo = () => {
     const text = inputText.trim();
     if (!text) return;
     setTodoItems((prev) => [...prev, { text, done: false }]);
     setInputText("");
   };
-
+  /** Alternate the state of 'complete' of a todo */
   const toggleDone = (index) => {
     setTodoItems((prev) => {
       const copy = [...prev];
@@ -71,11 +76,11 @@ const Todo = () => {
       return copy;
     });
   };
-
+  //** Deletes a todo based on its index */
   const removeTodo = (index) => {
     setTodoItems((prev) => prev.filter((_, i) => i !== index));
   };
-
+  //** Handles addition via enter key */
   const handleKeyPress = (e) => {
     if (e.key === "Enter") addTodo();
   };
@@ -86,7 +91,7 @@ const Todo = () => {
       <h2>Today's TO-DO</h2>
 
       {showBanner && (
-        <div className="new-day-banner">🌞 Nuova giornata, nuova lista!</div>
+        <div className="new-day-banner">🌞 New day, new list!</div>
       )}
 
       <div className="todo-controls">
@@ -95,14 +100,14 @@ const Todo = () => {
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder="Aggiungi una cosa da fare"
+          placeholder="Add a thing to do"
         />
         <button onClick={addTodo}>+</button>
       </div>
 
       <ul id="todo-list">
         {todoItems.length === 0 ? (
-          <p className="empty">Nessun elemento per oggi ✨</p>
+          <p className="empty">No elements for today ✨</p>
         ) : (
           todoItems.map((item, index) => (
             <li key={index} className={item.done ? "done" : ""}>
@@ -110,7 +115,7 @@ const Todo = () => {
               <button
                 className="remove-btn"
                 onClick={() => removeTodo(index)}
-                title="Rimuovi"
+                title="Remove"
               >
                 🗑️
               </button>

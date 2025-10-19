@@ -4,7 +4,13 @@ import { postItTemplates } from '../PostItCreator/postItTemplates';
 import './Postit.css';
 
 const API_URL = '/postits';
-
+/**
+* Determines which fields on a post-it should be visible
+* based on the template and specified conditions.
+* 
+* @param {Object} note - The post-it to parse
+* @returns {Array} List of visible fields
+*/
 function getVisibleFields(note) {
   const template = postItTemplates[note.section];
   if (!template || !template.fields) return [];
@@ -17,35 +23,37 @@ function getVisibleFields(note) {
       : triggerValue === expected;
   });
 }
-
+/**
+* Main Post-it Board: manages the viewing,
+* creation, editing, and deletion of notes.
+*/
 export default function PostItBoard() {
   const [notes, setNotes] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  /**
+   * Upload post-it notes from the server.
+   */
   const loadNotes = async () => {
     try {
-      console.log('🔄 Fetch /postits dal server...');
       const response = await fetch(API_URL);
       if (!response.ok) {
-        console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
+        console.error(`❌ Error HTTP: ${response.status} ${response.statusText}`);
         return;
       }
       const data = await response.json();
-      console.log('✅ Dati ricevuti dal server:', data);
       setNotes(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error('❌ Errore fetch /postits:', error);
-      setNotes([
-        { id: 1, section: 'Travel', title: 'Fallback Test 1' },
-        { id: 2, section: 'Finance', title: 'Fallback Test 2' }
-      ]);
+      console.error('❌ Error fetch /postits:', error);
     } finally {
       setLoading(false);
     }
   };
-
+  /**
+* Saves updated post-it notes to the server.
+* @param {Array} updatedNotes - Complete updated list of post-it notes
+*/
   const saveNotes = async (updatedNotes) => {
     try {
       const response = await fetch(API_URL, {
@@ -54,21 +62,26 @@ export default function PostItBoard() {
         body: JSON.stringify(updatedNotes),
       });
       if (!response.ok) {
-        console.error(`❌ Errore HTTP: ${response.status} ${response.statusText}`);
+        console.error(`❌ Error HTTP: ${response.status} ${response.statusText}`);
         return;
       }
-      console.log('✅ Salvataggio completato');
     } catch (error) {
-      console.error('❌ Errore nel salvataggio dei post-it:', error);
+      console.error('❌ Errore saving of post-it:', error);
     }
   };
-
+/**
+ * Add the new post-it and updates the server
+ * @param {Object} note - The new post-it to add
+ */
   const addNote = async (note) => {
     const updated = [...notes, note];
     setNotes(updated);
     await saveNotes(updated);
   };
-
+/**
+ * Updates an existing post-it and the server
+ * @param {Object} updatedNote - The modified post-it
+ */
   const updateNote = async (updatedNote) => {
     const updatedNotes = notes.map(note =>
       note.id === updatedNote.id ? updatedNote : note
@@ -76,25 +89,29 @@ export default function PostItBoard() {
     setNotes(updatedNotes);
     await saveNotes(updatedNotes);
   };
-
+/**
+* Deletes a post-it from the board and refreshes the server.
+* @param {string} id - ID of the post-it to delete
+*/
   const deleteNote = async (id) => {
     const updatedNotes = notes.filter(note => note.id !== id);
     setNotes(updatedNotes);
     await saveNotes(updatedNotes);
   };
-
+/**
+* Opens the edit modal for a selected post-it.
+* @param {Object} note - Post-it to edit
+*/
   const editNote = (note) => {
-    console.log('✏️ Editing note:', note);
     setNoteToEdit(note);
     setModalOpen(true);
   };
-
+/** Upload of the post-its at the upload of the component */
   useEffect(() => {
     loadNotes();
   }, []);
 
   useEffect(() => {
-    console.log('📌 Stato aggiornato: notes =', notes);
   }, [notes]);
 
   return (
@@ -119,14 +136,13 @@ export default function PostItBoard() {
 
       <div className="postit-board">
         {loading ? (
-          <p>⏳ Caricamento in corso...</p>
+          <p>⏳ Uploading...</p>
         ) : notes.length === 0 ? (
-          <p>📭 Nessun post-it disponibile</p>
+          <p>📭 No post-it available </p>
         ) : (
           notes
             .filter(note => note && note.id && note.section)
             .map((note) => {
-              console.log('Rendering note:', note);
               return (
                 <div key={note.id} className={`postit ${note.section.toLowerCase()}`}>
                   <h4>{note.title}</h4>
@@ -145,7 +161,7 @@ export default function PostItBoard() {
                   )}
                   <div className="postit-content">
                     {getVisibleFields(note)
-                    //in modo da non vedere questo nella visualizzazione
+                    //So the imageUrl is not visible in the post-it
                     .filter(field => field.name !== 'imageUrl')
                     .map((field) => (
                       <div key={field.name} className="postit-row">
@@ -156,8 +172,8 @@ export default function PostItBoard() {
                   </div>
 
                   <div className="postit-actions">
-                    <button className='edit-button' onClick={() => editNote(note)}>✏️ Modifica</button>
-                    <button className='delete-button' onClick={() => deleteNote(note.id)}>🗑️ Elimina</button>
+                    <button className='edit-button' onClick={() => editNote(note)}>✏️ Edit</button>
+                    <button className='delete-button' onClick={() => deleteNote(note.id)}>🗑️ Delete</button>
                   </div>
 
                   <small>
