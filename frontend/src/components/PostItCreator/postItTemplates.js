@@ -10,7 +10,7 @@ export const postItTemplates ={
    Finance: {
     fields: [
         {name: 'title', label: 'Name of the cost', type: 'text'},
-        {name: 'amount', label: 'How much', type: 'number', min: 0, max: 999999999},
+        {name: 'amount', label: 'How much', type: 'number', min: 0, max: 999999999, step: 0.01,},
         {name: 'type', label: 'Cost or Revenue', type: 'select', options: ['Revenue','Cost'],},
         {name: 'category', label: 'Category', type: 'select', options: ['Food','Transport','Pleasure','Work','Other'],},
         {name: 'description', label: 'Description', type: 'textarea'},
@@ -61,11 +61,11 @@ export const postItTemplates ={
     fields:[
         {name: 'title', label:'Name of the Game', type: 'text'},
         {name: 'imageUrl', label: 'Image of the Game', type: 'text'},
-        {name: 'amount', label: 'Cost of the Game', type: 'number', min: 0, max: 999999999},
+        {name: 'amount', label: 'Cost of the Game', type: 'number', min: 0, max: 999999999, step: 0.01,},
         {name: 'type', label: 'Type of Game', type: 'select', options: ['Co-Op', 'Singleplayer', 'Multiplayer'],},
         {name: 'status', label: 'Status', type: 'select', options: ['Played', 'Yet To Play','Playing','Dropped'],},
         {name: 'mark', label:'Your Mark', type: 'number', min: 0, max: 5,conditionalOn: {field: 'status', value: ['Played', 'Dropped', 'Playing']}},
-        {name: 'review', label: 'Review of the series', type: 'textarea',conditionalOn: {field: 'status', value: ['Played', 'Dropped', 'Playing']}},
+        {name: 'review', label: 'Review of the game', type: 'textarea',conditionalOn: {field: 'status', value: ['Played', 'Dropped', 'Playing']}},
     ]
    },
    Sites:{
