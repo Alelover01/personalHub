@@ -24,6 +24,7 @@ export const postItTemplates ={
         {name: 'status', label: 'Status', type: 'select', options: ['Idk', 'Read', 'To Read', 'Dropped'],},
         {name: 'series', label: 'Part of a series', type: 'select', options: ['Yes', 'No'],},
         {name: 'nameSeries', label: 'Name of the Series', type: 'text',conditionalOn: { field: 'series', value: 'Yes'}},
+        {name: 'number series', label: 'Number of the Series', type: 'text',conditionalOn: { field: 'series', value: 'Yes'}},
         {name: 'mark', label:'Your Mark', type: 'number', min: 0, max: 5, conditionalOn: {field: 'status', value: ['Read', 'Dropped']}},
         {name: 'review', label: 'Review of the book', type: 'textarea', conditionalOn: {field: 'status', value: ['Read', 'Dropped']}},
     ]
