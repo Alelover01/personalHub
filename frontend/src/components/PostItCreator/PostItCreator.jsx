@@ -18,7 +18,12 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'number' ? Number(value) : value,
+      [name]: 
+      type === 'number' 
+      ? value === ''
+        ? '' //se vuoto lascia vuoto
+        :Number(value) 
+      : value,
     }));
   };
 
@@ -97,6 +102,7 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
                     onChange={handleChange}
                     min={field.min}
                     max={field.max}
+                    step={field.step ?? 'any'}
                     required={field.required}
                   />
                 )}
