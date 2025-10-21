@@ -6,10 +6,6 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
   const [formData, setFormData] = useState({
     id: Date.now(),
     section: 'Travel',
-    title: '',
-    imageUrl: '',
-    description: '',
-    link: '', // nuovo campo
   });
 
   useEffect(() => {
@@ -19,8 +15,11 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
   }, [noteToEdit]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'number' ? Number(value) : value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -39,63 +38,101 @@ export default function PostItCreator({ onCreate, onClose, noteToEdit }) {
     onClose();
   };
 
+  // 🔹 Template della sezione attuale
+  const currentTemplate = postItTemplates[formData.section];
+
+  // 🔹 Funzione per controllare se un campo condizionale deve essere mostrato
+  const shouldShowField = (field) => {
+    if (!field.conditionalOn) return true;
+    const targetValue = formData[field.conditionalOn.field];
+    const expectedValue = field.conditionalOn.value;
+    if (Array.isArray(expectedValue)) {
+      return expectedValue.includes(targetValue);
+    }
+    return targetValue === expectedValue;
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>{noteToEdit ? 'Modifica Post-It' : 'Crea Post-It'}</h3>
+
         <form onSubmit={handleSubmit}>
+          {/* 🔸 Sezione */}
           <label>
             Sezione:
-            <select name="section" value={formData.section} onChange={handleChange}>
-              {Object.keys(postItTemplates).map(section => (
-                <option key={section} value={section}>{section}</option>
+            <select
+              name="section"
+              value={formData.section}
+              onChange={handleChange}
+            >
+              {Object.keys(postItTemplates).map((section) => (
+                <option key={section} value={section}>
+                  {section}
+                </option>
               ))}
             </select>
           </label>
 
-          <label>
-            Titolo:
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          {/* 🔸 Generazione dinamica dei campi */}
+          {currentTemplate.fields.map((field) =>
+            shouldShowField(field) ? (
+              <label key={field.name}>
+                {field.label}:
+                {field.type === 'text' && (
+                  <input
+                    type="text"
+                    name={field.name}
+                    value={formData[field.name] || ''}
+                    onChange={handleChange}
+                    required={field.required}
+                  />
+                )}
 
-          <label>
-            Immagine URL:
-            <input
-              type="text"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
-            />
-          </label>
+                {field.type === 'number' && (
+                  <input
+                    type="number"
+                    name={field.name}
+                    value={formData[field.name] || ''}
+                    onChange={handleChange}
+                    min={field.min}
+                    max={field.max}
+                    required={field.required}
+                  />
+                )}
 
-          <label>
-            Descrizione:
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-            />
-          </label>
+                {field.type === 'textarea' && (
+                  <textarea
+                    name={field.name}
+                    value={formData[field.name] || ''}
+                    onChange={handleChange}
+                  />
+                )}
 
-          <label>
-            Link esterno (opzionale):
-            <input
-              type="text"
-              name="link"
-              value={formData.link}
-              onChange={handleChange}
-            />
-          </label>
+                {field.type === 'select' && (
+                  <select
+                    name={field.name}
+                    value={formData[field.name] || ''}
+                    onChange={handleChange}
+                  >
+                    <option value="">Seleziona...</option>
+                    {field.options.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </label>
+            ) : null
+          )}
 
+          {/* 🔹 Pulsanti */}
           <div className="modal-actions">
             <button type="submit">{noteToEdit ? 'Aggiorna' : 'Crea'}</button>
-            <button type="button" onClick={onClose}>Annulla</button>
+            <button type="button" onClick={onClose}>
+              Annulla
+            </button>
           </div>
         </form>
       </div>
