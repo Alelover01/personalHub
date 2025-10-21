@@ -74,5 +74,11 @@ export const postItTemplates ={
         {name: 'description', label: 'Description', type: 'textarea'},
         {name: 'link', label: 'Link to the site', type: 'text'},
     ]
+   },
+   Other:{
+    fields:[
+        {name: 'title', label:'Name', type: 'text'},
+        {name: 'description', label: 'Description', type: 'textarea'},
+    ]
    }
 };

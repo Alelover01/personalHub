@@ -47,7 +47,7 @@
 
 
 /* Sezioni colorate */
-.postit.travel {
+.postit.travel, .postit.other {
   background-color: var(--link-cl);
   border-left: 6px solid var(--dark-cl);
 }
