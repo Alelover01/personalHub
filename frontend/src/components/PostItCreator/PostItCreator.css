@@ -34,10 +34,25 @@
 .modal-content select,
 .modal-content textarea {
   width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  border-radius: 4px;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.modal-content textarea{
+  min-height: 80px;
+  resize: vertical;
+}
+.modal-content select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  cursor: pointer;
 }
 
 .modal-actions {
