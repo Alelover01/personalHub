@@ -40,6 +40,7 @@
   border: 1px solid #ccc;
   outline: none;
   transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
 }
 
 .modal-content textarea{
