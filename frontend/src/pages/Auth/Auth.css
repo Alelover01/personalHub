@@ -1,19 +1,22 @@
-/* Auth.css - adattamento di prova.css con scope .auth-layout */
-.auth-layout *{
+/* =======================
+   AUTH PAGE - STYLES
+   ======================= */
+
+.auth-layout * {
   box-sizing: border-box;
 }
 
 .auth-layout {
   font-family: "Poppins", sans-serif;
   min-height: 100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: linear-gradient(90deg, #edede9, #e3d5ca, #d6ccc2);
 }
 
-/* Container style */
-.auth-layout .container{
+/* ========== Container principale ========== */
+.auth-layout .container {
   position: relative;
   width: 850px;
   height: 550px;
@@ -22,18 +25,21 @@
   border-radius: 30px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  transition: all 0.6s ease-in-out;
 }
-.auth-layout .container h1{
+
+.auth-layout .container h1 {
   font-size: 36px;
   margin: -10px 0;
 }
-.auth-layout .container p{
+
+.auth-layout .container p {
   font-size: 14.5px;
   margin: 15px 0;
 }
 
-/* Form box */
-.auth-layout .form-box{
+/* ========== Form Box (Login/Register) ========== */
+.auth-layout .form-box {
   position: absolute;
   right: 0;
   width: 50%;
@@ -44,13 +50,12 @@
   color: #333;
   text-align: center;
   padding: 40px;
-  z-index: 4;
   transition: all 0.8s ease;
   opacity: 1;
   transform: translateX(0);
+  z-index: 5; /* sotto i pannelli */
 }
 
-/* Default: login visible, register shifted right */
 .auth-layout .form-box.login {
   transform: translateX(0);
   opacity: 1;
@@ -63,25 +68,26 @@
   z-index: 5;
 }
 
-/* When active (register shown) */
-.auth-layout .container.active .form-box.login{
+/* Stato attivo (Register visibile) */
+.auth-layout .container.active .form-box.login {
   transform: translateX(-100%);
   opacity: 0;
   z-index: 5;
 }
 
-.auth-layout .container.active .form-box.register{
+.auth-layout .container.active .form-box.register {
   transform: translateX(0);
   opacity: 1;
   z-index: 6;
 }
 
-/* Inputs */
-.auth-layout .input-box{
+/* ========== Input ========== */
+.auth-layout .input-box {
   position: relative;
   margin: 30px 0;
 }
-.auth-layout .input-box input{
+
+.auth-layout .input-box input {
   width: 100%;
   padding: 13px 50px 13px 20px;
   background: #eee;
@@ -92,11 +98,13 @@
   color: #555;
   font-weight: 500;
 }
-.auth-layout .input-box input::placeholder{
+
+.auth-layout .input-box input::placeholder {
   color: #888;
   font-weight: 400;
 }
-.auth-layout .input-box i{
+
+.auth-layout .input-box i {
   position: absolute;
   right: 20px;
   top: 50%;
@@ -104,11 +112,17 @@
   font-size: 20px;
 }
 
-/* Forgot link, buttons, social */
-.auth-layout .forgot-link{ margin: -15px 0 15px; }
-.auth-layout .forgot-link a{ font-size: 14.5px; color: #444; }
+/* ========== Link, bottoni e social ========== */
+.auth-layout .forgot-link {
+  margin: -15px 0 15px;
+}
 
-.auth-layout .btn{
+.auth-layout .forgot-link a {
+  font-size: 14.5px;
+  color: #444;
+}
+
+.auth-layout .btn {
   width: 100%;
   height: 48px;
   background: #d6ccc2;
@@ -122,21 +136,35 @@
   font-weight: 600;
   transition: all 0.3s ease;
 }
-.auth-layout .btn:hover{ background: #c5bdaf; }
 
-.auth-layout .social-icons{ display:flex; justify-content:center; }
-.auth-layout .social-icons a{ display:inline-flex; padding:10px; font-size:24px; color:#444; margin:0 8px; }
+.auth-layout .btn:hover {
+  background: #c5bdaf;
+}
 
-/* Toggle box - blob */
-.auth-layout .toggle-box{
+.auth-layout .social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-layout .social-icons a {
+  display: inline-flex;
+  padding: 10px;
+  font-size: 24px;
+  color: #444;
+  margin: 0 8px;
+}
+
+/* ========== Toggle Box (Blob + Panels) ========== */
+.auth-layout .toggle-box {
   position: absolute;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  z-index: 5; /* above background, below top form content */
+  overflow: visible;
+  z-index: 10;
+  pointer-events: none;
 }
 
-.auth-layout .toggle-box::before{
+.auth-layout .toggle-box::before {
   content: '';
   position: absolute;
   left: -250%;
@@ -144,26 +172,86 @@
   height: 100%;
   background-color: rgba(214,204,194,0.85);
   border-radius: 150px;
-  z-index: 5;
+  z-index: 1;
   mix-blend-mode: multiply;
   transition: left 1.8s ease-in-out;
 }
-.auth-layout .container.active .toggle-box::before{ left: 50%; }
 
-/* Toggle panels */
-.auth-layout .toggle-panel{
+.auth-layout .container.active .toggle-box::before {
+  left: 50%;
+}
+
+/* ========== Toggle Panels (testo + pulsanti) ========== */
+.auth-layout .toggle-panel {
   position: absolute;
   width: 50%;
   height: 100%;
   color: #746D61;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 11;
   transition: all 0.6s ease-in-out;
+  pointer-events: auto;
+  text-align: center;
+  padding: 0 40px;
 }
-.auth-layout .toggle-panel.toggle-left{ left: 0; }
-.auth-layout .container.active .toggle-panel.toggle-left{ left: -50%; }
-.auth-layout .toggle-panel.toggle-right{ right: -50%; }
-.auth-layout .container.active .toggle-panel.toggle-right{ right: 0; }
+
+.auth-layout .toggle-panel.toggle-left {
+  left: 0;
+}
+
+.auth-layout .container.active .toggle-panel.toggle-left {
+  left: -50%;
+}
+
+.auth-layout .toggle-panel.toggle-right {
+  right: -50%;
+}
+
+.auth-layout .container.active .toggle-panel.toggle-right {
+  right: 0;
+}
+
+/* Pulsanti nei pannelli */
+.auth-layout .toggle-panel .btn {
+  width: 150px;
+  margin-top: 15px;
+  background: #d6ccc2;
+  color: #4a4a4a;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  transition: background 0.3s ease;
+  position: relative;
+  z-index: 12;
+}
+
+.auth-layout .toggle-panel .btn:hover {
+  background: #c5bdaf;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .auth-layout .container {
+    width: 95%;
+    height: auto;
+  }
+
+  .auth-layout .form-box {
+    width: 100%;
+    position: relative;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .auth-layout .toggle-box,
+  .auth-layout .toggle-panel {
+    display: none;
+  }
+}
