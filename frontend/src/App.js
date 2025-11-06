@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Layouts
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
 
-// Pagine di autenticazione
-import Login from "./pages/Auth/Login";
-import Register from "./pages/Auth/Register";
+// Pagina di autenticazione unificata (Login + Register)
+import Auth from "./pages/Auth/Auth";
 
 // Pagine principali
 import Home from "./pages/Home/Home";
@@ -22,25 +23,25 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* --- Autenticazione --- */}
+        {/* --- Autenticazione (Login + Register) --- */}
         <Route
           path="/"
           element={
             <AuthLayout>
-              <Login />
+              <Auth />
             </AuthLayout>
           }
         />
         <Route
-          path="/register"
+          path="/auth"
           element={
             <AuthLayout>
-              <Register />
+              <Auth />
             </AuthLayout>
           }
         />
 
-        {/* --- Layout principale --- */}
+        {/* --- Pagine principali con Navbar e Footer --- */}
         <Route
           path="/home"
           element={
