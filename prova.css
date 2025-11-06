@@ -14,7 +14,7 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(90deg, #edede9, #e3d5ca, #d6ccc2);
+    background: linear-gradient(120deg, #e2e2e2, #c9d6ff);
 }
 /**
     Container style
@@ -144,7 +144,7 @@ form{
     background-color: #d6ccc2;
     border-radius: 150px;
     z-index: 2;
-    transition: 1.8 ease-in-out;
+    transition: 1.8s ease-in-out;
 }
 .container.active .toggle-box::before{
     left: 50%;
