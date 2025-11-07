@@ -1,10 +1,10 @@
-import pg from 'pg';
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { release } from 'os';
+import sql from './db.js';
 
 dotenv.config();
 
@@ -152,24 +152,13 @@ app.listen(PORT, () => {
   console.log(`🌍 URL pubblico Render: ${process.env.RENDER_EXTERNAL_URL || 'non definito'}`);
 });
 
-
-/* =================== DATABASE CONNECTION ========== */
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl:{
-    rejectUnauthorized: false
+/** */
+app.get('/users', async (req, res) => {
+  try {
+    const users = await sql`SELECT * FROM profiles;`;  // esempio tabella
+    res.json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore DB' });
   }
-});
-//Test of the connection
-pool.connect((err,client, release)=>{
-  if(err){
-    return console.error('Errore nella connessione al database', err.stack);
-  }
-  client.query('SELECT NOW()', (err, result)=>{
-    release();
-    if (err){
-      console.error('Errore nell\'esecuzione della query di test', err.stack);
-    }
-    console.log('Connessione a PostgreSQL riuscita:', result.rows[0].now);
-  });
 });
