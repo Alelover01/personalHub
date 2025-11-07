@@ -161,3 +161,21 @@ app.get('/users', async (req, res) => {
     res.status(500).json({ error: 'Errore DB' });
   }
 });
+// ✅ Rotta di test del database
+app.get("/api/test-db", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT NOW()");
+    res.json({
+      success: true,
+      message: "✅ Connessione al database riuscita!",
+      time: result.rows[0].now,
+    });
+  } catch (err) {
+    console.error("❌ Errore di connessione al database:", err);
+    res.status(500).json({
+      success: false,
+      message: "Errore nella connessione al database",
+      error: err.message,
+    });
+  }
+});

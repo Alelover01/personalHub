@@ -1,6 +1,7 @@
 {
   "name": "calendar-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Backend server for calendar app using Express",
   "main": "server.js",
   "scripts": {
