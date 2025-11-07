@@ -161,6 +161,7 @@ app.get("/api/test-db", async (req, res) => {
     });
   } catch (err) {
     console.error("❌ Errore di connessione al database:", err);
+    console.log("🔍 DATABASE_URL:", process.env.DATABASE_URL);
     res.status(500).json({
       success: false,
       message: "Errore nella connessione al database",
