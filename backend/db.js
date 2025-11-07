@@ -3,14 +3,17 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Forza IPv4 e SSL (necessario su Render + Supabase)
-const sql = postgres(process.env.DATABASE_URL, {
+const connectionString = process.env.DATABASE_URL;
+
+// 🔹 Forza SSL e IPv4 per Supabase
+const sql = postgres(connectionString + "?sslmode=require", {
   ssl: "require",
-  hostname: process.env.DB_HOST || undefined,
+  hostname: "db.juhfnvmfoiikdnoizors.supabase.co", // il tuo host supabase
+  prepare: false,
   connection: {
-    host: "supabase", // placeholder, sarà ignorato se la connessione è diretta
+    host: "db.juhfnvmfoiikdnoizors.supabase.co", // forza IPv4
+    port: 5432,
   },
-  onnotice: () => {}, // ignora notifiche Postgres
 });
 
 export default sql;
