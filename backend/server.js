@@ -164,11 +164,11 @@ app.get('/users', async (req, res) => {
 // ✅ Rotta di test del database
 app.get("/api/test-db", async (req, res) => {
   try {
-    const result = await pool.query("SELECT NOW()");
+    const result = await sql`SELECT NOW() AS current_time;`;
     res.json({
       success: true,
       message: "✅ Connessione al database riuscita!",
-      time: result.rows[0].now,
+      time: result[0].current_time,
     });
   } catch (err) {
     console.error("❌ Errore di connessione al database:", err);
