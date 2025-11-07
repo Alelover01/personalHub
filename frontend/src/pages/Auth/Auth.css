@@ -1,6 +1,6 @@
 /* =======================
-   AUTH PAGE - STYLES FIXED
-   ======================= */
+   AUTH PAGE - STYLES FIXED
+   ======================= */
 
 .auth-layout * {
   box-sizing: border-box;
@@ -50,7 +50,7 @@
 }
 
 .auth-layout .form-box.register {
-  left: 0;
+  left:0;
   opacity: 0;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .auth-layout .container.active .form-box.register {
-  left: 50%;
+  left: 50;
   opacity: 1;
   z-index: 5;
 }
@@ -113,7 +113,7 @@
   height: 48px;
   background: #d6ccc2;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: none;
   outline: none;
   cursor: pointer;
@@ -152,10 +152,10 @@
 .auth-layout .toggle-box::before {
   content: '';
   position: absolute;
-  left: -200%;
+  left: -250%;
   width: 300%;
   height: 100%;
-  background-color: rgba(214,204,194,0.85);
+  background-color: rgba(214, 204, 194, 0.85);
   border-radius: 150px;
   z-index: 2;
   mix-blend-mode: normal;
@@ -163,7 +163,7 @@
 }
 
 .auth-layout .container.active .toggle-box::before {
-  left: -50%;
+  left: 50%;
 }
 
 /* ========== Toggle Panels (testo + pulsanti) ========== */
@@ -187,7 +187,7 @@
 }
 
 .auth-layout .container.active .toggle-panel.toggle-left {
-  left: 50%;
+  left: -50%;
 }
 
 .auth-layout .toggle-panel.toggle-right {
@@ -210,7 +210,7 @@
   font-size: 16px;
   font-weight: 600;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: background 0.3s ease;
 }
 
