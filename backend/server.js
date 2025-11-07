@@ -141,11 +141,6 @@ app.post('/events', async (req, res) => {
 });
 
 /* ================= REACT ROUTER ================= */
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
-});
-
 app.listen(PORT, () => {
   console.log(`🚀 Server avviato su http://localhost:${PORT}`);
   console.log(`🌍 URL pubblico Render: ${process.env.RENDER_EXTERNAL_URL || 'non definito'}`);
@@ -178,4 +173,8 @@ app.get("/api/test-db", async (req, res) => {
       error: err.message,
     });
   }
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
