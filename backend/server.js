@@ -1,8 +1,11 @@
+require('dotenv').config(); //Carica le variabili dell'env
+const {Pool} = require('pg');
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { release } from 'os';
 
 dotenv.config();
 
@@ -147,4 +150,26 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server avviato su http://localhost:${PORT}`);
   console.log(`🌍 URL pubblico Render: ${process.env.RENDER_EXTERNAL_URL || 'non definito'}`);
+});
+
+
+/* =================== DATABASE CONNECTION ========== */
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl:{
+    rejectUnauthorized: false
+  }
+});
+//Test of the connection
+pool.connect((err,client, release)=>{
+  if(err){
+    return console.error('Errore nella connessione al database', err.stack);
+  }
+  client.query('SELECT NOW()', (err, result)=>{
+    release();
+    if (err){
+      console.error('Errore nell\'esecuzione della query di test', err.stack);
+    }
+    console.log('Connessione a PostgreSQL riuscita:', result.rows[0].now);
+  });
 });
