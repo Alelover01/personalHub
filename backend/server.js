@@ -1,5 +1,4 @@
-require('dotenv').config(); //Carica le variabili dell'env
-const {Pool} = require('pg');
+import { Pool } from 'pg';
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
