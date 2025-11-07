@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { pg } from 'pg';
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
@@ -153,7 +153,7 @@ app.listen(PORT, () => {
 
 
 /* =================== DATABASE CONNECTION ========== */
-const pool = new Pool({
+const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl:{
     rejectUnauthorized: false
