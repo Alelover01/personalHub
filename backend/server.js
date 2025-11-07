@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3001;
 const POSTIT_BIN_URL = process.env.JSONBIN_URL;         // bin post-it
 const EVENT_BIN_URL = process.env.JSONBIN_URL_EVENTS;  // bin eventi
 const API_KEY = process.env.JSONBIN_API_KEY;           // stessa chiave per entrambi
+const {Pool} = pg;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -153,7 +154,7 @@ app.listen(PORT, () => {
 
 
 /* =================== DATABASE CONNECTION ========== */
-const pool = pg.Pool({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl:{
     rejectUnauthorized: false
