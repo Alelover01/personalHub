@@ -13,7 +13,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const POSTIT_BIN_URL = process.env.JSONBIN_URL;         // bin post-it
 const EVENT_BIN_URL = process.env.JSONBIN_URL_EVENTS;  // bin eventi
-const API_KEY = process.env.JSONBIN_API_KEY;           // stessa chiave per entrambi
+const API_KEY = process.env.JSONBIN_API_KEY;           
+const JWT_SECRET = process.env.JWT_SECRET
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
