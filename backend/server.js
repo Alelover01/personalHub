@@ -3,8 +3,9 @@ import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { release } from 'os';
 import sql from './db.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -29,7 +30,80 @@ app.use((req, res, next) => {
   console.log("====================================");
   next();
 });
+/* ================= AUTH ROUTES ================= */
+//Rotta di registrazione
+app.post('/auth/register', async(req,res)=>{
+  const {username, email, password } = req.body;
+  const saltRounds = 10;
+  if (!username || !email || !password){
+    return res.status(400).json({message: 'Tutti i campi sono obbligatori.'});
+  }
+  try{
+    //Hash della password
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const result = await sql `
+            INSERT INTO profiles (username, email, password)
+            VALUES (${username}, ${email}, ${hashedPassword})
+            RETURNING id, username, email;
+        `;
+        const token = jwt.sign({id: result[0].id, username: result[0].username}, JWT_SECRET, {expiresIn: '1d'});
 
+        res.status(201).json({
+          message: 'Registrazione completata con successo!',
+          user: { id: result[0].id, username: result[0].username, email: result[0].email },
+          token
+        });
+  } catch (err){
+    console.error('Errore di registrazione:', err);
+    //Gestione errore di violazione dei constraint UNICI
+    if(err.code === '23505'){
+      let field = 'campo';
+      if (err.detail.includes('email')) field = 'Email';
+      else if (err.detail.includes('username')) field = 'Username';
+      return res.status(409).json({message: `${field} già in uso.`});
+    }
+    res.status(500).json({message: 'Errore interno del server durante la registrazione.' });
+  }
+});
+//Rotta di Login
+app.post('/auth/login', async (req, res) => {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username e Password sono obbligatori.' });
+    }
+
+    try {
+        const users = await sql`
+            SELECT id, username, password 
+            FROM profiles 
+            WHERE username = ${username} OR email = ${username};
+        `;
+
+        const user = users[0];
+
+        if (!user) {
+            return res.status(401).json({ message: 'Credenziali non valide.' });
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Credenziali non valide.' });
+        }
+
+        const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1d' });
+
+        res.json({ 
+            message: 'Login completato con successo!',
+            user: { id: user.id, username: user.username },
+            token
+        });
+
+    } catch (err) {
+        console.error("Errore di Login:", err);
+        res.status(500).json({ message: 'Errore interno del server durante il login.' });
+    }
+});
 /* ================= POST-IT ROUTES ================= */
 
 // Legge i post-it
