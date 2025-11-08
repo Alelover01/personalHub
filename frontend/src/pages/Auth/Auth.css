@@ -25,7 +25,7 @@
   border-radius: 30px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  transition: all 0.6s ease-in-out;
+  transition: all 0.8s ease-in-out;
 }
 
 /* ========== Form Box (Login/Register) ========== */
@@ -40,7 +40,7 @@
   color: #333;
   text-align: center;
   padding: 40px;
-  transition: all 0.6s ease-in-out;
+  transition: all 0.8s ease-in-out;
   z-index: 1;
 }
 
@@ -160,7 +160,7 @@
   border-radius: 150px;
   z-index: 2;
   mix-blend-mode: normal;
-  transition: left 1.2s ease-in-out;
+  transition: left 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .auth-layout .container.active .toggle-box::before {
