@@ -1,6 +1,6 @@
 /* =======================
-   AUTH PAGE - STYLES FIXED
-   ======================= */
+    AUTH PAGE - STYLES FIXED
+    ======================= */
 
 .auth-layout * {
   box-sizing: border-box;
@@ -41,28 +41,28 @@
   text-align: center;
   padding: 40px;
   transition: all 0.8s ease-in-out;
-  z-index: 1;
+  z-index: 1; /* Il form di Login/Register è sopra gli altri contenuti */
 }
 
 .auth-layout .form-box.login {
-  left: 50%;
+  left: 0; /* CORREZIONE: Inizia a sinistra */
   opacity: 1;
 }
 
 .auth-layout .form-box.register {
-  left:0;
+  left: 50%; /* CORREZIONE: Inizia a destra (nascosto) */
   opacity: 0;
 }
 
 /* Stato attivo (Register visibile) */
 .auth-layout .container.active .form-box.login {
-  left: 100%;
+  left: -50%; /* CORREZIONE: Sposta il Login completamente fuori a sinistra */
   opacity: 0;
   z-index: 4;
 }
 
 .auth-layout .container.active .form-box.register {
-  left: 50;
+  left: 0; /* CORREZIONE: Sposta il Register a sinistra, nello spazio liberato */
   opacity: 1;
   z-index: 5;
 }
@@ -146,25 +146,31 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  top: 0;
+  left: 50%; /* CORREZIONE: Toggle box inizia a destra */
   overflow: hidden;
+  transition: left 0.8s ease-in-out; /* Aggiunto transizione al box */
   z-index: 2;
 }
 
 .auth-layout .toggle-box::before {
   content: '';
   position: absolute;
-  left: -250%;
-  width: 300%;
+  left: 0; /* CORREZIONE: Inizia a 0 rispetto al toggle-box */
+  width: 200%; 
   height: 100%;
   background-color: rgba(214, 204, 194, 0.85);
-  border-radius: 150px;
+  border-radius: 30px; 
   z-index: 2;
-  mix-blend-mode: normal;
-  transition: left 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Usiamo transform */
+}
+
+.auth-layout .container.active .toggle-box {
+  left: 0; /* CORREZIONE: Sposta il toggle box a sinistra */
 }
 
 .auth-layout .container.active .toggle-box::before {
-  left: 50%;
+  transform: translateX(-100%); /* CORREZIONE: Sposta il blob completamente a sinistra */
 }
 
 /* ========== Toggle Panels (testo + pulsanti) ========== */
