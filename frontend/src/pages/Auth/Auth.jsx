@@ -5,9 +5,16 @@ import "./Auth.css";
 export default function Auth() {
   const [isRegister, setIsRegister] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
-  const [registerData, setRegisterData] = useState({ username: "", email: "", password: "" });
+  const [registerData, setRegisterData] = useState({ username: "", email: "", password: "", profilePictureFile: null});
   const [error, setError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
   const navigate = useNavigate();
+
+  //Funzione di utilità per la validazione dell'email
+  const validateEmail = (email) =>{
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }
 
   const handleToggleRegister = () => {
     setError(null); 
@@ -25,7 +32,19 @@ export default function Auth() {
 
   // Gestore per i campi di Registrazione
   const handleRegisterChange = (e) => {
-    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
+    const {name, value , files } = e.target;
+    if (name === 'profilePicture'){
+      setRegisterData({...registerData, profilePictureFile: files[0] });
+    } else {
+      let newEmailError = null;
+      if (name === 'email'){
+        if (value.trim() !== '' && !validateEmail(value)){
+          newEmailError = 'Formato email non valido';
+        }
+        setEmailError(newEmailError);
+      }
+      setRegisterData({...registerData, [name]: value});
+    }
   };
 
   const handleLoginSubmit = async (e) => {
@@ -42,12 +61,10 @@ export default function Auth() {
       const data = await response.json();
 
       if (response.ok) {
-        // Login riuscito: salva token e vai a /home
-        localStorage.setItem("token", data.token); // Salva il token JWT
-        localStorage.setItem("username", data.user.username); // Salva il nome utente
+        localStorage.setItem("token", data.token); 
+        localStorage.setItem("username", data.user.username); 
         navigate("/home");
       } else {
-        // Login fallito: mostra l'errore dal backend
         setError(data.message || "Errore di login sconosciuto.");
       }
     } catch (err) {
@@ -60,17 +77,29 @@ export default function Auth() {
     e.preventDefault();
     setError(null);
 
+    if (emailError){
+      setError('Correggi l\'email prima di procedere con la registrazione.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('username', registerData.username);
+    formData.append('email', registerData.email);
+    formData.append('password', registerData.password);
+    if (registerData.profilePictureFile){
+      formData.append('profilePicture', registerData.profilePictureFile);
+    }
+
     try {
       const response = await fetch("/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(registerData),
+        body: formData,
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert("Registrazione completata! Effettua il login."); // Notifica l'utente
+        alert("Registrazione completata! Accesso in corso..."); // Notifica l'utente
         //Login Automatico
         localStorage.setItem("token", data.token); 
         localStorage.setItem("username", data.user.username);
@@ -83,6 +112,13 @@ export default function Auth() {
       setError("Impossibile connettersi al server.");
     }
   };
+  //Funzione per mostrare un anteprima dell'immagine profilo
+  const getProfilePicturePreview = ()=>{
+    if (registerData.profilePictureFile){
+      return URL.createObjectURL(registerData.profilePictureFile);
+    }
+    return 'https://placehold.co/100x100/d6ccc2/4a4a4a?text=Foto';
+  }
   return (
     <div className={`auth-layout`}>
       <div className={`container ${isRegister ? "active" : ""}`}>
@@ -90,9 +126,11 @@ export default function Auth() {
         {error && (
             <div style={{
                 position: 'absolute', top: 0, left: 0, right: 0, 
-                backgroundColor: '#f8d7da', color: '#721c24', 
+                backgroundColor: error.includes('successo')? '#d4edda':'#f8f7da', 
+                color: error.includes('successo')? '#155724': '#721c24',
                 padding: '10px', textAlign: 'center', zIndex: 10, 
-                borderTopLeftRadius: '30px', borderTopRightRadius: '30px'
+                borderTopLeftRadius: '30px', borderTopRightRadius: '30px',
+                fontWeight: 'bold'
             }}>
                 {error}
             </div>
@@ -127,13 +165,26 @@ export default function Auth() {
         <div className="form-box register">
           <form onSubmit={handleRegisterSubmit}>
             <h1>Register</h1>
+            <label htmlFor="profilePictureInput" className="file-input-wrapper">
+              <img 
+              src={getProfilePicturePreview()}
+              alt="Anteprima Profilo"
+              className="profile-image-preview"
+              title="Clicca per selezionare l\'immagine"
+              ></img>
+              <span style={{ fontSize: '14px', color: '#4a4a4a', fontWeight: '500'}}>
+                {registerData.profilePictureFile ? registerData.profilePictureFile.name: 'Scegli Foto Profilo'}
+              </span>
+              <input type="file" id="profilePictureInput" name="profilePicture" accept="image/*" onChange={handleRegisterChange} style={{ display: 'none'}}></input>
+            </label>
             <div className="input-box">
               <input type="text" name="username" placeholder="Username" required value={registerData.username} onChange={handleRegisterChange} />
               <i className="fa-solid fa-user"></i>
             </div>
             <div className="input-box">
-              <input type="email" name="email" placeholder="Email" required value={registerData.email} onChange={handleRegisterChange} />
+              <input type="email" name="email" placeholder="Email" required value={registerData.email} onChange={handleRegisterChange} style={{ borderColor: emailError ? '#dc3545' : 'initial'}} />
               <i className="fa-solid fa-envelope"></i>
+              {emailError && <div className="email-error">{emailError}</div>}
             </div>
             <div className="input-box">
               <input type="password" name="password" placeholder="Password" required value={registerData.password} onChange={handleRegisterChange} />
@@ -160,7 +211,7 @@ export default function Auth() {
 
           <div className="toggle-panel toggle-right">
             <h1>Welcome Back!</h1>
-            <p>Already have an account</p>
+            <p>Already have an account?</p>
             <button className="btn login-btn" type="button" onClick={handleToggleLogin}>Login</button>
           </div>
         </div>

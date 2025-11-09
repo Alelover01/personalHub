@@ -41,28 +41,28 @@
   text-align: center;
   padding: 40px;
   transition: all 0.8s ease-in-out;
-  z-index: 1; /* Il form di Login/Register è sopra gli altri contenuti */
+  z-index: 1; 
 }
 
 .auth-layout .form-box.login {
-  left: 0; /* CORREZIONE: Inizia a sinistra */
+  left: 0;
   opacity: 1;
 }
 
 .auth-layout .form-box.register {
-  left: 50%; /* CORREZIONE: Inizia a destra (nascosto) */
+  left: 50%;
   opacity: 0;
 }
 
 /* Stato attivo (Register visibile) */
 .auth-layout .container.active .form-box.login {
-  left: -50%; /* CORREZIONE: Sposta il Login completamente fuori a sinistra */
+  left: -50%;
   opacity: 0;
   z-index: 4;
 }
 
 .auth-layout .container.active .form-box.register {
-  left: 0; /* CORREZIONE: Sposta il Register a sinistra, nello spazio liberato */
+  left: 0;
   opacity: 1;
   z-index: 5;
 }
@@ -73,7 +73,24 @@
   margin: 30px 0;
 }
 
-.auth-layout .input-box input {
+.auth-layout .file-input-wrapper{
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  margin: 20px 0;
+  cursor: pointer;
+}
+.auth-layout .profile-image-preview{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #d6ccc2;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.auth-layout .input-box input:not([type='file']) {
   width: 100%;
   padding: 13px 50px 13px 20px;
   background: #eee;
@@ -96,6 +113,14 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 20px;
+  pointer-events: none;
+}
+.auth-layout .email-error{
+  color: #dc3545;
+  font-size: 12px;
+  text-align: left;
+  margin-top: 5px;
+  padding-left: 20px;
 }
 
 /* ========== Link, bottoni e social ========== */
@@ -106,6 +131,7 @@
 .auth-layout .forgot-link a {
   font-size: 14.5px;
   color: #444;
+  text-decoration: none;
 }
 
 .auth-layout .btn {
@@ -147,7 +173,7 @@
   width: 100%;
   height: 100%;
   top: 0;
-  left: 50%; /* CORREZIONE: Toggle box inizia a destra */
+  left: 50%; 
   overflow: hidden;
   transition: left 0.8s ease-in-out; /* Aggiunto transizione al box */
   z-index: 2;
@@ -156,7 +182,7 @@
 .auth-layout .toggle-box::before {
   content: '';
   position: absolute;
-  left: 0; /* CORREZIONE: Inizia a 0 rispetto al toggle-box */
+  left: 0;
   width: 200%; 
   height: 100%;
   background-color: rgba(214, 204, 194, 0.85);
@@ -166,11 +192,11 @@
 }
 
 .auth-layout .container.active .toggle-box {
-  left: 0; /* CORREZIONE: Sposta il toggle box a sinistra */
+  left: 100%; 
 }
 
 .auth-layout .container.active .toggle-box::before {
-  transform: translateX(-100%); /* CORREZIONE: Sposta il blob completamente a sinistra */
+  transform: translateX(-100%);
 }
 
 /* ========== Toggle Panels (testo + pulsanti) ========== */
