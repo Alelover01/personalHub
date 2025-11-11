@@ -25,7 +25,7 @@
   border-radius: 30px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  transition: all 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* ========== Form Box (Login/Register) ========== */
@@ -40,7 +40,10 @@
   color: #333;
   text-align: center;
   padding: 40px;
-  transition: transform 1.4s ease-in-out,  opacity 0.8s ease-in-out;
+  transition: 
+    transform 1s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 1s cubic-bezier(0.25, 0.8, 0.25, 1),
+    visibility 0s linear 0s;
   z-index: 5; 
   opacity: 1;
 }
@@ -50,32 +53,34 @@
   right: 50%;
 }
 
-/* Fade tra login e register */
+/* Fade + slide tra login e register */
 .auth-layout .form-box.login {
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.8s ease-in-out, visibility 0s 0s;
+  transform: translateX(0);
   z-index: 6;
 }
 
 .auth-layout .form-box.register {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.8s ease-in-out, visibility 0s 0.8s;
+  transform: translateX(40px); /* 🔼 offset per lo slide */
   z-index: 4;
 }
 
 .auth-layout .container.active .form-box.login {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.8s ease-in-out, visibility 0s 0.8s;
+  transform: translateX(-40px); /* 🔼 scivola via */
+  transition-delay: 0s, 0s, 0.8s;
   z-index: 4;
 }
 
 .auth-layout .container.active .form-box.register {
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.8s ease-in-out, visibility 0s 0s;
+  transform: translateX(0);
+  transition-delay: 0s, 0s, 0s;
   z-index: 6;
 }
 
@@ -194,7 +199,7 @@
   background: linear-gradient(120deg, rgba(214, 204, 194, 0.85), rgba(227, 213, 202, 0.85));
   border-radius: 100px;
   z-index: 1;
-  transition: all 1.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 1.6s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .auth-layout .container.active .toggle-box::before {
   left: 50%;
@@ -211,14 +216,14 @@
   justify-content: center;
   align-items: center;
   z-index: 2;
-  transition: all 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* Pannello sinistro con sfondo tenue */
 .auth-layout .toggle-panel.toggle-left {
   left: 0;
   background: rgba(214, 204, 194, 0.3);
-  transition: all 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .auth-layout .container.active .toggle-panel.toggle-left {
   left: -50%;
@@ -228,7 +233,7 @@
 /* Pannello destro */
 .auth-layout .toggle-panel.toggle-right {
   right: -50%;
-  transition: all 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .auth-layout .container.active .toggle-panel.toggle-right {
   right: 0;
