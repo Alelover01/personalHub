@@ -8,6 +8,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
+import { error } from 'console';
 
 dotenv.config();
 
@@ -76,7 +77,6 @@ app.post('/auth/register',upload.single('profilePicture'), async(req,res)=>{
         });
   } catch (err){
     console.error('Errore di registrazione:', err);
-    res.status(500).json({message: 'Errore interno del server durante la registrazione.', error: err.message });
     //Gestione errore di violazione dei constraint UNICI
     if(err.code === '23505'){
       let field = 'campo';
@@ -84,7 +84,7 @@ app.post('/auth/register',upload.single('profilePicture'), async(req,res)=>{
       else if (err.detail.includes('username')) field = 'Username';
       return res.status(409).json({message: `${field} già in uso.`});
     }
-    res.status(500).json({message: 'Errore interno del server durante la registrazione.' });
+    res.status(500).json({message: 'Errore interno del server durante la registrazione.' , error: err.message});
   }
 });
 //Rotta di Login
