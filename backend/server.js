@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import sql from './db.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
 
 dotenv.config();
 
@@ -14,7 +15,8 @@ const PORT = process.env.PORT || 3001;
 const POSTIT_BIN_URL = process.env.JSONBIN_URL;         // bin post-it
 const EVENT_BIN_URL = process.env.JSONBIN_URL_EVENTS;  // bin eventi
 const API_KEY = process.env.JSONBIN_API_KEY;           
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET;
+const upload = multer({ dest: 'uploads/' });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,7 +35,7 @@ app.use((req, res, next) => {
 });
 /* ================= AUTH ROUTES ================= */
 //Rotta di registrazione
-app.post('/auth/register', async(req,res)=>{
+app.post('/auth/register',upload.single('profilePicture'), async(req,res)=>{
   const {username, email, password } = req.body;
   const saltRounds = 10;
   if (!username || !email || !password){
