@@ -54,7 +54,7 @@ app.post('/auth/register',upload.single('profilePicture'), async(req,res)=>{
     let profilePictureUrl = null;
     if (req.file){
       const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-        folder: 'profilePicture',
+        folder: 'profile_picture',
         public_id: username,
         resource_type: 'image'
       });
@@ -63,9 +63,9 @@ app.post('/auth/register',upload.single('profilePicture'), async(req,res)=>{
     //Hash della password
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const result = await sql `
-            INSERT INTO profiles (username, email, password, profilePicture)
+            INSERT INTO profiles (username, email, password, profile_picture)
             VALUES (${username}, ${email}, ${hashedPassword}, ${profilePictureUrl})
-            RETURNING id, username, email, profilePicture;
+            RETURNING id, username, email, profile_picture;
         `;
         const token = jwt.sign({id: result[0].id, username: result[0].username}, JWT_SECRET, {expiresIn: '1d'});
 
