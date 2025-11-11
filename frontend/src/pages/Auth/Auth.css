@@ -31,40 +31,29 @@
 /* ========== Form Box (Login/Register) ========== */
 .auth-layout .form-box {
   position: absolute;
+  right: 0;
   width: 50%;
   height: 100%;
   background: #fff;
   display: flex;
   align-items: center;
-  justify-content: center;
   color: #333;
   text-align: center;
   padding: 40px;
-  transition: all 0.8s ease-in-out;
+  transition: 0.6 ease-in-out 1.2s, visibility 0s 1s;
   z-index: 1; 
 }
-
-.auth-layout .form-box.login {
-  left: 0;
-  opacity: 1;
+.auth-layout .container.active .form-box{
+  right: 50%;
 }
-
-.auth-layout .form-box.register {
-  left: 50%;
-  opacity: 0;
+.auth-layout .form-box.register{
+  visibility: hidden;
 }
 
 /* Stato attivo (Register visibile) */
-.auth-layout .container.active .form-box.login {
-  left: -50%;
-  opacity: 0;
-  z-index: 4;
-}
 
 .auth-layout .container.active .form-box.register {
-  left: 0;
-  opacity: 1;
-  z-index: 5;
+  visibility: visible;
 }
 
 /* ========== Input ========== */
