@@ -1,5 +1,5 @@
 /* =======================
-    AUTH PAGE - STYLES FIXED + IMPROVED
+    AUTH PAGE - STYLES FIXED + SMOOTH + FADE
     ======================= */
 
 .auth-layout * {
@@ -42,15 +42,37 @@
   padding: 40px;
   transition: all 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
   z-index: 1; 
+  opacity: 1;
 }
+
+/* Stato attivo: sposta il box */
 .auth-layout .container.active .form-box {
   right: 50%;
 }
-.auth-layout .form-box.register {
-  visibility: hidden;
-}
-.auth-layout .container.active .form-box.register {
+
+/* Fade tra login e register */
+.auth-layout .form-box.login {
+  opacity: 1;
   visibility: visible;
+  transition: opacity 0.8s ease, visibility 0s 0s;
+}
+
+.auth-layout .form-box.register {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0s 0.8s;
+}
+
+.auth-layout .container.active .form-box.login {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0s 0.8s;
+}
+
+.auth-layout .container.active .form-box.register {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s ease, visibility 0s 0s;
 }
 
 /* ========== Input ========== */
@@ -188,7 +210,7 @@
   transition: all 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
-/* Pannello sinistro con colore di sfondo tenue */
+/* Pannello sinistro con sfondo tenue */
 .auth-layout .toggle-panel.toggle-left {
   left: 0;
   background: rgba(214, 204, 194, 0.3);
