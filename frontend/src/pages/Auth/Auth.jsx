@@ -54,8 +54,7 @@ export default function Auth() {
     try {
       const response = await fetch("/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData),
+        body: formData,
       });
 
       const data = await response.json();
