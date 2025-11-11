@@ -36,6 +36,8 @@ app.use((req, res, next) => {
 /* ================= AUTH ROUTES ================= */
 //Rotta di registrazione
 app.post('/auth/register',upload.single('profilePicture'), async(req,res)=>{
+  console.log("BODY:", req.body);
+  console.log("FILE:", req.file);
   const {username, email, password } = req.body;
   const saltRounds = 10;
   if (!username || !email || !password){
