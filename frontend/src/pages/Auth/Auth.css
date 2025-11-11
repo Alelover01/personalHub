@@ -162,7 +162,7 @@
 .auth-layout .toggle-box::before {
   content: '';
   position: absolute;
-  left: -50%;
+  left: 250%;
   width: 200%;
   height: 100%;
   background: linear-gradient(120deg, rgba(214, 204, 194, 0.85), rgba(227, 213, 202, 0.85));
