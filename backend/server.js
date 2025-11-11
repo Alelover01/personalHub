@@ -76,6 +76,7 @@ app.post('/auth/register',upload.single('profilePicture'), async(req,res)=>{
         });
   } catch (err){
     console.error('Errore di registrazione:', err);
+    res.status(500).json({message: 'Errore interno del server durante la registrazione.', error: err.message });
     //Gestione errore di violazione dei constraint UNICI
     if(err.code === '23505'){
       let field = 'campo';
