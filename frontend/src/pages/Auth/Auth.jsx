@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css"; 
 
+/**
+ * Auth Component
+ * Handles both Login and Registration flows with form validation,
+ * profile picture upload preview, and automatic login after registration.
+ */
 export default function Auth() {
   const [isRegister, setIsRegister] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
@@ -10,27 +15,30 @@ export default function Auth() {
   const [emailError, setEmailError] = useState(null);
   const navigate = useNavigate();
 
-  //Funzione di utilità per la validazione dell'email
+  /**
+   * Utility function to validate email format
+   * @param {string} email - The email string to validate
+   * @returns {boolean} true if valid, false otherwise
+   */
   const validateEmail = (email) =>{
     const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   }
-
+  /** Toggle to Registration form */
   const handleToggleRegister = () => {
     setError(null); 
     setIsRegister(true);
   };
+  /** Toggle to Login form */
   const handleToggleLogin = () => {
     setError(null); 
     setIsRegister(false);
   };
-  
-  // Gestore per i campi di Login
+  /** Handle input changes for Login form*/
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
-
-  // Gestore per i campi di Registrazione
+  /** Handle input changes for Registration form*/
   const handleRegisterChange = (e) => {
     const {name, value , files } = e.target;
     if (name === 'profilePicture'){
@@ -39,14 +47,17 @@ export default function Auth() {
       let newEmailError = null;
       if (name === 'email'){
         if (value.trim() !== '' && !validateEmail(value)){
-          newEmailError = 'Formato email non valido';
+          newEmailError = 'Invalid email format';
         }
         setEmailError(newEmailError);
       }
       setRegisterData({...registerData, [name]: value});
     }
   };
-
+  /**
+   * Handle Login form submission
+   * Sends credentials to backend and stores JWT token in localStorage
+   */
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -65,20 +76,23 @@ export default function Auth() {
         localStorage.setItem("username", data.user.username); 
         navigate("/home");
       } else {
-        setError(data.message || "Errore di login sconosciuto.");
+        setError(data.message || "Unknown login error.");
       }
     } catch (err) {
-      console.error("Errore di rete/server:", err);
-      setError("Impossibile connettersi al server.");
+      console.error("Network/Server error:", err);
+      setError("Unable to connect to the server.");
     }
   };
-
+  /**
+   * Handle Registration form submission
+   * Validates email, upload profile picture and logs in automatically
+   */
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
     if (emailError){
-      setError('Correggi l\'email prima di procedere con la registrazione.');
+      setError('Please fix the email before proceeding with registration.');
       return;
     }
     const formData = new FormData();
@@ -98,20 +112,22 @@ export default function Auth() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Registrazione completata! Accesso in corso..."); // Notifica l'utente
-        //Login Automatico
+        alert("Registration completed! Logging in...");
         localStorage.setItem("token", data.token); 
         localStorage.setItem("username", data.user.username);
         navigate("/home"); 
       } else {
-        setError(data.message || "Errore di registrazione sconosciuto.");
+        setError(data.message || "Unknown registation error.");
       }
     } catch (err) {
-      console.error("Errore di rete/server:", err);
-      setError("Impossibile connettersi al server.");
+      console.error("Network/Server error:", err);
+      setError("Unable to connect to the server.");
     }
   };
-  //Funzione per mostrare un anteprima dell'immagine profilo
+  /**
+   * Returns preview URL for profile picture
+   * @returns {string} URL for preview image
+   */
   const getProfilePicturePreview = ()=>{
     if (registerData.profilePictureFile){
       return URL.createObjectURL(registerData.profilePictureFile);
@@ -121,12 +137,12 @@ export default function Auth() {
   return (
     <div className={`auth-layout`}>
       <div className={`container ${isRegister ? "active" : ""}`}>
-        {/* Mostra l'errore, se presente */}
+        {/* Error banner */}
         {error && (
             <div style={{
                 position: 'absolute', top: 0, left: 0, right: 0, 
-                backgroundColor: error.includes('successo')? '#d4edda':'#f8f7da', 
-                color: error.includes('successo')? '#155724': '#721c24',
+                backgroundColor: error.includes('success')? '#d4edda':'#f8f7da', 
+                color: error.includes('success')? '#155724': '#721c24',
                 padding: '10px', textAlign: 'center', zIndex: 10, 
                 borderTopLeftRadius: '30px', borderTopRightRadius: '30px',
                 fontWeight: 'bold'
@@ -167,9 +183,9 @@ export default function Auth() {
             <label htmlFor="profilePictureInput" className="file-input-wrapper">
               <img 
               src={getProfilePicturePreview()}
-              alt="Anteprima Profilo"
+              alt="Profile Preview"
               className="profile-image-preview"
-              title="Clicca per selezionare l\'immagine"
+              title="Click to select an image"
               ></img>
               <span style={{ fontSize: '14px', color: '#4a4a4a', fontWeight: '500'}}>
                 {registerData.profilePictureFile ? registerData.profilePictureFile.name: 'Scegli Foto Profilo'}
@@ -200,7 +216,7 @@ export default function Auth() {
           </form>
         </div>
 
-        {/* Toggle Box */}
+        {/* Toggle Box: switches between Login and Register */}
         <div className="toggle-box">
           <div className="toggle-panel toggle-left">
             <h1>Hello, Welcome!</h1>
