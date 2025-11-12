@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Todo.css";
+
 /**
  * Generate the key of localStorage for the date today.
  * @returns {string} The Key in format 'todos-YYYY-MM-DD'.
@@ -13,54 +14,47 @@ const getTodayKey = () => {
 };
 
 const Todo = () => {
-  /**
-   * Retrieves todos from localStorage for the current date.
-   * If no list exists, retuns an empty array.
-   */
-  const initialTodos = () => {
-    try {
-      const key = getTodayKey();
-      const raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : [];
-    } catch (err) {
-      console.error("[Todo] Error while reading initialTodos:", err);
-      return [];
-    }
-  };
-
-  const [todoItems, setTodoItems] = useState(initialTodos);
+  const [todoItems, setTodoItems] = useState([]);   // inizializza vuoto
   const [inputText, setInputText] = useState("");
   const [showBanner, setShowBanner] = useState(false);
+
   /**
-   * When the component starts:
-   * -If today's list doesn't exist, initialize it.
-   * -Display a 'new day' banner.
+   * Carica i todos dal localStorage SOLO nel browser
    */
   useEffect(() => {
     try {
-      const key = getTodayKey();
-      const exists = localStorage.getItem(key) !== null;
-      if (!exists) {
-        localStorage.setItem(key, JSON.stringify([]));
-        setShowBanner(true);
-        setTimeout(() => setShowBanner(false), 4000);
+      if (typeof window !== "undefined") {
+        const key = getTodayKey();
+        const raw = localStorage.getItem(key);
+        const initial = raw ? JSON.parse(raw) : [];
+        setTodoItems(initial);
+
+        // Se non esiste ancora la lista di oggi, inizializzala
+        if (!raw) {
+          localStorage.setItem(key, JSON.stringify([]));
+          setShowBanner(true);
+          setTimeout(() => setShowBanner(false), 4000);
+        }
       }
     } catch (err) {
       console.error("[Todo] error useEffect mount:", err);
     }
   }, []);
+
   /**
-   * Automatically saves the updated list to localStorage
-   * whenever the status of the todos changes.
+   * Salva i todos aggiornati nel localStorage
    */
   useEffect(() => {
     try {
-      const key = getTodayKey();
-      localStorage.setItem(key, JSON.stringify(todoItems));
+      if (typeof window !== "undefined") {
+        const key = getTodayKey();
+        localStorage.setItem(key, JSON.stringify(todoItems));
+      }
     } catch (err) {
       console.error("[Todo] Error of the save:", err);
     }
   }, [todoItems]);
+
   /** Adds un new todo on the list. */
   const addTodo = () => {
     const text = inputText.trim();
@@ -68,6 +62,7 @@ const Todo = () => {
     setTodoItems((prev) => [...prev, { text, done: false }]);
     setInputText("");
   };
+
   /** Alternate the state of 'complete' of a todo */
   const toggleDone = (index) => {
     setTodoItems((prev) => {
@@ -76,10 +71,12 @@ const Todo = () => {
       return copy;
     });
   };
+
   //** Deletes a todo based on its index */
   const removeTodo = (index) => {
     setTodoItems((prev) => prev.filter((_, i) => i !== index));
   };
+
   //** Handles addition via enter key */
   const handleKeyPress = (e) => {
     if (e.key === "Enter") addTodo();
