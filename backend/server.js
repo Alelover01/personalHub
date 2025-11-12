@@ -31,6 +31,8 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
+console.log("Cloudinary config:", process.env.CLOUDINARY_API_KEY);
+
 
 // Serve i file statici React
 app.use(express.static(path.join(__dirname, '../frontend/build')));
