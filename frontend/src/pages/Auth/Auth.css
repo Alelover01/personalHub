@@ -13,7 +13,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, var(--base-bg), var(--footer-bg));
 }
 
 /* ========== Container principale ========== */
