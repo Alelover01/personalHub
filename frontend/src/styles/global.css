@@ -1,5 +1,7 @@
+/* =============================
+    VARIBILI GLOBALI
+===============================*/
 :root {
-  /* Palette calda e neutra*/
   --base-bg: #f6f5f3;
   --text-cl: #2f2f2f;
   --nav-bg: #d6ccc2;
@@ -10,7 +12,23 @@
   --other-cl: #555;
   --accent-cl: #b08968;
 }
-
+/* =============================
+    MODALITA' SCURA
+===============================*/
+body.dark-mode{
+  --base-bg: #2b2b2b;
+  --text-cl: #f0f0f0;
+  --nav-bg: #3e3e3e;
+  --footer-bg: #444;
+  --link-cl: #b08968;
+  --det-cl: #5c5c5c;
+  --dark-cl: #e3d5ca;
+  --other-cl: #ccc;
+  --accent-cl: #d6ccc2;
+}
+/* =============================
+    STILI BASE
+===============================*/
 body {
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;

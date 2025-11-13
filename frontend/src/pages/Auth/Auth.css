@@ -223,7 +223,7 @@
 /* Pannello sinistro con sfondo tenue */
 .auth-layout .toggle-panel.toggle-left {
   left: 0;
-  background: rgba(214, 204, 194, 0.3);
+  background: #746d61;
   transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .auth-layout .container.active .toggle-panel.toggle-left {
