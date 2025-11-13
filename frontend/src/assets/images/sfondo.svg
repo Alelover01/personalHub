@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+  <defs>
+    <rect id="bg" width="100%" height="100%" fill="#f7f5f0"/>
+    <pattern id="linen" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="#f7f5f0"/>
+      <g stroke="#e0ddd5" stroke-width="0.5" opacity="0.3">
+        <path d="M10 0 V100 M20 0 V100 M30 0 V100 M40 0 V100 M50 0 V100 
+                 M60 0 V100 M70 0 V100 M80 0 V100 M90 0 V100"/>
+        <path d="M0 10 H100 M0 20 H100 M0 30 H100 M0 40 H100 M0 50 H100 
+                 M0 60 H100 M0 70 H100 M0 80 H100 M0 90 H100"/>
+      </g>
+      <filter id="paper-grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise"/>
+        <feColorMatrix type="saturate" values="0"/>
+        <feBlend in="SourceGraphic" in2="noise" mode="multiply"/>
+      </filter>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#linen)" filter="url(#paper-grain)"/>
+</svg>
