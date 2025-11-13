@@ -1,7 +1,28 @@
-@import './variable.css';
+:root {
+  /* Palette calda e neutra*/
+  --base-bg: #f6f5f3;
+  --text-cl: #2f2f2f;
+  --nav-bg: #d6ccc2;
+  --footer-bg: #e3d5ca;
+  --link-cl: #f5ebe0;
+  --det-cl: #c5bdaf;
+  --dark-cl: #746D61;
+  --other-cl: #555;
+  --accent-cl: #b08968;
+}
+
 body {
-  font-family: Arial, sans-serif;  /*TO-DO Change the font to the one i want*/
+  font-family: 'Poppins', sans-serif;
   min-height: 100vh;
   background-color: var(--base-bg);
   margin: 0;
+  color: var(--text-cl);
+}
+a{
+  color: var(--accent-cl);
+  text-decoration: none;
+  transition: color 0.3 ease;
+}
+a:hover{
+  color: var(--dark-cl);
 }
