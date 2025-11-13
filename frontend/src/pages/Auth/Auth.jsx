@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css"; 
-
+import '../../styles/global.css';
 /**
  * Auth Component
  * Handles both Login and Registration flows with form validation,
