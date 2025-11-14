@@ -203,7 +203,6 @@ Link, Buttons & Social
 .auth-layout .forgot-link a:hover {
   color: var(--accent-cl);
 }
-
 /* Button base style*/
 .auth-layout .btn {
   width: 100%;
@@ -223,7 +222,7 @@ Link, Buttons & Social
   background: var(--det-cl);
   transform: scale(1.02);
 }
-/**/
+/*Social login icons*/
 .auth-layout .social-icons {
   display: flex;
   justify-content: center;
@@ -248,16 +247,17 @@ Link, Buttons & Social
   background: #e9e7e3;
 }
 
-/* ========== Toggle Box (Blob + Panels) ========== */
+/* ========== 
+Toggle Box (Blob + Panels)
+ ========== */
+ /*Decorative background blob*/
 .auth-layout .toggle-box {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 2;
-  pointer-events: none; /* evita click “accidentali” sul desktop */
+  pointer-events: none; 
 }
-
-/* Blob di sfondo animato */
 .auth-layout .toggle-box::before {
   content: '';
   position: absolute;
@@ -273,7 +273,7 @@ Link, Buttons & Social
   left: 50%;
 }
 
-/* ========== Toggle Panels (testo + pulsanti) ========== */
+/*Toggle panels with text and buttons */
 .auth-layout .toggle-panel {
   position: absolute;
   width: 50%;
@@ -285,9 +285,8 @@ Link, Buttons & Social
   align-items: center;
   z-index: 2;
   transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-  pointer-events: auto; /* riattiva click sui bottoni */
+  pointer-events: auto;
 }
-
 .auth-layout .toggle-panel.toggle-left {
   left: 0;
   background: rgba(214, 204, 194, 0.28);
@@ -296,7 +295,6 @@ Link, Buttons & Social
   left: -50%;
   transition-delay: 0.6s;
 }
-
 .auth-layout .toggle-panel.toggle-right {
   right: -50%;
 }
@@ -304,13 +302,14 @@ Link, Buttons & Social
   right: 0;
   transition-delay: 0.6s;
 }
-
 .auth-layout .toggle-panel .btn {
   width: 160px;
   margin-top: 10px;
 }
 
-/* ========== Mobile toggle (solo mobile) ========== */
+/* ========== 
+Mobile Toggle
+ ========== */
 .auth-layout .mobile-toggle {
   display: none;
   justify-content: center;
@@ -326,21 +325,22 @@ Link, Buttons & Social
    RESPONSIVE
 ======================= */
 
-/* Tablet & mobile */
+/* Tablet & mobile adjustments
+  - forms stacked vertically
+  - hide of the desktop pannels
+  - show of the mobile buttons
+*/
 @media (max-width: 768px) {
   .auth-layout {
     padding: 20px;
     align-items: flex-start;
   }
-
   .auth-layout .container {
     width: 320px;
-    height: auto; /* 🔧 lascia crescere in base al contenuto */
+    height: auto; 
     border-radius: 20px;
     box-shadow: none;
   }
-
-  /* 🔧 I form non devono essere assoluti su mobile */
   .auth-layout .form-box {
     position: relative;
     width: 100%;
@@ -351,8 +351,6 @@ Link, Buttons & Social
     z-index: 1 !important;
     padding: 30px 20px;
   }
-
-  /* 🔧 Mostra solo il form attivo */
   .auth-layout .form-box.login {
     display: block;
   }
@@ -360,7 +358,7 @@ Link, Buttons & Social
     display: none;
   }
   .auth-layout .container.active .form-box {
-    right: 0; /* Annulla il 'right: 50%' ereditato da desktop */
+    right: 0;
   }
   .auth-layout .container.active .form-box.login {
     display: none;
@@ -368,8 +366,6 @@ Link, Buttons & Social
   .auth-layout .container.active .form-box.register {
     display: block;
   }
-
-  /* 🔧 Nascondi pannelli desktop */
   .auth-layout .toggle-box,
   .auth-layout .toggle-panel {
     display: none;
@@ -378,38 +374,30 @@ Link, Buttons & Social
     display: none !important;
     content: none !important;
   }
-  /* 🔧 Bottoni mobile visibili */
   .auth-layout .mobile-toggle {
     display: flex;
     justify-content: center;
     margin-top: 20px;
   }
-
   .auth-layout .mobile-toggle .btn {
     width: 140px;
     height: 44px;
     font-size: 15px;
   }
-
-  /* 🔧 Adattamenti generali */
   .auth-layout .btn {
     font-size: 15px;
     height: 44px;
   }
-
   .auth-layout .input-box {
     margin: 20px 0;
   }
-
   .auth-layout .profile-image-preview {
     width: 64px;
     height: 64px;
   }
-
   .auth-layout .social-icons {
     gap: 6px;
   }
-
   .auth-layout .social-icons a {
     width: 38px;
     height: 38px;
@@ -417,52 +405,31 @@ Link, Buttons & Social
   }
 }
 
-
-/* Small phones */
+/* Small phones adjustmenst*/
 @media (max-width: 480px) {
   .auth-layout h1 {
     font-size: 26px;
   }
-
   .auth-layout .form-box {
     padding: 20px 14px;
   }
-
   .auth-layout .btn {
     font-size: 14px;
     height: 42px;
   }
-
   .auth-layout .input-box input {
     font-size: 15px;
     padding: 12px 44px 12px 14px;
   }
-
   .auth-layout .input-box i {
     font-size: 18px;
     right: 12px;
   }
-
   .auth-layout .forgot-link a {
     font-size: 13px;
   }
-
   .auth-layout .mobile-toggle .btn {
     width: 120px;
     height: 40px;
-  }
-}
-
-/* =======================
-   ACCESSIBILITÀ / RIDUZIONE MOTION
-======================= */
-@media (prefers-reduced-motion: reduce) {
-  .auth-layout .form-box,
-  .auth-layout .toggle-box::before,
-  .auth-layout .toggle-panel {
-    transition: none;
-  }
-  .auth-layout .btn {
-    transition: background 0.3s ease;
   }
 }
