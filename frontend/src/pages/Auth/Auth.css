@@ -348,6 +348,9 @@
   .auth-layout .form-box.register {
     display: none;
   }
+  .auth-layout .container.active .form-box {
+    right: 0; /* Annulla il 'right: 50%' ereditato da desktop */
+  }
   .auth-layout .container.active .form-box.login {
     display: none;
   }
