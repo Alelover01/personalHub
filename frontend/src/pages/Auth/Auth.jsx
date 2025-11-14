@@ -14,7 +14,7 @@ export default function Auth() {
   const [error, setError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const navigate = useNavigate();
-
+  cosnt [showPassword , setShowPassword] = useState(false);
   /**
    * Utility function to validate email format
    * @param {string} email - The email string to validate
@@ -158,9 +158,10 @@ export default function Auth() {
               <input type="text" name="username" placeholder="Username" required value={loginData.username} onChange={handleLoginChange} />
               <i className="fa-solid fa-user"></i>
             </div>
+            {/* Hides and shows password */}
             <div className="input-box">
-              <input type="password" name="password" placeholder="Password" required value={loginData.password} onChange={handleLoginChange} />
-              <i className="fa-solid fa-lock"></i>
+              <input type={showPassword ? 'text': 'password'} name="password" placeholder="Password" required value={loginData.password} onChange={handleLoginChange} />
+              <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`} onClick={() => setShowPassword(!showPassword)} style={{cursor:'pointer'}}></i>
             </div>
             <div className="forgot-link">
               <a href="#">Forgot Password?</a>
@@ -205,8 +206,8 @@ export default function Auth() {
               {emailError && <div className="email-error">{emailError}</div>}
             </div>
             <div className="input-box">
-              <input type="password" name="password" placeholder="Password" required value={registerData.password} onChange={handleRegisterChange} />
-              <i className="fa-solid fa-lock"></i>
+              <input type={showPassword ? 'text': 'password'} name="password" placeholder="Password" required value={registerData.password} onChange={handleRegisterChange} />
+              <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`} onClick={() => setShowPassword(!showPassword)} style={{cursor:'pointer'}}></i>
             </div>
             <button type="submit" className="btn">Register</button>
             <p>or register with social platforms</p>
