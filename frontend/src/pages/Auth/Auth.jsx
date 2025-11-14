@@ -173,6 +173,9 @@ export default function Auth() {
               <a href="#"><i className="fa-brands fa-instagram"></i></a>
               <a href="#"><i className="fa-brands fa-github"></i></a>
             </div>
+            <div className="mobile-toggle">
+              <button className="btn" type="button" onClick={handleToggleRegister}>Go to Register</button>
+            </div>
           </form>
         </div>
 
@@ -213,6 +216,9 @@ export default function Auth() {
               <a href="#"><i className="fa-brands fa-instagram"></i></a>
               <a href="#"><i className="fa-brands fa-github"></i></a>
             </div>
+            <div className="mobile-toggle">
+              <button className="btn" type="button" onClick={handleToggleLogin}>Go to Login</button>
+            </div>
           </form>
         </div>
 
@@ -229,11 +235,6 @@ export default function Auth() {
             <p>Already have an account?</p>
             <button className="btn login-btn" type="button" onClick={handleToggleLogin}>Login</button>
           </div>
-        </div>
-        {/* Mobile Toggle Buttons */}
-        <div className="mobile-toggle">
-          <button className="btn" type="button" onClick={handleToggleLogin}>Login</button>
-          <button className="btn" type="button" onClick={handleToggleRegister}>Register</button>
         </div>
       </div>
     </div>

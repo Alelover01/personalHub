@@ -360,7 +360,6 @@
   /* Mostra i bottoni mobile */
   .auth-layout .mobile-toggle {
     display: flex;
-    flex-direction: row;
   }
 
   .auth-layout .btn {
