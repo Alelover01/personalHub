@@ -170,8 +170,6 @@ export default function Auth() {
             <p>or login with social platforms</p>
             <div className="social-icons">
               <a href="#"><i className="fa-brands fa-google"></i></a>
-              <a href="#"><i className="fa-brands fa-facebook"></i></a>
-              <a href="#"><i className="fa-brands fa-instagram"></i></a>
               <a href="#"><i className="fa-brands fa-github"></i></a>
             </div>
             <div className="mobile-toggle">
@@ -213,8 +211,6 @@ export default function Auth() {
             <p>or register with social platforms</p>
             <div className="social-icons">
               <a href="#"><i className="fa-brands fa-google"></i></a>
-              <a href="#"><i className="fa-brands fa-facebook"></i></a>
-              <a href="#"><i className="fa-brands fa-instagram"></i></a>
               <a href="#"><i className="fa-brands fa-github"></i></a>
             </div>
             <div className="mobile-toggle">
