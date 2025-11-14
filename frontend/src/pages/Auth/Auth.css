@@ -323,8 +323,7 @@
   }
 
   .auth-layout .container {
-    width: 100%;
-    max-width: 100%;
+    width: 320px;
     height: auto; /* 🔧 lascia crescere in base al contenuto */
     border-radius: 20px;
     box-shadow: none;
