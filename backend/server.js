@@ -117,6 +117,9 @@ app.post('/auth/login', async (req, res) => {
     res.status(500).json({ message: 'Errore interno del server durante il login.' });
   }
 });
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
 /* ================= REACT ROUTER ================= */
 app.listen(PORT, () => {
   console.log(`🚀 Server avviato su http://localhost:${PORT}`);
