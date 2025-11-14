@@ -6,6 +6,8 @@ import MainLayout from "./layouts/MainLayout";
 
 // Pagina di autenticazione unificata (Login + Register)
 import Auth from "./pages/Auth/Auth";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import ResetPassword from "./pages/Auth/ResetPassword";
 
 // Pagine principali
 import Home from "./pages/Home/Home";
@@ -37,6 +39,23 @@ export default function App() {
           element={
             <AuthLayout>
               <Auth />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <AuthLayout>
+              <ForgotPassword />
+            </AuthLayout>
+          }
+        />
+
+        <Route
+          path="/reset-password"
+          element={
+            <AuthLayout>
+              <ResetPassword />
             </AuthLayout>
           }
         />
