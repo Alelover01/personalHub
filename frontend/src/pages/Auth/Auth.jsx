@@ -230,6 +230,11 @@ export default function Auth() {
             <button className="btn login-btn" type="button" onClick={handleToggleLogin}>Login</button>
           </div>
         </div>
+        {/* Mobile Toggle Buttons */}
+        <div className="mobile-toggle">
+          <button className="btn" type="button" onClick={handleToggleLogin}>Login</button>
+          <button className="btn" type="button" onClick={handleToggleRegister}>Register</button>
+        </div>
       </div>
     </div>
   );
