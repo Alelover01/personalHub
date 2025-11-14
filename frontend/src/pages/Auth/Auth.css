@@ -21,7 +21,7 @@
 .auth-layout .container {
   position: relative;
   width: 850px;
-  height: 550px;
+  height: auto;
   background: #fff;
   margin: 0;
   border-radius: 30px;
