@@ -164,14 +164,9 @@ export default function Auth() {
               <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`} onClick={() => setShowPassword(!showPassword)} style={{cursor:'pointer'}}></i>
             </div>
             <div className="forgot-link">
-              <a href="#">Forgot Password?</a>
+              <a href="/forgot-password">Forgot Password?</a>
             </div>
             <button type="submit" className="btn">Login</button>
-            <p>or login with social platforms</p>
-            <div className="social-icons">
-              <a href="#"><i className="fa-brands fa-google"></i></a>
-              <a href="#"><i className="fa-brands fa-github"></i></a>
-            </div>
             <div className="mobile-toggle">
               <button className="btn" type="button" onClick={handleToggleRegister}>Go to Register</button>
             </div>
@@ -208,11 +203,6 @@ export default function Auth() {
               <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`} onClick={() => setShowPassword(!showPassword)} style={{cursor:'pointer'}}></i>
             </div>
             <button type="submit" className="btn">Register</button>
-            <p>or register with social platforms</p>
-            <div className="social-icons">
-              <a href="#"><i className="fa-brands fa-google"></i></a>
-              <a href="#"><i className="fa-brands fa-github"></i></a>
-            </div>
             <div className="mobile-toggle">
               <button className="btn" type="button" onClick={handleToggleLogin}>Go to Login</button>
             </div>
