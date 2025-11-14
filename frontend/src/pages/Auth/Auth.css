@@ -267,22 +267,6 @@
 
 /* ========== Responsive ========== */
 @media (max-width: 768px) {
-  .auth-layout .container {
-    width: 95%;
-    height: auto;
-  }
-  .auth-layout .form-box {
-    width: 100%;
-    position: relative;
-    transform: none !important;
-    opacity: 1 !important;
-  }
-  .auth-layout .toggle-box,
-  .auth-layout .toggle-panel {
-    display: none;
-  }
-}
-@media (max-width: 768px) {
   .auth-layout {
     padding: 20px;
     align-items: flex-start;
@@ -305,9 +289,16 @@
     height: auto;
   }
 
-  .auth-layout .toggle-box,
-  .auth-layout .toggle-panel {
-    display: none;
+ .auth-layout .toggle-panel {
+    width: 100%;
+    position: relative;
+    padding: 20px;
+    background: transparent;
+  }
+
+  .auth-layout .toggle-panel .btn {
+    width: 100px;
+    font-size: 14px;
   }
 
   .auth-layout .btn {
