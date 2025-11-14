@@ -7,6 +7,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
+import { use } from 'react';
 
 dotenv.config();
 const app = express();
@@ -25,6 +28,16 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
+//Nodemail transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS}
+});
+function generateResetToken(){
+  const token = crypto.randomBytes(32).toString('hex');
+  const expires = new Date(Date.now() + 60 * 60 *1000);
+  return {token, expires};
+}
 
 // Serve i file statici React
 app.use(express.static(path.join(__dirname, '../frontend/build')));
@@ -117,8 +130,64 @@ app.post('/auth/login', async (req, res) => {
     res.status(500).json({ message: 'Errore interno del server durante il login.' });
   }
 });
+//Rotta Forgot Password
+app.post('auth/forgot-password', async (req, res)=>{
+  try{
+    const {email} = req.body;
+    if (!email) return res.status(400).json({message: 'Email richiesta.'});
+    //Cerca utente per email
+    const result = await sql`SELECT id, email, FROM profiles WHERE email = ${email}`;
+    const user = result[0];
+    if (!user){
+      return res.json({message: 'Se l\' email esiste, riceverai un link di reset.'});
+    }
+    const {token, expires} = generateResetToken();
+    await sql `UPDATE profiles SET reset_token = ${token}, reset_expires = ${expires} WHERE id = ${user.id}`;
+    //Link verso il forntend
+    const frontendURL = process.env.FRONTEND_URL || 'https://localhost:3000';
+    const resetLink = `${frontendURL}/reset-password?token=${token}`;
+    //Invia email
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'Reset Password - Personal Hub',
+      html: `<p>Hai richiesto il reset della password.</p>
+      <p> Clicca questo link per continuare:</p>
+      <p><a href="${resetLink}">${resetLink}</a></p>
+      <p> Il link scade tra 1 ora. </p>`      
+    });
+    return res.json({message: 'Se l\'email esiste, riceverai un link di reset.'});
+  }catch (err){
+    console.error('Errore forgot-password: ', err);
+    return res.status(500).json({message: 'Errore nel rest della password.'});
+  }
+});
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
+app.post('auth/reset-password', async(req, res)=>{
+  try{
+    const { token, newPassword } = req.body;
+    if (!token || !newPassword){
+      return res.status(400).json({message: 'Token e nuova password richiesti.'});
+    }
+    //Trova utente con token valido
+    const rows = await sql`SELECT id, reset_expires FROM profiles WHERE reset_token = ${token}`;
+    const user = rows[0];
+    if (!user) return res.status(400).json({message: 'Token non valido.'});
+    if (new Date(user.reset_expires) < new Date()){
+      return res.status(400).json({message: 'Token scaduto.'});
+    }
+    //Hash nuova password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    //Aggiorna password e invia token
+    await sql`UPDATE profiles SET password = ${hashedPassword},reset_token = NULL, reset_expires = NULL WHERE id = ${user.id}`;
+    return res.json({message: 'Password aggiornata con successo.'});
+  }catch(err){
+    console.error('Errore reset-password:',err);
+    return res.status(500).json({message: 'Errore aggiornamento password.'});
+  }
 });
 /* ================= REACT ROUTER ================= */
 app.listen(PORT, () => {
