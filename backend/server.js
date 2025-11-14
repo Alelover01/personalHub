@@ -9,7 +9,6 @@ import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
-import { use } from 'react';
 
 dotenv.config();
 const app = express();
