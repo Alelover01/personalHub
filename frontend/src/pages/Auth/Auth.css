@@ -1,23 +1,27 @@
 @import '../../styles/global.css';
 
 /* =======================
-   AUTH PAGE - FIXED + SMOOTH + FADE
+   AUTH PAGE STYLE
+   Layout, transitions and responsive behavior
 ======================= */
-
+/*Global reset for consistent sizing*/
 .auth-layout * {
   box-sizing: border-box;
 }
-
+/*Main wrapper: centers content vertically and horizontally*/
 .auth-layout {
   font-family: "Poppins", sans-serif;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px; /* breathing room on large screens */
+  padding: 40px 20px;
 }
 
-/* ========== Container principale ========== */
+/* =======================
+   Container
+======================= */
+/* Main container for login/register forms */
 .auth-layout .container {
   position: relative;
   width: 850px;
@@ -30,7 +34,7 @@
   transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Banner error/success */
+/* Banner error/success messages */
 .auth-layout .error-banner {
   position: absolute;
   top: 0;
@@ -47,7 +51,10 @@
   font-size: 14px;
 }
 
-/* ========== Form Box (Login/Register) ========== */
+/* =======================
+   Form Boxes (Login/Register)
+======================= */
+/* Shared styles for both forms */
 .auth-layout .form-box {
   position: absolute;
   right: 0;
@@ -67,34 +74,34 @@
   opacity: 1;
 }
 
-/* Stato attivo: sposta il box a sinistra (per mostrare register) */
+/* Active state: shifts box to the left to reveal register */
 .auth-layout .container.active .form-box {
   right: 50%;
 }
 
-/* Fade + slide tra login e register */
+/* Login form visible by default */
 .auth-layout .form-box.login {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
   z-index: 6;
 }
-
+/*Register form hidden by default*/
 .auth-layout .form-box.register {
   opacity: 0;
   visibility: hidden;
-  transform: translateX(40px); /* offset per lo slide */
+  transform: translateX(40px);
   z-index: 4;
 }
 
+/*Transition when switching to register*/
 .auth-layout .container.active .form-box.login {
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-40px); /* scivola via */
+  transform: translateX(-40px); 
   transition-delay: 0s, 0s, 0.8s;
   z-index: 4;
 }
-
 .auth-layout .container.active .form-box.register {
   opacity: 1;
   visibility: visible;
@@ -103,7 +110,9 @@
   z-index: 6;
 }
 
-/* ========== Typography ========== */
+/* ========== 
+Typography 
+========== */
 .auth-layout h1 {
   margin: 0 0 10px;
   font-size: 32px;
@@ -115,12 +124,14 @@
   font-size: 14px;
 }
 
-/* ========== Input ========== */
+/* ========== 
+Inputs 
+========== */
 .auth-layout .input-box {
   position: relative;
   margin: 26px 0;
 }
-
+/*Profile picture style*/
 .auth-layout .file-input-wrapper {
   display: flex;
   align-items: center;
@@ -128,7 +139,6 @@
   margin: 16px 0 8px;
   cursor: pointer;
 }
-
 .auth-layout .profile-image-preview {
   width: 80px;
   height: 80px;
@@ -137,13 +147,12 @@
   border: 3px solid var(--footer-bg);
   cursor: pointer;
 }
-
 .auth-layout .file-input-wrapper span {
   font-size: 14px;
   color: var(--dark-cl);
   font-weight: 500;
 }
-
+/*Input fields (except file)*/
 .auth-layout .input-box input:not([type='file']) {
   width: 100%;
   padding: 13px 50px 13px 16px;
@@ -155,12 +164,12 @@
   color: var(--other-cl);
   font-weight: 500;
 }
-
+/*Placeholder styling*/
 .auth-layout .input-box input::placeholder {
   color: #888;
   font-weight: 400;
 }
-
+/*Icons inside input fields*/
 .auth-layout .input-box i {
   position: absolute;
   right: 16px;
@@ -170,7 +179,7 @@
   color: #999;
   pointer-events: none;
 }
-
+/*Email validation error message*/
 .auth-layout .email-error {
   color: #dc3545;
   font-size: 12px;
@@ -179,7 +188,9 @@
   padding-left: 2px;
 }
 
-/* ========== Link, bottoni e social ========== */
+/* ========== 
+Link, Buttons & Social 
+========== */
 .auth-layout .forgot-link {
   margin: -8px 0 16px;
 }
@@ -193,7 +204,7 @@
   color: var(--accent-cl);
 }
 
-/* Button base */
+/* Button base style*/
 .auth-layout .btn {
   width: 100%;
   height: 48px;
@@ -212,7 +223,7 @@
   background: var(--det-cl);
   transform: scale(1.02);
 }
-
+/**/
 .auth-layout .social-icons {
   display: flex;
   justify-content: center;

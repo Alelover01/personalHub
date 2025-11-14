@@ -1,5 +1,5 @@
 /* =============================
-    VARIBILI GLOBALI
+    GLOBAL VARIABLES
 ===============================*/
 :root {
   --base-bg: #f6f5f3;
@@ -13,7 +13,7 @@
   --accent-cl: #b08968;
 }
 /* =============================
-    MODALITA' SCURA
+    DARK THEME
 ===============================*/
 body.dark-mode{
   --base-bg: #2b2b2b;
@@ -27,7 +27,7 @@ body.dark-mode{
   --accent-cl: #d6ccc2;
 }
 /* =============================
-    STILI BASE
+    BASE STYLE
 ===============================*/
 body {
   font-family: 'Poppins', sans-serif;
