@@ -331,37 +331,57 @@
 
   .auth-layout .container {
     width: 100%;
-    height: auto;
+    height: auto; /* 🔧 lascia crescere in base al contenuto */
     border-radius: 20px;
     box-shadow: none;
-    padding-bottom: 12px; /* spazio per mobile-toggle */
   }
 
+  /* 🔧 I form non devono essere assoluti su mobile */
   .auth-layout .form-box {
-    width: 100%;
     position: relative;
+    width: 100%;
     height: auto;
     transform: none !important;
     opacity: 1 !important;
-    padding: 26px 18px;
+    visibility: visible !important;
+    z-index: 1 !important;
+    padding: 30px 20px;
   }
 
-  /* Nascondi blob/pannelli desktop */
-  .auth-layout .toggle-box::before {
+  /* 🔧 Mostra solo il form attivo */
+  .auth-layout .form-box.login {
+    display: block;
+  }
+  .auth-layout .form-box.register {
     display: none;
   }
-  .auth-layout .toggle-box {
+  .auth-layout .container.active .form-box.login {
     display: none;
   }
+  .auth-layout .container.active .form-box.register {
+    display: block;
+  }
+
+  /* 🔧 Nascondi pannelli desktop */
+  .auth-layout .toggle-box,
   .auth-layout .toggle-panel {
     display: none;
   }
 
-  /* Mostra i bottoni mobile */
+  /* 🔧 Bottoni mobile visibili */
   .auth-layout .mobile-toggle {
     display: flex;
+    justify-content: center;
+    margin-top: 20px;
   }
 
+  .auth-layout .mobile-toggle .btn {
+    width: 140px;
+    height: 44px;
+    font-size: 15px;
+  }
+
+  /* 🔧 Adattamenti generali */
   .auth-layout .btn {
     font-size: 15px;
     height: 44px;
@@ -379,12 +399,14 @@
   .auth-layout .social-icons {
     gap: 6px;
   }
+
   .auth-layout .social-icons a {
     width: 38px;
     height: 38px;
     font-size: 18px;
   }
 }
+
 
 /* Small phones */
 @media (max-width: 480px) {
