@@ -14,7 +14,7 @@ export default function Auth() {
   const [error, setError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const navigate = useNavigate();
-  cosnt [showPassword , setShowPassword] = useState(false);
+  const [showPassword , setShowPassword] = useState(false);
   /**
    * Utility function to validate email format
    * @param {string} email - The email string to validate
