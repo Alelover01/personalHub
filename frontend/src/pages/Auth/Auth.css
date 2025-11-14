@@ -315,13 +315,6 @@
    RESPONSIVE
 ======================= */
 
-/* Tablet landscape / small desktop refinement */
-@media (max-width: 1024px) {
-  .auth-layout .container {
-    width: 90%;
-  }
-}
-
 /* Tablet & mobile */
 @media (max-width: 768px) {
   .auth-layout {
@@ -367,7 +360,10 @@
   .auth-layout .toggle-panel {
     display: none;
   }
-
+  .auth-layout .toggle-box::before {
+    display: none !important;
+    content: none !important;
+  }
   /* 🔧 Bottoni mobile visibili */
   .auth-layout .mobile-toggle {
     display: flex;
