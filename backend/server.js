@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import nodemailer from 'nodemailer';
+import sgTransport from 'nodemailer-sendgrid-transport';
 import crypto from 'crypto';
 
 dotenv.config();
@@ -28,10 +29,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 //Nodemail transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS}
-});
+const transporter = nodemailer.createTransport(sgTransport({
+  auth:{
+    api_key: process.env.SENDGRID_API_KEY
+  }
+}));
 function generateResetToken(){
   const token = crypto.randomBytes(32).toString('hex');
   const expires = new Date(Date.now() + 60 * 60 *1000);
