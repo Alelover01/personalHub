@@ -130,12 +130,12 @@ app.post('/auth/login', async (req, res) => {
   }
 });
 //Rotta Forgot Password
-app.post('auth/forgot-password', async (req, res)=>{
+app.post('/auth/forgot-password', async (req, res)=>{
   try{
     const {email} = req.body;
     if (!email) return res.status(400).json({message: 'Email richiesta.'});
     //Cerca utente per email
-    const result = await sql`SELECT id, email, FROM profiles WHERE email = ${email}`;
+    const result = await sql`SELECT id, email FROM profiles WHERE email = ${email}`;
     const user = result[0];
     if (!user){
       return res.json({message: 'Se l\' email esiste, riceverai un link di reset.'});
@@ -164,7 +164,7 @@ app.post('auth/forgot-password', async (req, res)=>{
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
-app.post('auth/reset-password', async(req, res)=>{
+app.post('/auth/reset-password', async(req, res)=>{
   try{
     const { token, newPassword } = req.body;
     if (!token || !newPassword){
