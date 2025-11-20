@@ -28,7 +28,7 @@ export default function ForgotPassword(){
                     <form onSubmit={handleSubmit}>
                         <h1>Forgot Password</h1>
                         <div className="input-box">
-                            <input type="email" placeholder="Email" required value={email} onChange={setEmail(e.target.value)} />
+                            <input type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} />
                             <i className="fa-solid fa-envelope"></i>
                         </div>
                         <button type="submit" className="btn">Invia link reset</button>
