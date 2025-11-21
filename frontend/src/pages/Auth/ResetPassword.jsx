@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import "./Auth.css"; 
 import '../../styles/global.css';
+import './AuthSimple.css';
 
 export default function ResetPassword() {
   const [params] = useSearchParams();

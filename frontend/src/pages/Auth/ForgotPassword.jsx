@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import "./Auth.css"; 
 import '../../styles/global.css';
-import './ForgotPassword.css';
+import './AuthSimple.css';
 
 export default function ForgotPassword(){
     const [email, setEmail] = useState('');
@@ -26,7 +26,7 @@ export default function ForgotPassword(){
     };
     return (
         <div className="auth-layout">
-            <div className="container forgot-password">
+            <div className="container auth-simple">
                 <div className="form-box">
                     <form onSubmit={handleSubmit}>
                         <h1>Forgot Password</h1>

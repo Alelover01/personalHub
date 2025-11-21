@@ -1,4 +1,4 @@
-.container.forgot-password{
+.container.auth-simple{
     width: 100%;
     max-width: 500px;
     height: auto;
@@ -9,7 +9,7 @@
     flex-direction: column;
 }
 
-.container.forgot-password .form-box{
+.container.auth-simple .form-box{
     position: relative;
     width: 100%;
     height: auto;
@@ -19,7 +19,7 @@
     align-items: center;
 }
 @media (max-width: 768px) {
-  .auth-layout .container.forgot-password {
+  .auth-layout .container.auth-simple {
     width: 100%;
     max-width: 500px;
     height: auto;
@@ -33,7 +33,7 @@
     align-items: center;
   }
 
-  .auth-layout .container.forgot-password .form-box {
+  .auth-layout .container.auth-simple .form-box {
     position: relative;
     width: 100%;
     height: auto;
@@ -43,30 +43,30 @@
     align-items: center;
   }
 
-  .auth-layout .container.forgot-password h1 {
+  .auth-layout .container.auth-simple h1 {
     font-size: 24px;
     margin-bottom: 20px;
   }
 
-  .auth-layout .container.forgot-password .btn {
+  .auth-layout .container.auth-simple .btn {
     width: 100%;
     max-width: 220px;
     font-size: 15px;
     height: 44px;
   }
 
-  .auth-layout .container.forgot-password .input-box {
+  .auth-layout .container.auth-simple .input-box {
     width: 100%;
     margin: 20px 0;
   }
 
-  .auth-layout .container.forgot-password .input-box input {
+  .auth-layout .container.auth-simple .input-box input {
     width: 100%;
     padding: 12px 16px;
     font-size: 15px;
   }
 
-  .auth-layout .container.forgot-password .input-box i {
+  .auth-layout .container.auth-simple .input-box i {
     right: 16px;
     font-size: 18px;
   }
