@@ -1,10 +1,12 @@
 import React, {useState} from "react";
+import {useNavigate} from 'react-router-dom';
 import "./Auth.css"; 
 import '../../styles/global.css';
 
 export default function ForgotPassword(){
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState(null);
+    const navigate = useNavigate();
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
@@ -34,6 +36,8 @@ export default function ForgotPassword(){
                         <button type="submit" className="btn">Invia link reset</button>
                         {status && <p style={{marginTop: 10}}>{status}</p>}
                     </form>
+                    {/* Bottone per tornare indietro */}
+                    <button className="btn secondary" style={{marginTop: 20}} onClick={()=> Navigate('/auth')}>Torna al login</button>
                 </div>
             </div>
         </div>
