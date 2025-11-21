@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import "./Auth.css"; 
 import '../../styles/global.css';
+import './ForgotPassword.css';
 
 export default function ForgotPassword(){
     const [email, setEmail] = useState('');
@@ -25,7 +26,7 @@ export default function ForgotPassword(){
     };
     return (
         <div className="auth-layout">
-            <div className="container active">
+            <div className="container forgot-password">
                 <div className="form-box">
                     <form onSubmit={handleSubmit}>
                         <h1>Forgot Password</h1>
@@ -37,7 +38,7 @@ export default function ForgotPassword(){
                         {status && <p style={{marginTop: 10}}>{status}</p>}
                     </form>
                     {/* Bottone per tornare indietro */}
-                    <button className="btn secondary" style={{marginTop: 20}} onClick={()=> Navigate('/auth')}>Torna al login</button>
+                    <button className="btn secondary" style={{marginTop: 20}} onClick={()=> navigate('/auth')}>Torna al login</button>
                 </div>
             </div>
         </div>
