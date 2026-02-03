@@ -7,17 +7,25 @@ export default function MainLayout({ children }) {
       style={{
         minHeight: "100vh",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
       }}
     >
-      {/* Navbar sempre visibile */}
+      {/* Navbar on the left side */}
       <Navbar />
-
-      {/* Contenuto principale */}
-      <main style={{ flex: 1, padding: "20px" }}>{children}</main>
-
-      {/* Footer sempre visibile */}
-      <Footer />
+      
+      {/* Main Content + Footer*/}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <main style={{ flex: 1, padding: "20px" }}>
+          {children}
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
