@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Calendar.css";
 
 const startHour = 8;
@@ -21,19 +21,6 @@ const Calendar = () => {
     endTime: "",
     color: "#3f51b5"
   });
-
-  /*
-  const titleRef = useRef();
-  const descriptionRef = useRef();
-  const dayRef = useRef();
-  const startTimeRef = useRef();
-  const endTimeRef = useRef();
-  const colorRef = useRef();
-
-  const timeColumnRef = useRef();
-  const daysContainerRef = useRef();
-  const weekRangeRef = useRef(); */
-
   const API_URL = "/events";
 
   //Load events in the backend
@@ -85,7 +72,7 @@ const Calendar = () => {
     setCurrentDate(newDate);
   };
   const goToNextWeek = () => {
-    const newDate = newDate(currentDate);
+    const newDate = new Date(currentDate); // FIX: era "newDate(currentDate)"
     newDate.setDate(newDate.getDate() + 7);
     setCurrentDate(newDate);
   };
@@ -252,148 +239,6 @@ const Calendar = () => {
     day: "numeric",
     month: "short"
   })} - ${weekDays[6].toLocaleDateString("it-IT", { day: "numeric", month: "short" })}`;
-/*
-  useEffect(() => {
-    const addDragEvents = (ev) => {
-      let isDragging = false;
-
-      ev.addEventListener("pointerdown", () => {
-        isDragging = false;
-        ev.style.zIndex = 1000;
-        ev.classList.add("dragging");
-
-        const onPointerMove = () => {
-          isDragging = true;
-        };
-
-        const onPointerUp = async () => {
-          ev.classList.remove("dragging");
-          ev.style.zIndex = 1;
-          document.removeEventListener("pointermove", onPointerMove);
-          document.removeEventListener("pointerup", onPointerUp);
-
-          if (!isDragging) {
-            const eventId = parseInt(ev.dataset.id);
-            const found = events.find(e => e.id === eventId);
-            if (found) {
-              setEditingEvent(found);
-              setModalVisible(true);
-            }
-            return;
-          }
-
-          const newTop = parseInt(ev.style.top);
-          const newCol = ev.parentElement;
-          const newDay = new Date(newCol.dataset.date);
-          const newStart = Math.max(startHour, startHour + Math.floor((newTop - 25) / 40));
-          const newEnd = newStart + (parseInt(ev.style.height) / 40);
-
-          const updated = events.map(e =>
-            e.id === parseInt(ev.dataset.id)
-              ? { ...e, date: newDay, startHour: Math.round(newStart), endHour: Math.round(newEnd) }
-              : e
-          );
-          setEvents(updated);
-          await saveEvents(updated);
-        };
-
-        document.addEventListener("pointermove", onPointerMove);
-        document.addEventListener("pointerup", onPointerUp);
-      });
-    };
-
-    const renderTimeColumn = () => {
-      const col = timeColumnRef.current;
-      if (!col) return;
-      col.innerHTML = "";
-      for (let h = startHour; h <= endHour; h++) {
-        const div = document.createElement("div");
-        div.classList.add("time-slot");
-        div.textContent = `${h}:00`;
-        col.appendChild(div);
-      }
-    };
-
-    const renderCalendar = () => {
-      const weekDays = getWeekDays(currentDate);
-      const container = daysContainerRef.current;
-      const range = weekRangeRef.current;
-      if (!container || !range) return;
-
-      container.innerHTML = "";
-      const start = weekDays[0].toLocaleDateString("it-IT", { day: "numeric", month: "short" });
-      const end = weekDays[6].toLocaleDateString("it-IT", { day: "numeric", month: "short" });
-      range.textContent = `${start} - ${end}`;
-
-      weekDays.forEach(day => {
-        const col = document.createElement("div");
-        col.classList.add("day-column");
-        col.dataset.date = day.toISOString();
-        col.style.position = "relative";
-
-        const header = document.createElement("div");
-        header.classList.add("day-header");
-        header.textContent = day.toLocaleDateString("it-IT", { weekday: "short", day: "numeric" });
-        col.appendChild(header);
-
-        for (let j = startHour; j < endHour; j++) {
-          const hourBlock = document.createElement("div");
-          hourBlock.classList.add("hour-block");
-          col.appendChild(hourBlock);
-        }
-
-        const dayEvents = events.filter(e => e.date.toDateString() === day.toDateString());
-        dayEvents.sort((a, b) => a.startHour - b.startHour);
-
-        const overlaps = [];
-        dayEvents.forEach(e => {
-          let placed = false;
-          for (let group of overlaps) {
-            if (e.startHour < group[group.length - 1].endHour) {
-              group.push(e);
-              placed = true;
-              break;
-            }
-          }
-          if (!placed) overlaps.push([e]);
-        });
-
-        overlaps.forEach(group => {
-          const total = group.length;
-          group.forEach((e, i) => {
-            const ev = document.createElement("div");
-            ev.classList.add("event");
-            ev.textContent = e.title;
-            ev.style.background = e.color || "var(--footer-bg)";
-            ev.dataset.id = e.id;
-
-            ev.style.top = `${(e.startHour - startHour) * 41 + 30}px`;
-            ev.style.height = `${(e.endHour - e.startHour) * 41 - 6}px`;
-            ev.style.left = `${(i / total) * 100}%`;
-            ev.style.width = `${100 / total - 3}%`;
-
-            addDragEvents(ev);
-            col.appendChild(ev);
-          });
-        });
-
-        container.appendChild(col);
-      });
-    };
-
-    renderTimeColumn();
-    renderCalendar();
-  }, [events, currentDate]);
-
-  const getWeekDays = (date) => {
-    const start = new Date(date);
-    start.setDate(start.getDate() - start.getDay() + 1);
-    return Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(start);
-      d.setDate(start.getDate() + i);
-      return d;
-    });
-  }; */
 return (
   <div className="calendar" onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
     <h2>Weekly Events</h2>
@@ -431,16 +276,16 @@ return (
                   <div key={i} className="hour-block"></div>
                 ))}
                 {/*Events*/}
-                {layoutEvents.map(event =>{
+                {layoutEvents.map(event =>(
                 <div
                   key={event.id}
                   className={`event ${draggingEvent === event.id ? "dragging" : ''}`}
                   style={{
                     top: `${(event.startHour - startHour) * 41 + 30}px`,
                     height: `${(event.endHour - event.startHour) * 41 - 6}px`,
-                    left: `${event.left}`,
-                    width: `${event.width}`,
-                    background: event || "var(--footer-bg)",
+                    left: `${event.left}%`, // FIX: aggiunto %
+                    width: `${event.width}%`, // FIX: aggiunto %
+                    background: event.color || "var(--footer-bg)", // FIX: era solo "event"
                     zIndex : draggingEvent === event.id ? 1000 : 1
                   }}
                   onPointerDown={(e) => handlePointerDown(e, event)}
@@ -448,7 +293,7 @@ return (
                 >
                   {event.title}
                 </div>
-              })}
+              ))}
               </div>
             );
           })}
@@ -502,7 +347,7 @@ return (
           />
           <input
             type="color"
-            value={formData.value}
+            value={formData.color} // FIX: era formData.value
             onChange={(e)=> setFormData({...formData, color: e.target.value})}
           />
           <button onClick={handleSaveEvent}>
