@@ -72,7 +72,7 @@ const Calendar = () => {
     setCurrentDate(newDate);
   };
   const goToNextWeek = () => {
-    const newDate = new Date(currentDate); // FIX: era "newDate(currentDate)"
+    const newDate = new Date(currentDate);
     newDate.setDate(newDate.getDate() + 7);
     setCurrentDate(newDate);
   };
@@ -153,19 +153,21 @@ const Calendar = () => {
   const handlePointerDown = (e, event) => {
     e.stopPropagation();
     setDraggingEvent(event.id);
-    setDragStart({x: e.clientX, y: e.clientY});
+    setDragStart({x: e.clientX, y: e.clientY, hasMoved:false});
   };
   const handlePointerMove = (e) => {
     if (!draggingEvent || !dragStart) return ;
 
     const deltaY = e.clientY - dragStart.y;
+    const deltaX = e.clientX - dragStart.x;
+
+    if (Math.abs(deltaY) > 5 || Math.abs(deltaX) > 5){
+      setDragStart(prev => ({...prev, hasMoved:true}));
+    }
     const deltaHours = Math.round(deltaY / 41); //Number of the pixel for hour
-
     if (deltaHours === 0) return;
-
     const eventToUpdate = events.find(ev => ev.id === draggingEvent);
     if (!eventToUpdate) return ;
-
     const newStartHour = Math.max(
       startHour,
       Math.min(endHour - 1, eventToUpdate.startHour + deltaHours)
@@ -173,14 +175,27 @@ const Calendar = () => {
     const duration = eventToUpdate.endHour - eventToUpdate.startHour;
     const newEndHour = Math.min(endHour, newStartHour + duration);
 
+    const daysGridElement = document.querySelector('.days-grid');
+    if (!daysGridElement) return;
+    const dayColumnWidth = daysGridElement.offsetWidth / 7;
+    const deltaDays = Math.round(deltaX / dayColumnWidth);
+    const newDate = new Date(eventToUpdate.date);
+    newDate.setDate(newDate.getDate() + deltaDays);
+    const isInWeek = weekDays.some(day => day.toDateString() === newDate.toDateString());
+
     const updated = events.map(ev =>
       ev.id === draggingEvent
-        ? {...ev, startHour : newStartHour, endHour:newEndHour}
+        ? {
+          ...ev, 
+          startHour : newStartHour, 
+          endHour:newEndHour,
+          date: isInWeek ? newDate : ev.date
+        }
         : ev
     );
 
     setEvents(updated);
-    setDragStart({x: e.clientX, y:e.clientY});
+    setDragStart({x: e.clientX, y:e.clientY, hasMoved: dragStart.hasMoved});
   };
   const handlePointerUp = async() => {
     if (draggingEvent) {
@@ -192,7 +207,7 @@ const Calendar = () => {
 
   //Click of the event
   const handleEventClick = (event) => {
-    if (!dragStart){
+    if (!dragStart || !dragStart.hasMoved){
       openModalForEdit(event);
     }
   };
@@ -283,9 +298,9 @@ return (
                   style={{
                     top: `${(event.startHour - startHour) * 41 + 30}px`,
                     height: `${(event.endHour - event.startHour) * 41 - 6}px`,
-                    left: `${event.left}%`, // FIX: aggiunto %
-                    width: `${event.width}%`, // FIX: aggiunto %
-                    background: event.color || "var(--footer-bg)", // FIX: era solo "event"
+                    left: `${event.left}%`, 
+                    width: `${event.width}%`, 
+                    background: event.color || "var(--footer-bg)",
                     zIndex : draggingEvent === event.id ? 1000 : 1
                   }}
                   onPointerDown={(e) => handlePointerDown(e, event)}
