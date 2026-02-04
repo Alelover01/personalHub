@@ -181,3 +181,9 @@
   background-color: #e0e0e0;
   color: var(--text-cl);
 }
+.event.dragging {
+  opacity: 0.7;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: grabbing;
+  z-index: 1000;
+}
