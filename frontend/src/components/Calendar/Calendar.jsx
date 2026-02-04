@@ -23,14 +23,23 @@ const Calendar = () => {
     color: "#3f51b5"
   });
   const API_URL = "/events";
+  const getAuthHeaders = () =>{
+    const token = localStorage.getItem('token');
+    return{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  };
 
   //Load events in the backend
   const loadEvents = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        headers: getAuthHeaders()
+      });
       if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
       const data = await response.json();
-      const parsedEvents = data.map(ev => ({ ...ev, date: new Date(ev.date) }));
+      const parsedEvents = data.map(ev => ({ ...ev, date: new Date(ev.date), startHour: ev.startHour, endHour: ev.endHour }));
       setEvents(parsedEvents);
     } catch (error) {
       console.error("Error in the loading of the events:", error);
@@ -42,7 +51,7 @@ const Calendar = () => {
     try {
       const response = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders(),
         body: JSON.stringify(updatedEvents)
       });
       if (!response.ok) throw new Error(`Errore ${response.status}: ${response.statusText}`);
