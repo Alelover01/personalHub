@@ -11,6 +11,7 @@ const Calendar = () => {
   const [editingEvent, setEditingEvent] = useState(null);
   const [draggingEvent, setDraggingEvent] = useState(null);
   const [dragStart, setDragStart] = useState(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   //Form State
   const [formData, setFormData] = useState({
@@ -153,61 +154,77 @@ const Calendar = () => {
   const handlePointerDown = (e, event) => {
     e.stopPropagation();
     setDraggingEvent(event.id);
-    setDragStart({x: e.clientX, y: e.clientY, hasMoved:false});
+    setDragStart({ x: e.clientX, y: e.clientY, hasMoved: false });
+    setDragOffset({ x: 0, y: 0 });
   };
+  
   const handlePointerMove = (e) => {
-    if (!draggingEvent || !dragStart) return ;
+    if (!draggingEvent || !dragStart) return;
 
-    const deltaY = e.clientY - dragStart.y;
     const deltaX = e.clientX - dragStart.x;
+    const deltaY = e.clientY - dragStart.y;
 
-    if (Math.abs(deltaY) > 5 || Math.abs(deltaX) > 5){
-      setDragStart(prev => ({...prev, hasMoved:true}));
+    if (Math.abs(deltaY) > 5 || Math.abs(deltaX) > 5) {
+      setDragStart(prev => ({ ...prev, hasMoved: true }));
     }
-    const deltaHours = Math.round(deltaY / 41); //Number of the pixel for hour
-    if (deltaHours === 0) return;
+    setDragOffset({ x: deltaX, y: deltaY });
+  };
+  
+  const handlePointerUp = async () => {
+    if (!draggingEvent || !dragStart) return;
+
     const eventToUpdate = events.find(ev => ev.id === draggingEvent);
-    if (!eventToUpdate) return ;
+    if (!eventToUpdate) {
+      setDraggingEvent(null);
+      setDragStart(null);
+      setDragOffset({ x: 0, y: 0 });
+      return;
+    }
+    const deltaY = dragOffset.y;
+    const deltaX = dragOffset.x;
+    const deltaHours = Math.round(deltaY / 41);
     const newStartHour = Math.max(
       startHour,
       Math.min(endHour - 1, eventToUpdate.startHour + deltaHours)
     );
     const duration = eventToUpdate.endHour - eventToUpdate.startHour;
     const newEndHour = Math.min(endHour, newStartHour + duration);
-
     const daysGridElement = document.querySelector('.days-grid');
-    if (!daysGridElement) return;
+    if (!daysGridElement) {
+      setDraggingEvent(null);
+      setDragStart(null);
+      setDragOffset({ x: 0, y: 0 });
+      return;
+    }
+    
     const dayColumnWidth = daysGridElement.offsetWidth / 7;
     const deltaDays = Math.round(deltaX / dayColumnWidth);
     const newDate = new Date(eventToUpdate.date);
     newDate.setDate(newDate.getDate() + deltaDays);
     const isInWeek = weekDays.some(day => day.toDateString() === newDate.toDateString());
-
+    
     const updated = events.map(ev =>
       ev.id === draggingEvent
         ? {
-          ...ev, 
-          startHour : newStartHour, 
-          endHour:newEndHour,
-          date: isInWeek ? newDate : ev.date
-        }
+            ...ev,
+            startHour: newStartHour,
+            endHour: newEndHour,
+            date: isInWeek ? newDate : ev.date
+          }
         : ev
     );
 
     setEvents(updated);
-    setDragStart({x: e.clientX, y:e.clientY, hasMoved: dragStart.hasMoved});
-  };
-  const handlePointerUp = async() => {
-    if (draggingEvent) {
-      await saveEvents(events);
-      setDraggingEvent(null);
-      setDragStart(null);
-    }
+    await saveEvents(updated);
+    
+    setDraggingEvent(null);
+    setDragStart(null);
+    setDragOffset({ x: 0, y: 0 });
   };
 
   //Click of the event
   const handleEventClick = (event) => {
-    if (!dragStart || !dragStart.hasMoved){
+    if (!dragStart || !dragStart.hasMoved) {
       openModalForEdit(event);
     }
   };
@@ -298,10 +315,14 @@ return (
                   style={{
                     top: `${(event.startHour - startHour) * 41 + 30}px`,
                     height: `${(event.endHour - event.startHour) * 41 - 6}px`,
-                    left: `${event.left}%`, 
-                    width: `${event.width}%`, 
+                    left: `${event.left}%`,
+                    width: `${event.width}%`,
                     background: event.color || "var(--footer-bg)",
-                    zIndex : draggingEvent === event.id ? 1000 : 1
+                    zIndex : draggingEvent === event.id ? 1000 : 1,
+                    transform: draggingEvent === event.id 
+                      ? `translate(${dragOffset.x}px, ${dragOffset.y}px)` 
+                      : 'none',
+                    transition: draggingEvent === event.id ? 'none' : 'transform 0.2s ease'
                   }}
                   onPointerDown={(e) => handlePointerDown(e, event)}
                   onClick={() => handleEventClick(event)}
@@ -362,7 +383,7 @@ return (
           />
           <input
             type="color"
-            value={formData.color} // FIX: era formData.value
+            value={formData.color}
             onChange={(e)=> setFormData({...formData, color: e.target.value})}
           />
           <button onClick={handleSaveEvent}>
