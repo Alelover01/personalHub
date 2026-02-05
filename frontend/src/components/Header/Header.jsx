@@ -4,12 +4,25 @@ import "./Header.css";
 
 const Header = () => {
   const [dataTime, setDataTime] = useState(new Date());
+  const [user, setUser] = useState(null);
+  const defaultProfilePic = profilePic;
 
   useEffect(() => {
     const interval = setInterval(() => {
       setDataTime(new Date());
     }, 1000);
     return () => clearInterval(interval);
+  }, []);
+  //Upload of the data
+  useEffect(() =>{
+    const storedUser = localStorage.getItem('user');
+    if (storedUser){
+      try{
+        setUser(JSON.parse(storedUser));
+      } catch (err){
+        console.error('Error in the parsing of the user data:', err);
+      }
+    }
   }, []);
 
   const monthNames = [
@@ -36,10 +49,12 @@ const Header = () => {
     "Saturday",
   ];
   const pad = (num) => String(num).padStart(2, "0");
+  const profilePicture = user?.profilePicture || defaultProfilePic;
+  const username = user?.username || "Guest";
 
   return (
     <header>
-      <h1>Alelover's Personal Hub</h1>
+      <h1>{username}'s Personal Hub</h1>
 
       <div className="right-header">
         {/* SIGNBOARD */}
@@ -91,7 +106,14 @@ const Header = () => {
         </div>
 
         {/* PROFILE PIC */}
-        <img src={profilePic} alt="Person of the profile of the people using it" className="profile-pic" />
+        <img 
+          src={profilePicture} 
+          alt="Person of the profile of the people using it" 
+          className="profile-pic"
+          onError={(e)=>{
+            e.target.src = defaultProfilePic;
+          }}
+          />
       </div>
     </header>
   );

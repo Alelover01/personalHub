@@ -124,7 +124,7 @@ app.post('/auth/login', async (req, res) => {
 
   try {
     const users = await sql`
-      SELECT id, username, password 
+      SELECT id, username, email, password, profile_picture
       FROM profiles 
       WHERE username = ${username} OR email = ${username};
     `;
@@ -144,7 +144,12 @@ app.post('/auth/login', async (req, res) => {
 
     res.json({
       message: 'Login completato con successo!',
-      user: { id: user.id, username: user.username },
+      user: { 
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        profilePicture: user.profile_picture
+      },
       token
     });
 
@@ -245,13 +250,10 @@ app.post('/events', authenticateToken, async (req, res) => {
 
     // Usa una transazione per garantire atomicità
     await sql.begin(async sql => {
-      // Step 1: Cancella tutti gli eventi esistenti dell'utente
       await sql`
         DELETE FROM events 
         WHERE user_id = ${userId}
       `;
-      
-      // Step 2: Inserisci i nuovi eventi (se ce ne sono)
       if (events.length > 0) {
         for (const event of events) {
           await sql`
