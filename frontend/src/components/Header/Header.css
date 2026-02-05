@@ -1,8 +1,21 @@
+/* =============================
+   HEADER.CSS
+   Styles for the application header component
+   Includes: main header layout, 3D signboard animation, profile picture
+   ============================= */
+
 /* ============================
-   HEADER BASE
+   HEADER BASE LAYOUT
    ============================ */
+
+/**
+ * Main header container
+ * - Flexbox layout for horizontal alignment
+ * - Full width with responsive padding
+ * - Bottom border for visual separation
+ */
 header {
-  justify-content: space-between;
+  justify-content: space-between;  /* Space between title and right elements */
   padding: 16px 32px;
   border-bottom: 1px solid var(--det-cl);
   display: flex;
@@ -11,18 +24,34 @@ header {
   box-sizing: border-box;
 }
 
+/**
+ * Main heading (username's Personal Hub)
+ * - Large font size for prominence
+ * - Uses theme color variable
+ * - No default margin
+ */
 header h1 {
   font-size: 48px;
   color: var(--dark-cl);
   margin: 0;
 }
 
+/**
+ * Right side container
+ * - Contains signboard and profile picture
+ * - Flexbox for horizontal alignment
+ * - Large gap for visual separation
+ */
 .right-header {
   display: flex;
   align-items: center;
   gap: 100px;
 }
 
+/**
+ * Remove default list styling
+ * - Used for signboard elements (li tags for semantic structure)
+ */
 .right-header li {
   list-style: none;
 }
@@ -30,6 +59,13 @@ header h1 {
 /* ============================
    ANIMATION & TRANSITIONS
    ============================ */
+
+/**
+ * Custom cubic-bezier animation
+ * - Creates elastic/bouncy effect
+ * - 0.4s duration for smooth feel
+ * - Applied to all signboard transformations
+ */
 .anim04c {
   transition: all 0.4s cubic-bezier(0.5, 0.35, 0.15, 1.4);
 }
@@ -37,14 +73,27 @@ header h1 {
 /* ============================
    SIGNBOARD STRUCTURE
    ============================ */
+
+/**
+ * Signboard wrapper container
+ * - Fixed size container for consistent layout
+ * - Perspective creates 3D space for transforms
+ * - Centered with margin auto
+ */
 .signboard-container {
   position: relative;
   width: 90px;
   height: 90px;
   margin: 0 auto;
-  perspective: 400px;
+  perspective: 400px;  /* 3D perspective depth */
 }
 
+/**
+ * Signboard outer wrapper
+ * - Contains all three faces (front, left, right)
+ * - Full size of container
+ * - Cursor pointer for click interaction
+ */
 .signboard.outer {
   position: relative;
   width: 100%;
@@ -53,16 +102,32 @@ header h1 {
   cursor: pointer;
 }
 
+/**
+ * Signboard inner wrapper
+ * - Actual clickable area
+ * - Smaller than container (70x70)
+ * - Centered with margin auto
+ */
 .signboard .outer {
   width: 70px;
   height: 70px;
   margin: auto;
   color: var(--text-cl);
   border-radius: 10px;
-  overflow: visible;
+  overflow: visible;  /* Allow transforms to extend outside */
 }
 
-/* Common style for the 3 faces */
+/* ============================
+   SIGNBOARD FACES (3D EFFECT)
+   ============================ */
+
+/**
+ * Common styles for all three signboard faces
+ * - Absolute positioning for layering
+ * - Flexbox for centered content
+ * - Smooth transitions for rotation/movement
+ * - Rounded corners for modern look
+ */
 .signboard.front,
 .signboard.left,
 .signboard.right {
@@ -81,6 +146,12 @@ header h1 {
   color: var(--text-cl, #222);
 }
 
+/**
+ * Front face - Primary calendar view
+ * - Highest z-index (visible on top)
+ * - Shadow for depth
+ * - Shows month, date, day by default
+ */
 .signboard.front {
   z-index: 3;
   background: var(--det-cl, #ffffff);
@@ -88,18 +159,36 @@ header h1 {
   text-align: center;
 }
 
+/**
+ * Left face - Shows hours on click
+ * - Lowest z-index (behind)
+ * - Rotated and translated to create 3D effect
+ * - Different background color for distinction
+ */
 .signboard.left {
   z-index: 1;
   transform: rotate(6deg) translate(-6px, 6px);
   background: var(--footer-bg, #cccccc);
 }
 
+/**
+ * Right face - Shows seconds on click
+ * - Middle z-index
+ * - Rotated opposite direction from left
+ * - Third distinct background color
+ */
 .signboard.right {
   z-index: 2;
   transform: rotate(-8deg) translate(6px, 6px);
   background: var(--nav-bg, #dddddd);
 }
 
+/**
+ * Calendar main display positioning
+ * - Positioned on front face
+ * - Offset for visual balance
+ * - Contains month, date, day
+ */
 .signboard.front .calendarMain {
   position: absolute;
   top: 15px;
@@ -110,8 +199,14 @@ header h1 {
 }
 
 /* ============================
-   OUTER INTERACTION STATES
+   SIGNBOARD INTERACTION STATES
    ============================ */
+
+/**
+ * Outer container base state
+ * - Centered vertically with transform
+ * - Cursor indicates clickable
+ */
 .outer {
   z-index: 1;
   transform: translateY(-50%);
@@ -119,18 +214,37 @@ header h1 {
   position: relative;
 }
 
+/**
+ * Hover state - Align faces
+ * - Removes rotation from inner faces
+ * - Creates "stacking" effect
+ */
 .outer:hover .inner {
   transform: rotate(0) translate(0);
 }
 
+/**
+ * Active state (click) - Overall scale
+ * - Scales down entire signboard
+ * - Provides tactile feedback
+ */
 .outer:active .inner {
   transform: rotate(0) translate(0) scale(0.9);
 }
 
+/**
+ * Active state - Emphasize date number
+ * - Scales up date for focus
+ */
 .outer:active .front .date {
   transform: scale(1.4);
 }
 
+/**
+ * Active state - Hide day and month text
+ * - Fades out and shrinks
+ * - Makes room for emphasized date
+ */
 .outer:active .front .day,
 .outer:active .front .month {
   transform: scale(0.8);
@@ -138,32 +252,62 @@ header h1 {
   visibility: hidden;
 }
 
+/**
+ * Active state - Spread right face
+ * - Rotates and moves right
+ * - Creates "exploded view" effect
+ */
 .outer:active .right {
   transform: rotate(-12deg) translateX(80px) scale(0.95);
 }
 
+/**
+ * Active state - Spread left face
+ * - Rotates and moves left
+ * - Mirror of right face movement
+ */
 .outer:active .left {
   transform: rotate(12deg) translateX(-80px) scale(0.95);
 }
 
+/**
+ * Active state - Hide main calendar
+ * - Fades out month/day/date text
+ * - Reveals clock display underneath
+ */
 .outer:active .calendarMain {
   transform: translateY(calc(-1 * var(--face-top))) scale(1.1);
   opacity: 0;
   visibility: hidden;
 }
 
+/**
+ * Active state - Show clock time
+ * - Reveals hours, minutes, seconds
+ * - Scales up for emphasis
+ */
 .outer:active .clock {
   transform: scale(1.1);
   opacity: 1;
   visibility: visible;
 }
 
+/**
+ * Active state - Show normal calendar view
+ * - Alternative display on faces
+ * - Repositions downward
+ */
 .outer:active .calendarNormal {
   bottom: -20px;
   opacity: 1;
   visibility: visible;
 }
 
+/**
+ * Active state - Show year
+ * - Displays full year at top
+ * - Positions above main display
+ */
 .outer:active .year {
   top: -25px;
   letter-spacing: 1px;
@@ -174,6 +318,13 @@ header h1 {
 /* ============================
    TEXT FORMATTING
    ============================ */
+
+/**
+ * Month and day text styling
+ * - Small uppercase text
+ * - Bold weight for readability
+ * - Letter spacing for elegance
+ */
 .month,
 .day {
   font-size: 10px;
@@ -183,6 +334,12 @@ header h1 {
   letter-spacing: 1px;
 }
 
+/**
+ * Date number styling
+ * - Larger than month/day
+ * - Normal weight (not bold)
+ * - Main focal point in default state
+ */
 .date {
   font-size: 20px;
   line-height: 18px;
@@ -191,6 +348,13 @@ header h1 {
   letter-spacing: 1px;
 }
 
+/**
+ * Clock display (hours, minutes, seconds)
+ * - Large text for visibility when shown
+ * - Hidden by default (opacity 0)
+ * - Revealed on click/active state
+ * - Absolutely positioned for layering
+ */
 .clock {
   width: 100%;
   height: 100%;
@@ -205,6 +369,13 @@ header h1 {
   visibility: hidden;
 }
 
+/**
+ * Year display
+ * - Medium size text
+ * - Hidden by default
+ * - Shows at top on click
+ * - Lighter weight than other text
+ */
 .year {
   width: 100%;
   top: 0;
@@ -220,8 +391,15 @@ header h1 {
 }
 
 /* ============================
-   CALENDAR DISPLAY
+   ALTERNATIVE CALENDAR DISPLAY
    ============================ */
+
+/**
+ * Normal calendar view (shown on click)
+ * - Alternative display mode
+ * - Shows on left/right faces when active
+ * - Smaller text for compact view
+ */
 .calendarNormal {
   width: 100%;
   bottom: 0;
@@ -236,6 +414,11 @@ header h1 {
   visibility: hidden;
 }
 
+/**
+ * Main calendar container
+ * - Positioned absolutely for layering
+ * - Contains month, date, day in default view
+ */
 .calendarMain {
   position: absolute;
 }
@@ -243,6 +426,14 @@ header h1 {
 /* ============================
    PROFILE PICTURE
    ============================ */
+
+/**
+ * User profile picture
+ * - Circular shape (border-radius 50%)
+ * - Fixed size for consistency
+ * - Object-fit covers to maintain aspect ratio
+ * - White border for definition against any background
+ */
 .profile-pic {
   width: 70px;
   height: 70px;
