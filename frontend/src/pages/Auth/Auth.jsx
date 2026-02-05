@@ -73,7 +73,12 @@ export default function Auth() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token); 
-        localStorage.setItem("username", data.user.username); 
+        localStorage.setItem("user", JSON.stringify({
+          id: data.user.id,
+          username: data.user.username,
+          email: data.user.email,
+          profilePicture: data.user.profilePicture || null
+        })); 
         navigate("/home");
       } else {
         setError(data.message || "Unknown login error.");
@@ -114,7 +119,12 @@ export default function Auth() {
       if (response.ok) {
         alert("Registration completed! Logging in...");
         localStorage.setItem("token", data.token); 
-        localStorage.setItem("username", data.user.username);
+        localStorage.setItem("user", JSON.stringify({
+          id: data.user.id,
+          username: data.user.username,
+          email: data.user.email,
+          profilePicture: data.user.profilePicture || null
+        })); 
         navigate("/home"); 
       } else {
         setError(data.message || "Unknown registation error.");
