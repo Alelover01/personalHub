@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const { testConnection } = require('./config/db');
+const initDB = require('./config/initDB')
 
 const app = express();
 
@@ -26,5 +27,6 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, async () => {
     await testConnection();
+    await initDB();
     console.log(`Server in ascolto sulla porta ${PORT}`);
 });
