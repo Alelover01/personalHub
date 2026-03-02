@@ -21,7 +21,7 @@ app.get('/health', (req, res) => {
 });
 
 //TODO: Add all the routes needed
-//app.use('/api/auth', require('./routes/auth.routes')); e poi tutte le altre come books, series, travel ecc..
+app.use('/api/auth', require('./routes/auth.routes')); //e poi tutte le altre come books, series, travel ecc..
 
 const PORT = process.env.PORT || 5000;
 
