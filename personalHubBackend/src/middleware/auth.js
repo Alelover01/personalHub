@@ -1,19 +1,21 @@
 const jwt = require('jsonwebtoken');
 
-const authMiddleware = (req, res , next) => {
-    const token = req.headers.authorization?.split(' ')[1];
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.split(' ')[1];
 
-    if (!token) {
-        return res.status(401).json({message: "Token Mancante"});
-    }
+  if (!token) {
+    return res.status(401).json({ message: 'Token mancante' });
+  }
 
-    try{
-        const decoded = jwt.verify(token, process.env.JTW_SECRET);
-        req.user = decoded;
-        next();
-    }catch (err){
-        return res.status(401).json({ message: "Token non valido"});
-    }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    console.log('Errore JWT:', err.message);
+    return res.status(401).json({ message: 'Token non valido' });
+  }
 };
 
-module.exports = authMiddleware
+module.exports = authMiddleware;
