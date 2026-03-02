@@ -1,5 +1,7 @@
-constpool = require('./db');
-
+const pool = require('./db');
+console.log('pool:', pool);
+console.log('tipo:', typeof pool);
+console.log('query:', typeof pool.query);
 const initDB = async() => {
     try{
         //USERS Table
