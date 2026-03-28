@@ -23,6 +23,8 @@ app.get('/health', (req, res) => {
 //TODO: Add all the routes needed
 app.use('/api/auth', require('./routes/auth.routes')); //e poi tutte le altre come books, series, travel ecc..
 app.use('/api/books', require('./routes/books.routes'));
+app.use('/api/series', require('./routes/series.routes'));
+app.use('/api/travel', require('./routes/travel.routes'));
 
 const PORT = process.env.PORT || 5000;
 
