@@ -25,6 +25,8 @@ app.use('/api/auth', require('./routes/auth.routes')); //e poi tutte le altre co
 app.use('/api/books', require('./routes/books.routes'));
 app.use('/api/series', require('./routes/series.routes'));
 app.use('/api/travel', require('./routes/travel.routes'));
+app.use('/api/todos', require('./routes/todos.routes'));
+app.use('/api/notifications', require('./routes/notifications.routes'));
 
 const PORT = process.env.PORT || 5000;
 
