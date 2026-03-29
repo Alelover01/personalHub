@@ -1,5 +1,5 @@
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 40px 32px;
 }
@@ -33,7 +33,7 @@
 }
 
 .headerText p {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
   margin-top: 4px;
   text-transform: uppercase;
@@ -47,29 +47,144 @@
   margin-top: 6px;
   border-left: 2px solid var(--accent-purple);
   padding-left: 10px;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 340px;
   gap: 24px;
 }
 
-.card {
+/* CALENDAR */
+.calendarCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.calendarHeader {
+  background: var(--accent-purple);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendarTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+}
+
+.calendarNav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.calendarNavBtn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.calendarNavBtn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.calendarRange {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  min-width: 160px;
+  text-align: center;
+}
+
+.calendarBody {
+  padding: 0 24px 24px;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: 60px repeat(7, 1fr);
+}
+
+.calendarDayHeader {
+  padding: 16px 0 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.calendarTimeLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 0 8px 0 0;
+  text-align: right;
+  height: 48px;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4px;
+}
+
+.calendarCell {
+  height: 48px;
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.calendarCell:hover {
+  background: var(--bg-hover);
+}
+
+.calendarEvent {
+  position: absolute;
+  top: 4px;
+  left: 2px;
+  right: 2px;
+  background: var(--accent-purple);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* TODO */
+.todoCard {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.cardHeader {
+.todoHeader {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
 }
 
-.cardIcon {
+.todoIcon {
   width: 32px;
   height: 32px;
   background: var(--bg-hover);
@@ -80,18 +195,17 @@
   font-size: 16px;
 }
 
-.cardTitle {
+.todoTitle {
   font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-.cardSubtitle {
+.todoSubtitle {
   font-size: 13px;
   color: var(--text-muted);
 }
 
-/* Todo List */
 .todoList {
   display: flex;
   flex-direction: column;
@@ -111,8 +225,6 @@
   width: 18px;
   height: 18px;
   border-radius: 4px;
-  border: 2px solid var(--border-light);
-  background: none;
   cursor: pointer;
   flex-shrink: 0;
   accent-color: var(--accent-purple);
@@ -152,15 +264,9 @@
   color: var(--success);
 }
 
-.todoDate {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
 .addTodoForm {
   display: flex;
   gap: 8px;
-  margin-top: 16px;
 }
 
 .addTodoInput {
@@ -184,7 +290,7 @@
   border: none;
   border-radius: 8px;
   padding: 10px 16px;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
@@ -194,59 +300,168 @@
   background: #6d28d9;
 }
 
-/* Travel upcoming */
-.travelList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.travelItem {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: var(--bg-secondary);
-  border-radius: 10px;
-  padding: 12px 14px;
-}
-
-.travelDate {
-  background: var(--accent-purple);
-  border-radius: 8px;
-  padding: 6px 10px;
-  text-align: center;
-  min-width: 52px;
-  flex-shrink: 0;
-}
-
-.travelDateDay {
-  font-size: 11px;
-  color: rgba(255,255,255,0.7);
-  text-transform: uppercase;
-}
-
-.travelDateNum {
-  font-size: 18px;
-  font-weight: 700;
-  color: white;
-  line-height: 1;
-}
-
-.travelInfo h4 {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.travelInfo p {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
 .empty {
   text-align: center;
   color: var(--text-muted);
   font-size: 14px;
   padding: 20px 0;
+}
+
+/* MODAL */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.modalField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.modalLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modalInput {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+}
+
+.modalInput:focus {
+  border-color: var(--accent-purple);
+}
+
+.modalButtons {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.modalConfirm {
+  flex: 1;
+  background: var(--accent-purple);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modalConfirm:hover {
+  background: #6d28d9;
+}
+
+.modalCancel {
+  flex: 1;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modalCancel:hover {
+  background: var(--bg-hover);
+}
+.todoDeleteBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.todoDeleteBtn:hover {
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.prioritySelect {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 10px 8px;
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+
+.prioritySelect:focus {
+  border-color: var(--accent-purple);
+}
+
+.modalDelete {
+  flex: 1;
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modalDelete:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.addEventBtn {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  color: white;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.addEventBtn:hover {
+  background: rgba(255,255,255,0.3);
 }

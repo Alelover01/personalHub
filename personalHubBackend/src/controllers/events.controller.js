@@ -29,6 +29,32 @@ const createEvent = async (req, res) => {
   }
 };
 
+const updateEvent = async (req, res) => {
+  try {
+    const { title, date, time, color } = req.body;
+    const [existing] = await pool.query(
+      'SELECT * FROM events WHERE id = ? AND user_id = ?',
+      [req.params.id, req.user.id]
+    );
+    if (existing.length === 0) {
+      return res.status(404).json({ message: 'Evento non trovato' });
+    }
+    await pool.query(
+      `UPDATE events SET
+        title = COALESCE(?, title),
+        date = COALESCE(?, date),
+        time = COALESCE(?, time),
+        color = COALESCE(?, color)
+       WHERE id = ? AND user_id = ?`,
+      [title, date, time, color, req.params.id, req.user.id]
+    );
+    const [updated] = await pool.query('SELECT * FROM events WHERE id = ?', [req.params.id]);
+    res.json(updated[0]);
+  } catch (err) {
+    res.status(500).json({ message: 'Errore server', error: err.message });
+  }
+};
+
 const deleteEvent = async (req, res) => {
   try {
     await pool.query(
@@ -41,4 +67,4 @@ const deleteEvent = async (req, res) => {
   }
 };
 
-module.exports = { getAllEvents, createEvent, deleteEvent };
+module.exports = { getAllEvents, createEvent, updateEvent, deleteEvent };
