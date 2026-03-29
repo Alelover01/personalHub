@@ -79,7 +79,19 @@ const initDB = async() => {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )`
     );
-
+    //EVENTI
+    await pool.query(`
+    CREATE TABLE IF NOT EXISTS events (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_id INT NOT NULL,
+      title VARCHAR(255) NOT NULL,
+      date DATE NOT NULL,
+      time VARCHAR(10) DEFAULT NULL,
+      color VARCHAR(20) DEFAULT '#7c3aed',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+  `);
     // NOTIFICATIONS
     await pool.query(
       `CREATE TABLE IF NOT EXISTS notifications (
